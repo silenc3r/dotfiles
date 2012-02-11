@@ -7,7 +7,9 @@ xset +fp /usr/share/fonts/TTF &               # add local fonts
 xset +fp /usr/share/fonts/misc &               # add local fonts
 xset +fp /usr/share/fonts/artwiz-fonts &        # add local fonts
 xset fp rehash &
-xset s 1200 1200 &                              # set monitor to sleep 20 mins
+# xset s 1200 1200 &                              # set monitor to sleep 20 mins
+xset +dpms &
+xset dpms 0 0 300 &
 sh /home/silencer/bin/trackpad-toggle &
 xrdb ~/.config/Xresources &
 /usr/bin/urxvtd -q -o -f &
