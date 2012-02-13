@@ -25,7 +25,7 @@ alias su='su -'
 alias ping='ping -c 3'
 alias mkdir='mkdir -p -v'
 alias df='df -h'
-alias sizeof='du -sh'
+alias du='du -h'
 
 # audio splitting
 alias splitflac='shntool split -f *.cue -o flac *.flac'
@@ -43,6 +43,9 @@ alias rm='rm -I'
 
 # bash prompt style
 PS1='\[\e[0;32m\]\u@\h \[\e[1;33m\]\W\[\e[0;32m\] $\[\e[0m\] '
+
+# path
+PATH=$PATH:/home/silencer/bin/
 
 # export thingy
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
