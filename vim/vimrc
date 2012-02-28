@@ -1,41 +1,73 @@
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 " file:     $HOME/.vimrc
 " author:   Dawid Zych
-" vim:fenc=utf-8:ai:et:ts=4:sw=4:fdm=indent:fdn=1:ft=vim:tw=78:
-"-----------------------------------------------------------------------------
+"-------------------------------------------------------------------------------
 
-" Bundle Support
+set nocompatible    " use vim settings instead of vi
+                    " this is mandatory for most of below settings to work
+
+" =============== Pathogen Initialization ======================================
+
 call pathogen#infect()
-filetype plugin indent on       " Automatically detect file types
-syntax on
+call pathogen#helptags()
 
-" General options
-set nocompatible                " use vim settings instead of vi
-set autowrite                   " set autowrite on
-set autoread                    " auto reload files saved in other editor
+" =============== General Options ========================================== {{{
+
+set hidden                      " Don't write to disk upon buffer change
+set autoread                    " Auto reload files changed outside vim
 set encoding=utf-8
-set viewoptions=folds,options,cursor,unix,slash " unix-windows compatibility
-set modelines=0                 " disable modelines (security)
+set viewoptions+=unix,slash     " Unix-windows compatibility
 set history=1000
-set ttyfast
-set lazyredraw
 set grepprg=grep\ -nH\ $*
-" set showbreak=↪
-set noeb vb t_vb=               " prevent screen flashing
+" set modelines=0               " Disable modelines (security)
+set noeb vb t_vb=               " Prevent screen flashing
+set ttyfast
+set lazyredraw                  " Redraw window only when necessary
+set title
+
+set mouse=v                     " Use mouse only in visual mode
+set mousehide                   " Hide mouse cursor when typing
+
+" Key options
+set backspace=indent,eol,start  " Allow backspace in insert mode
+set tildeop                     " Extended tilde usage
+
+
+set splitbelow
+set splitright
+
+syntax on                       " Turn on syntax highlighting
+
+" GUI options
 if has('autocmd')
     au GUIEnter * set vb t_vb=
 endif
 set gfn=Menlo\ 10
-set backspace=indent,eol,start  " backspace over everything in insert mode
+set gcr=a:blinkon0              "Disable cursor blink
+" }}}
 
-" Backup
+" =============== Searching ================================================ {{{
+
+set hlsearch                    " Highlight searches by default
+set ignorecase                  " Case insensitive search...
+set smartcase                   " ...until upper-case letter is typed
+set incsearch                   " Show next match while entering search
+set gdefault                    " Set g flag on :s substitutions by default
+set showmatch                   " Show matching braces
+" }}}
+
+" =============== Backup and Undo ========================================== {{{
+
 set backup
+set backupdir=$HOME/.vim/backup
+set noswapfile
+set directory=$HOME/.vim/swap
 set undofile
-set backupdir=$HOME/.vim/backup,$HOME/.tmp,$HOME/tmp,/var/tmp,/tmp
-set directory=$HOME/.vim/backup,$HOME/.tmp,$HOME/tmp,/var/tmp,/tmp
-set undodir=$HOME/.vim/backup,$HOME/.tmp,$HOME/tmp,/var/tmp,/tmp
+set undodir=$HOME/.vim/undo
+" }}}
 
-" Colors
+" =============== Colors =================================================== {{{
+
 if ($TERM =~ "-256color" || has('gui'))
     set t_Co=256
     " colorscheme wombat256mod
@@ -47,7 +79,7 @@ if ($TERM =~ "-256color" || has('gui'))
     " colorscheme diablo3
     " colorscheme ir_black
     " let s:low_color=1
-    colorscheme jellybeans
+    " colorscheme jellybeans
     " colorscheme peaksea
     " colorscheme werks
     " colorscheme xoria256
@@ -55,15 +87,36 @@ if ($TERM =~ "-256color" || has('gui'))
     " colorscheme mustang
     " colorscheme miro8
     " colorscheme bubblegum
-    " let g:molokai_original = 1
     " colorscheme molokai
+    " colorscheme molokai_mod
+    " colorscheme molokai_tom
+    colorscheme molokai_slosh
     " let g:zenburn_high_Contrast=1
     " colorscheme zenburn
 else
     colorscheme molokai
 endif
+" }}}
 
-" Statusline
+" =============== Visual options =========================================== {{{
+
+set cursorline                  " Highlight cursor line
+set relativenumber              " Relative line numbering
+set textwidth=80
+set colorcolumn=+1
+set formatoptions=qrn1
+set list                        " Display tabs and trailing spaces 
+set listchars=nbsp:·,eol:¬,extends:❯,precedes:❮,tab:▸\ 
+set virtualedit=block,onemore   " Allow for cursor beyond last character
+set nowrap
+set linebreak                   " Wrap lines at convenient points
+set scrolloff=5                 " Number of lines to keep above/below cursor
+set sidescroll=1                " Scroll one column at time
+set sidescrolloff=8
+" }}}
+
+" =============== Statusline =============================================== {{{
+
 if has('statusline')
     set laststatus=2                " status line, always
     set statusline=%<%f\            " Filename
@@ -72,115 +125,80 @@ if has('statusline')
     set statusline+=\ [%{getcwd()}] " current dir
     set statusline+=%=%-8.(%l,%c%V%)\ %p%% " Right aligned file nav info
 endif
-set showmode                    " display current mode
-" set ruler                       " show cursor position all the time
-" set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) " a ruler on steroids
-set showcmd                     " display incomplete commands
-set shortmess+=filmnrxoOtT      " abbrev. of messages (avoids 'hit enter')
+set showcmd                     " Display incomplete commands
+set shortmess+=mr               " Abbrev. of messages (avoids 'hit enter')
+" }}}
 
-" Search options
-set hlsearch                    " syntax highlighting
-set ignorecase                  " case insensitive search
-set smartcase                   " case sensitive when uc present
-set incsearch                   " show next match while entering search
+" =============== Indentation ============================================== {{{
 
-" Folding
+set autoindent
+set smartindent
+set smarttab
+set tabstop=4                   " Tab width
+set softtabstop=4               " Let backspace delete indent
+set shiftwidth=4                " Indentation width
+set shiftround                  " Round indent to multiple of shiftwidth
+set expandtab
+
+filetype plugin indent on       " Automatically detect file types
+" }}}
+
+" =============== Folding ================================================== {{{
+
 if has ('folding')
     set foldenable
-    "set foldmethod=indent
-    set foldcolumn=1
+    set foldmethod=indent
+    " set foldcolumn=1
     set foldminlines=3
-    " set foldlevelstart=99
+    set foldmarker={{{,}}}
+    set foldlevelstart=99
 endif
+" }}}
 
-set winminheight=1              " windows can be 1 line high
-set title
-set splitbelow
-set splitright
-set cursorline                  " highlight cursor line
-set showtabline=1               " show tabline if there's 2 or more tabs
-set relativenumber              " relative line numbering
-set textwidth=78
-set colorcolumn=+1              " color tw+1'th column
-set nowrap
-" set formatoptions=qrn1
-set lbr
-set listchars=nbsp:·,eol:¬,extends:❯,precedes:❮,tab:▸\ 
-set list
-set mouse=v                     " use mouse only in visual mode
-set mousehide                   " hide mouse cursor when typing
-set scrolloff=5                 " number of lines to keep above cursor
-set sidescroll=1
-set sidescrolloff=10
-set virtualedit=block,onemore         " allow for cursor beyond last character
-set gdefault                    " the /g flag on :s substitutions by default
-set tildeop                     " extended tilde function
+" =============== Completion =============================================== {{{
 
-" Completion
-set showmatch                   " show matching braces
-set mat=5
-set wildmenu                    " show list instead of just completing
-set wildignore+=*.o,*~,.lo
-set suffixes+=.in,.a
-set completeopt=menuone,longest " complete options for insert mode
+set wildmenu                    " Show list instead of just completing
+set wildignore+=*.o,*~,.lo,*.obj    " Files to ignore while tab completing
+set wildignore+=*vim/backup*
+set suffixes+=.in,.a            " Files with lower priority while completing
+set completeopt=menuone,longest " Complete options for insert mode
+" }}}
 
-" Indenting
-set autoindent                  " set indenting on
-" set cindent                     " scrticter indent rules for C programs
-set expandtab                   " uses spaces instead of tab
-set smarttab
-set tabstop=4                   " tab width
-set softtabstop=4               " let backspace delete indent
-set shiftwidth=4                " indentation width
-set shiftround                  " round indent to multiple of shiftwidth
+" =============== Keymaps =============== {{{
 
-" yank and copy to clipboard
-set clipboard+=unnamed
-let g:clipbrdDefaultReg = '+'
-
-""" Keymaps
 " change <LocalLeader> to ,
-let maplocalleader = ','
+let maplocalleader = '\\'
+let mapleader = ','
 
-" unmap/remap annoying keys
-" nnoremap q: <Nop>
-" nnoremap q/ <Nop>
-" nnoremap q? <Nop>
-cmap W w
-cmap WQ wq
-cmap wQ wq
-cmap Q q
+" Fuck you, manual key.
+nnoremap K <Nop>
+
+nnoremap ' `
+nnoremap ` '
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
-map N Nzz
-map n nzz
+noremap N Nzz
+noremap n nzz
 
-map <F5> :set list!<CR>
-map <F6> :set wrap!<CR>
+noremap <F5> :set list!<CR>
+noremap <F6> :set wrap!<CR>
 set pastetoggle=<F12>
 
-" enter cmdline-window by default with :, / and ?
-nnoremap : q:i
-vnoremap : q:i
-nnoremap / q/i
-vnoremap / q/i
-nnoremap ? q?i
-vnoremap ? q?i
-" allow leaving cmdline-window with <ESC>
-au CmdwinEnter * nnoremap <buffer> <ESC> :q<cr>
-" allow normal cmdline :, / and ?
-nnoremap q: :
-vnoremap q: :
-nnoremap q/ /
-vnoremap q/ /
-nnoremap q? ?
-vnoremap q? ?
+:nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+:nnoremap <leader>sv :source $MYVIMRC<cr>
 
-nore ; :
+" Move lines up and down
+nnoremap - ddp
+nnoremap _ ddkP
+
+" Make Y copy from current position to eol
+nnoremap Y y$
 
 " escape is too far
-inoremap jj <Esc>
+inoremap jk <Esc>
+" shift is hard
+noremap ; :
 
 " save the current file as root
 cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>"
@@ -198,52 +216,76 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
+" use sane regexes
+nnoremap / /\v
+vnoremap / /\v
+
+" reselect visual block after indent/outdent
+vnoremap < <gv
+vnoremap > >gv
+
 " move by display lines, not logical lines
 nnoremap j gj
 nnoremap k gk
 " Make logical line move accessible
 nnoremap <silent> gj j
 nnoremap <silent> gk k
+" H movest to begining of line, L to the end
+nnoremap H 0
+nnoremap L g_
+" Scroll faster
+nnoremap <C-e> 3<C-e>
+nnoremap <C-y> 3<C-y>
 
 nnoremap <Tab> %
 
-" Fuck you, manual key.
-nnoremap K <nop>
-
-" window/buffer navigation
+" Easier window/buffer navigation
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
-nnoremap <C-n> :next<CR>
-nnoremap <C-p> :prev<CR>
+nnoremap <C-n> :bn<CR>
+nnoremap <C-p> :bp<CR>
 noremap <leader>v <C-w>v
+
+" Autocmds
+autocmd FileType text setlocal textwidth=80 colorcolumn=+1
+
+" Abbreviations
+abbr lenght length
+abbr heigth height
+abbr widht width
 
 """ Language specific options
 let python_highlight_all = 1
 let python_highlight_space_errors = 1
 let python_fold=1
 
-""" Plugins
+" }}}
+
+" =============== Plugins =============== {{{
+
 " SnipMate
-    " Setting the author var
-    " If forking, please overwrite in your .vimrc.local file
-    let g:snips_author = 'Steve Francia <steve.francia@gmail.com>'
-    " Shortcut for reloading snippets, useful when developing
-    nnoremap ,smr <esc>:exec ReloadAllSnippets()<cr>
+" Setting the author var
+" If forking, please overwrite in your .vimrc.local file
+let g:snips_author = 'Steve Francia <steve.francia@gmail.com>'
+" Shortcut for reloading snippets, useful when developing
+nnoremap ,smr <esc>:exec ReloadAllSnippets()<cr>
 
 " NerdTree
-    map <F4> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
-    map <localleader>e :NERDTreeFind<CR>
-    nmap <localleader>nt :NERDTreeFind<CR>
+map <F4> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
+map <localleader>e :NERDTreeFind<CR>
+nmap <localleader>nt :NERDTreeFind<CR>
 
-    let NERDTreeShowBookmarks=1
-    let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-    let NERDTreeChDirMode=0
-    let NERDTreeQuitOnOpen=1
-    let NERDTreeShowHidden=1
-    let NERDTreeKeepTreeInNewTab=1
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=1
+let NERDTreeShowHidden=1
+let NERDTreeKeepTreeInNewTab=1
 
 " Notes
-    let g:notes_directory = '~/Notes'
-    let g:notes_suffix = '.note'
+let g:notes_directory = '~/Notes'
+let g:notes_suffix = '.note'
+
+" }}}
