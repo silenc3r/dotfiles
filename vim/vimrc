@@ -110,7 +110,7 @@ set listchars=nbsp:·,eol:¬,extends:❯,precedes:❮,tab:▸\
 set virtualedit=block,onemore   " Allow for cursor beyond last character
 set nowrap
 set linebreak                   " Wrap lines at convenient points
-set scrolloff=5                 " Number of lines to keep above/below cursor
+set scrolloff=0                 " Number of lines to keep above/below cursor
 set sidescroll=1                " Scroll one column at time
 set sidescrolloff=8
 " }}}
@@ -126,7 +126,7 @@ if has('statusline')
     set statusline+=%=%-8.(%l,%c%V%)\ %p%% " Right aligned file nav info
 endif
 set showcmd                     " Display incomplete commands
-set shortmess+=mr               " Abbrev. of messages (avoids 'hit enter')
+set shortmess+=mrI               " Abbrev. of messages (avoids 'hit enter')
 " }}}
 
 " =============== Indentation ============================================== {{{
@@ -158,6 +158,9 @@ endif
 " =============== Completion =============================================== {{{
 
 set wildmenu                    " Show list instead of just completing
+if exists("&wildignorecase")
+    set wildignorecase
+endif
 set wildignore+=*.o,*~,.lo,*.obj    " Files to ignore while tab completing
 set wildignore+=*vim/backup*
 set suffixes+=.in,.a            " Files with lower priority while completing
@@ -231,7 +234,7 @@ nnoremap k gk
 nnoremap <silent> gj j
 nnoremap <silent> gk k
 " H movest to begining of line, L to the end
-nnoremap H 0
+nnoremap H ^
 nnoremap L g_
 " Scroll faster
 nnoremap <C-e> 3<C-e>
