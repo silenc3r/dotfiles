@@ -1,8 +1,8 @@
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
 # file:     ~/.bashrc
 # author:   Dawid Zych
 # vim:fenc=utf-8:nu:ai:et:ts=4:sw=4:fdm=indent:fdn=1:ft=conf:
-#-------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------
 
 # Check for an interactive session
 [ -z "$PS1" ] && return
@@ -39,6 +39,8 @@ alias cptag='cuetag.sh *.cue split-track*.flac'
 #alias mv='mv -i'
 alias rm='rm -I'
 
+alias yv='youtube-viewer'
+
 # set -o vi
 
 # bash prompt style
@@ -53,7 +55,6 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
 export JAVA_FONTS=/usr/share/fonts/TTF
 # export AWT_TOOLKIT=MToolkit
 export EDITOR="vim"
-export BROWSER="firefox"
 if [ -n "$DISPLAY" ]; then
      BROWSER=firefox
 fi
@@ -66,22 +67,24 @@ if [[ -f "$HOME/.config/dircolors" ]] && [[ $(tput colors) == "256" ]]; then
     eval $( dircolors -b $HOME/.config/dircolors )
 fi
 # -- disable ^S/^Q flow control -------------------------------------------
-if tty -s ; then
-    stty -ixon
-    stty -ixoff
-fi
+# if tty -s ; then
+#     stty -ixon
+#     stty -ixoff
+# fi
 
+shopt -s histappend
 export HISTFILE="$HOME/.bash_history_`hostname`"   # hostname appended to bash history filename
 # file must be created manually, otherwise you won't have permission to edit it
-export HISTSIZE=10000                              # bash history will save N commands
+export HISTSIZE=1000000                            # bash history will save N commands
 export HISTFILESIZE=${HISTSIZE}                    # bash will remember N commands
 export HISTCONTROL="ignoreboth:erasedups"          # ingore duplicates and spaces (ignoreboth, ignoredups, ignorespace)
 
 # don't append the following to history: consecutive duplicate
 # commands, ls, bg and fg, and exit
-HISTIGNORE="&:ls:[bf]g:exit:reset:clear:cd*"
+HISTIGNORE="&:ls:[bf]g:exit:reset:clear:cd*:startx:..:..."
 HISTIGNORE=${HISTIGNORE}':%1:%2:shutdown*'
 export HISTIGNORE
+PROMPT_COMMAND='history -a; history -n'
 
 # bash sudo completion
 complete -cf sudo
@@ -131,3 +134,5 @@ pacman() {
 
 # Calculator
 ? () { echo "$*" | bc -l; } # $ ? 1337 - 1295 => 42
+# mkcd
+mkcd () { mkdir -p "$@" && cd "$@"; }
