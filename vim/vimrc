@@ -42,6 +42,9 @@ syntax on                       " Turn on syntax highlighting
 if has('autocmd')
     au GUIEnter * set vb t_vb=
 endif
+set go-=m                       "remove menubar
+set go-=T
+set go-=r
 set gfn=Menlo\ 10
 set gcr=a:blinkon0              "Disable cursor blink
 " }}}
@@ -68,7 +71,7 @@ set undodir=$HOME/.vim/undo
 
 " =============== Colors =================================================== {{{
 
-if ($TERM =~ "-256color" || has('gui'))
+if ($TERM =~ "-256color") || has('gui')
     set t_Co=256
     " colorscheme wombat256mod
     " colorscheme wombat256
@@ -88,13 +91,13 @@ if ($TERM =~ "-256color" || has('gui'))
     " colorscheme miro8
     " colorscheme bubblegum
     " colorscheme molokai
-    " colorscheme molokai_mod
+    colorscheme molokai_mod
     " colorscheme molokai_tom
-    colorscheme molokai_slosh
+    " colorscheme molokai_slosh
     " let g:zenburn_high_Contrast=1
     " colorscheme zenburn
 else
-    colorscheme molokai
+    " colorscheme molokai
 endif
 " }}}
 
@@ -166,6 +169,9 @@ set wildignore+=*vim/backup*
 set suffixes+=.in,.a            " Files with lower priority while completing
 set completeopt=menuone,longest " Complete options for insert mode
 " }}}
+
+" Clipboard
+set clipboard=unnamedplus       " copy to clipboard, 'unnamed' in windows
 
 " =============== Keymaps =============== {{{
 
