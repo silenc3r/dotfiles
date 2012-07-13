@@ -22,7 +22,7 @@ set grepprg=grep\ -nH\ $*
 " set modelines=0               " Disable modelines (security)
 set noeb vb t_vb=               " Prevent screen flashing
 set ttyfast
-set lazyredraw                  " Redraw window only when necessary
+" set lazyredraw                  " Redraw window only when necessary
 set title
 
 set mouse=v                     " Use mouse only in visual mode
@@ -109,7 +109,8 @@ set textwidth=80
 set colorcolumn=+1
 set formatoptions=qrn1
 set list                        " Display tabs and trailing spaces 
-set listchars=nbsp:·,eol:¬,extends:❯,precedes:❮,tab:▸\ 
+" set listchars=nbsp:·,eol:¬,extends:❯,precedes:❮,tab:▸\ 
+set listchars=nbsp:·,eol:¬,tab:▸\ 
 set virtualedit=block,onemore   " Allow for cursor beyond last character
 set nowrap
 set linebreak                   " Wrap lines at convenient points
@@ -168,6 +169,7 @@ set wildignore+=*.o,*~,.lo,*.obj    " Files to ignore while tab completing
 set wildignore+=*vim/backup*
 set suffixes+=.in,.a            " Files with lower priority while completing
 set completeopt=menuone,longest " Complete options for insert mode
+set wildmode=longest,list:longest
 " }}}
 
 " Clipboard
@@ -187,8 +189,11 @@ nnoremap ` '
 
 " Search mappings: These will make it so that going to the next one in a
 " search will center on the line it's found in.
-noremap N Nzz
-noremap n nzz
+nnoremap N Nzz
+nnoremap n nzz
+
+nnoremap g; g;zz
+nnoremap g. g.zz
 
 noremap <F5> :set list!<CR>
 noremap <F6> :set wrap!<CR>
