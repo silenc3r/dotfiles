@@ -1,8 +1,41 @@
-"1.0b7.2 "(created 2011/08/05 11:03:59)"
+"1.0rc1
 
-" loadplugins '\.(js|penta)$'
-" group user
+loadplugins '\.(js|penta)$'
+group user
+highlight Hint font: bold 10px "Consolas", monospace !important; margin: -.2ex; padding: 0 0 0 1px; outline: 1px solid rgba(0, 0, 0, .5); background: rgba(255, 248, 231, .8); color: black; text-transform: uppercase;
+map -count -modes=n ; -builtin <count>:
+map -count -modes=n '''' -builtin <count>go
+map -count -modes=n '"' -builtin <count>gn
+map -count -modes=n d -builtin <count><C-d>
+map -count -modes=n gf -builtin <Nop>
+map -count -modes=n gF -builtin <Nop>
+map -count -modes=n gI -builtin <count>2gi
+map -count -modes=n gs -builtin <count>gf
+map -count -modes=n h -builtin <count>3<Left>
+map -count -modes=n j -builtin <count>3<Down>
+map -count -modes=n J -builtin <count><C-n>
+map -count -modes=n k -builtin <count>3<Up>
+map -count -modes=n K -builtin <count><C-p>
+map -count -modes=n l -builtin <count>3l
+map -count -modes=n <Leader>a -builtin <count>:dialog<Space>addons<Return>
+map -count -modes=n <Leader>d -builtin <count>:downloads<Return>
+map -count -modes=n <Leader>l <count>:o<Space>javascript:(%28function%28%29%7Bwindow.baseUrl%3D%27http%3A//www.readability.com%27%3Bwindow.readabilityToken%3D%276rcLLK5xCrdkaEd2vNNrBr5KgzP7LuJSJMWRkwhr%27%3Bvar%20s%3Ddocument.createElement%28%27script%27%29%3Bs.setAttribute%28%27type%27%2C%27text/javascript%27%29%3Bs.setAttribute%28%27charset%27%2C%27UTF-8%27%29%3Bs.setAttribute%28%27src%27%2CbaseUrl%2B%27/bookmarklet/save.js%27%29%3Bdocument.documentElement.appendChild%28s%29%3B%7D%29%28%29)<Return>
+map -count -modes=n <Leader>p -builtin <count>:set<Space>private!<Return>
+map -count -modes=n <Leader>r <count>:o<Space>javascript:(%28function%28%29%7Bwindow.baseUrl%3D%27http%3A//www.readability.com%27%3Bwindow.readabilityToken%3D%276rcLLK5xCrdkaEd2vNNrBr5KgzP7LuJSJMWRkwhr%27%3Bvar%20s%3Ddocument.createElement%28%27script%27%29%3Bs.setAttribute%28%27type%27%2C%27text/javascript%27%29%3Bs.setAttribute%28%27charset%27%2C%27UTF-8%27%29%3Bs.setAttribute%28%27src%27%2CbaseUrl%2B%27/bookmarklet/read.js%27%29%3Bdocument.documentElement.appendChild%28s%29%3B%7D%29%28%29)<Return>
+map -count -modes=n <Leader>t <count>:set<Space>showtabline!=always,never<Return>
+map -count -modes=n <Leader>u -builtin <count>:undo<Space>
+map -count -modes=n <Leader>m <count>:o<Space>javascript:(function(){var%20d=document;var%20e=d.createElement('script');e.type='text/javascript';e.src='https://www.my1login.com/bookmarklet/1click_bm.js.php';d.getElementsByTagName('head')[0].appendChild(e);})()<Return>
+map -count -modes=n u -builtin <count><C-u>
+map -count -modes=n w -builtin <Nop>
+map -count -modes=n x -builtin <count>D
+map -count -modes=n X -builtin <count>u
+map -count -modes=n Y -builtin <count><yank-selection>
+map -count -modes=n ! -builtin <count>S!
 set defsearch=ddg
 set guioptions=bCrsN
+set hintkeys=sadfjklewcmpgh
+set mapleader=,
+set newtab=all
+set showstatuslinks=command
 
 " vim: set ft=pentadactyl:

@@ -1,0 +1,103 @@
+#!/bin/bash
+#
+# khinsider-dl (ver. 0.1.1)
+# This script makes downloading from http://downloads.khinsider.com easier.
+#
+# Copyright (c) 2007-2008 Arkadiusz Bokowy
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# If you want to read full version of the GNU General Public License
+# see <http://www.gnu.org/licenses/>.
+#
+# ** Note: **
+# For contact information and the lastest version of this program see
+# my webpage <http://arkbow.fm.interia.pl/main.html>.
+#
+
+tmpURL="/tmp/khinsider"
+tmpalbumURL="/tmp/khinsider.album"
+
+print_help() {
+	printf $'khinsider-dl 0.1.1
+Usage: khinsider-dl [options] URL[s]\n
+Options:
+\t-a, --album\t\tdownload whole album (need URL to album list)
+\t-o FILE\t\t\toutput file name
+\t--cookie-file FILE\tload cookie file
+\t-g, --get-url\t\tprint final URL only
+\t-q, --quiet\t\tactivates quiet mode
+\t--help\t\t\tprint this help text and exit
+\nCopyright (c) 2007-2008 by Arkadiusz Bokowy.\n\n'
+	exit
+}
+
+download_song() {
+	wget -q $quiet_set -O $tmpURL $cookie_set $1
+	if dlURL=`grep "Download to Computer" $tmpURL`; then
+		dlURL=`echo $dlURL | sed -e 's/.*href=\"//g' -e 's/\">.*//g'`
+	else
+		if test -z $quiet_set; then echo "Error: Not recognized khinsider URL type! Please, report a bug."; fi
+		rm $tmpURL; exit 1
+	fi
+	rm $tmpURL
+
+	if ((get_url_only == 1)) && test -z $quiet_set; then echo $dlURL
+	else wget $quiet_set $outfile_set $cookie_set $dlURL; fi
+}
+
+download_whole_album() {
+	wget -q $quiet_set -O $tmpalbumURL $cookie_set $1
+	if dlURLs=`grep $1 $tmpalbumURL`; then
+		for link_trush in `echo $dlURLs`; do
+			if preURL=`echo $link_trush |grep $1`; then
+				dlURL=`echo $preURL | sed -e 's/href=\"//' -e 's/\">.*//'`
+				download_song $dlURL
+			fi
+		done
+	else
+		if test -z $quiet_set; then echo "Error: Not recognized khinsider URL type! Please, report a bug."; fi
+		rm $tmpalbumURL; exit 1
+	fi
+	rm $tmpalbumURL
+}
+
+if test -z $1 || test $1 == "--help"; then print_help; fi
+
+while echo $1 |grep -q ^-; do
+	parerr=1
+	case $1 in
+		-a|--album) download_whole_album=1; parerr=0;;
+		-o)
+			if test -z $2; then echo "Error: No output file specified"; exit 1;
+			else outfile_set="-O $2"; shift; parerr=0; fi;;
+		--cookie-file)
+			if test -z $2; then echo "Error: No cookie file specified"; exit 1;
+			else cookie_set="--load-cookies=$2"; shift; parerr=0; fi;;
+		-q|--quiet) quiet_set="-q"; parerr=0;;
+		-g|--get-url) get_url_only=1; parerr=0;;
+	esac
+	if ((parerr == 1)); then echo "Error: No such option: $1"; exit 1; fi
+	shift
+done
+
+
+until test -z $1; do
+	dlURL=$1; shift
+
+	if ! echo $dlURL |grep -q "downloads.khinsider.com/"; then
+		if test -z $quiet_set; then echo "Error: URL does not seem to be a khinsider URL."; fi
+		exit 1
+	fi
+
+	if ((download_whole_album == 1)); then download_whole_album $dlURL
+	else download_song $dlURL; fi
+done

@@ -53,6 +53,7 @@ PATH=$PATH:/home/silencer/bin/
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
 # export _JAVA_AWT_WM_NONREPARENTING=1
 export JAVA_FONTS=/usr/share/fonts/TTF
+export R600_ENABLE_S3TC=1
 # export AWT_TOOLKIT=MToolkit
 export EDITOR="vim"
 if [ -n "$DISPLAY" ]; then
@@ -67,10 +68,10 @@ if [[ -f "$HOME/.config/dircolors" ]] && [[ $(tput colors) == "256" ]]; then
     eval $( dircolors -b $HOME/.config/dircolors )
 fi
 # -- disable ^S/^Q flow control -------------------------------------------
-# if tty -s ; then
-#     stty -ixon
-#     stty -ixoff
-# fi
+if tty -s ; then
+    stty -ixon
+    stty -ixoff
+fi
 
 shopt -s histappend
 export HISTFILE="$HOME/.bash_history_`hostname`"   # hostname appended to bash history filename

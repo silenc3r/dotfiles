@@ -1,39 +1,40 @@
 ! ----------------------------------------------------------------------------
 ! file:     ~/.config/Xresources
 ! author:   Dawid Zych
-! vim:fenc=utf-8:nu:ai:et:ts=4:sw=4:fdm=indent:fdn=1:ft=xdefaults:
+! vim:fenc=utf-8:ai:et:ts=4:sw=4:fdm=indent:fdn=1:ft=xdefaults:
 ! ----------------------------------------------------------------------------
 
 ! Colors
-! #include "/home/silencer/.xcolors/dark.xcolors"
-! #include "/home/silencer/.xcolors/random"
-#include "/home/silencer/.xcolors/dc2"
-! #include "/home/silencer/.xcolors/reki"
 ! #include "/home/silencer/.xcolors/bryter"
-! #include "/home/silencer/.xcolors/nnoell"
-! #include "/home/silencer/.xcolors/mason.larobina"
-! #include "/home/silencer/.xcolors/dc3"
+! #include "/home/silencer/.xcolors/cloud"
+! #include "/home/silencer/.xcolors/dark"
 ! #include "/home/silencer/.xcolors/dark2"
-! #include "/home/silencer/.xcolors/molokai.xcolors"
-! #include "/home/silencer/.xcolors/ewloni.xcolors"
-! #include "/home/silencer/.xcolors/solarized.xcolors"
-! #include "/home/silencer/.xcolors/edma.xcolors"
+! #include "/home/silencer/.xcolors/whiterock"
+#include "/home/silencer/.xcolors/dc2"
+! #include "/home/silencer/.xcolors/euphrasia"
+! #include "/home/silencer/.xcolors/dc3"
+! #include "/home/silencer/.xcolors/ewloni"
+! #include "/home/silencer/.xcolors/nnoell"
+! #include "/home/silencer/.xcolors/solarized"
+! #include "/home/silencer/.xcolors/space_supreme"
+! #include "/home/silencer/.xcolors/twilight"
 ! -- Nice low contrast
-! #include "/home/silencer/.xcolors/lich.xcolors"
+! #include "/home/silencer/.xcolors/lich"
 
 ! Fonts
 Xft.autohint: 0
 Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintfull
+! Xft.hintstyle: hintslight
 Xft.hinting: 1
 Xft.antialias: 1
 Xft.dpi: 96
 Xft.rgba: rgb
 
-! URxvt*font: xft:droid sans mono:regular:pixelsize=12
-! URxvt*boldFont: xft:droid sans mono:bold:pixelsize=12
-! URxvt*italicFont: xft:droid sans mono:itaic:pixelsize=12
-! URxvt*boldItalicFont: xft:droid sans mono:bold:italic:pixelsize=12
+! URxvt*font: xft:droid sans mono slashed:regular:pixelsize=12.5
+! URxvt*boldFont: xft:droid sans mono slashed:bold:pixelsize=12.5
+! URxvt*italicFont: xft:droid sans mono slashed:itaic:pixelsize=12.5
+! URxvt*boldItalicFont: xft:droid sans mono slashed:bold:italic:pixelsize=12.5
 
 ! URxvt*font: xft:luxi mono:regular:pixelsize=13
 ! URxvt*boldFont: xft:luxi mono:bold:pixelsize=13
@@ -42,7 +43,7 @@ Xft.rgba: rgb
 
 ! URxvt*font: xft:dejavu sans mono:medium:regular:pixelsize=12
 ! URxvt*boldFont: xft:dejavu sans mono:bold:regular:pixelsize=12
-! URxvt*italicFont: xft:dejavu sans mono:medium:regular:pixelsize=12
+! URxvt*italicFont: xft:dejavu sans mono:medium:italic:pixelsize=12
 ! URxvt*boldItalicFont: xft:dejavu sans mono:bold:italic:pixelsize=12
 
 ! URxvt*font: xft:menlo:medium:regular:pixelsize=13
@@ -65,10 +66,10 @@ Xft.rgba: rgb
 ! URxvt*italicFont: xft:inconsolata-g:medium:italic:pixelsize=12
 ! URxvt*boldItalicFont: xft:inconsolata-g:bold:italic:pixelsize=12
 
-! URxvt*font: xft:consolas:regular:pixelsize=13
-! URxvt*boldFont: xft:consolas:bold:pixelsize=13
-! URxvt*italicFont: xft:consolas:medium:italic:pixelsize=13
-! URxvt*boldItalicFont: xft:consolas:bold:italic:pixelsize=13
+URxvt*font: xft:consolas:regular:pixelsize=12.5
+URxvt*boldFont: xft:consolas:bold:pixelsize=12.5
+URxvt*italicFont: xft:consolas:medium:italic:pixelsize=12.5
+URxvt*boldItalicFont: xft:consolas:bold:italic:pixelsize=12.5
 
 !! nice but a bit too slim
 ! URxvt*font:         xft:envy code r:medium:pixelsize=13
@@ -83,8 +84,8 @@ Xft.rgba: rgb
 
 !! bitmap fonts
 ! dotted zeros
-! URxvt*font:     -*-proggyclean-medium-*-*-*-12-*-*-*-*-*-*-*
-! URxvt*boldFont: -*-proggyclean-medium-*-*-*-12-*-*-*-*-*-*-*
+! URxvt*font:     -*-proggyclean-medium-*-*-*-13-*-*-*-*-*-*-*
+! URxvt*boldFont: -*-proggyclean-medium-*-*-*-13-*-*-*-*-*-*-*
 
 ! sucks above 12px
 ! URxvt*font: -*-profont-medium-*-*-*-12-*-*-*-*-*-*-*
@@ -93,13 +94,17 @@ Xft.rgba: rgb
 ! URxvt*boldItalicFont: -*-profont-medium-*-*-*-12-*-*-*-*-*-*-*
 
 ! awesome bold
-! URxvt*font: -*-tamsyn-medium-*-*-*-15-*-*-*-*-*-*-*
-! URxvt*boldFont: -*-tamsyn-bold-*-*-*-15-*-*-*-*-*-*-*
-! URxvt*italicFont: -*-tamsyn-medium-*-*-*-15-*-*-*-*-*-*-*
-! URxvt*boldItalicFont: -*-tamsyn-medium-*-*-*-15-*-*-*-*-*-*-*
+! URxvt*font: -*-tamsyn-medium-*-*-*-14-*-*-*-*-*-*-*, -misc-gohufont-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+! URxvt*boldFont: -*-tamsyn-bold-*-*-*-14-*-*-*-*-*-*-*, -misc-gohufont-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+! URxvt*italicFont: -*-tamsyn-medium-*-*-*-12-*-*-*-*-*-*-*
+! URxvt*boldItalicFont: -*-tamsyn-bold-*-*-*-12-*-*-*-*-*-*-*
 
-URxvt.font: -*-termsyn-medium-*-*-*-14-*-*-*-*-*-iso8859-2
-URxvt.boldFont: -*-termsyn-bold-*-*-*-14-*-*-*-*-*-iso8859-2
+! TamsynMod14
+! URxvt*font: -*-tamsynmod14-medium-*-*-*-14-*-*-*-*-*-*-*, -misc-gohufont-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+! URxvt*boldFont: -*-tamsynmod14-bold-*-*-*-14-*-*-*-*-*-*-*, -misc-gohufont-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+
+! URxvt.font: -*-termsyn-medium-*-*-*-14-*-*-*-*-*-iso8859-2, -misc-gohufont-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
+! URxvt.boldFont: -*-termsyn-bold-*-*-*-14-*-*-*-*-*-iso8859-2, -misc-gohufont-medium-r-normal-*-14-*-*-*-*-*-iso10646-1
 
 ! urxvt*font: -misc-fixed-medium-r-semicondensed-*-13-*-*-*-*-*-iso10646-*
 ! urxvt*boldFont: -misc-fixed-medium-r-semicondensed-*-13-*-*-*-*-*-iso10646-*
@@ -122,10 +127,10 @@ URxvt.boldFont: -*-termsyn-bold-*-*-*-14-*-*-*-*-*-iso8859-2
 ! URxvt*italicFont: -*-terminusmod-medium-r-*-*-12-*-*-*-*-*-*-*
 ! URxvt*boldItalicFont: -*-terminusmod-bold-r-*-*-12-*-*-*-*-*-*-*
 
-! URxvt*font: -*-terminus-medium-r-*-*-14-*-*-*-*-*-*-*
-! URxvt*boldFont: -*-terminus-bold-r-*-*-12-*-*-*-*-*-*-*
-! URxvt*italicFont: -*-terminus-medium-r-*-*-12-*-*-*-*-*-*-*
-! URxvt*boldItalicFont: -*-terminus-bold-r-*-*-12-*-*-*-*-*-*-*
+! URxvt*font: -*-terminus-medium-r-*-*-12-*-*-*-*-*-*-2
+! URxvt*boldFont: -*-terminus-bold-r-*-*-12-*-*-*-*-*-*-2
+! URxvt*italicFont: -*-terminus-medium-r-*-*-12-*-*-*-*-*-*-2
+! URxvt*boldItalicFont: -*-terminus-bold-r-*-*-12-*-*-*-*-*-*-2
 
 urxvt*saveLines: 8192
 urxvt*scrollBar: false
