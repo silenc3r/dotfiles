@@ -1,0 +1,139 @@
+#!/usr/bin/python2
+#
+# redtube-dl (ver. 0.1.7)
+# Copyright (c) 2008-2010 Arkadiusz Bokowy
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# If you want to read full version of the GNU General Public License
+# see <http://www.gnu.org/licenses/>.
+#
+# ** Note: **
+# For contact information and the lastest version of this program see
+# my webpage <http://arkq.awardspace.us/#redtube-dl>.
+#
+# Changelog:
+# Mon Apr 12 2010 Arkq <> 0.1.6
+# - new movies paths determination (server side)
+# Thu Apr 30 2009 Arkq <> 0.1.5
+# - download more then one file at once
+#* Sat Mar 28 2009 Arkq <> 0.1.4
+# - few bugs fix
+#* Fay Oct 03 2008 Arkq <arkbow@poczta.fm> 0.1.3
+# - added '--title' switch
+
+APP_VER = "0.1.7"
+
+import os, sys, re, urllib2, optparse
+
+class RedTube:
+	infoURL = 'http://embed.redtube.com/video/info/?id=%s'
+	storageURL = 'http://cdn.ec.redtube.com/_videos_t4vn23s9jc5498tgj49icfj4678%s'
+
+	def checkURL(self, url):
+		"""Check if url is RedTube one."""
+		pat = re.compile("redtube\.com/.+")
+		if pat.search(url) is None:
+			raise ValueError("Not RedTube URL")
+
+	def getDirectFileURL(self, url):
+		"""Get direct file url (downloadable one)."""
+		self.checkURL(url)
+
+		# extract fileID from URL
+		(scheme, netloc, path, query, fragment) = urllib2.urlparse.urlsplit(url)
+		(head, fileID) = os.path.split(path)
+
+		# get movie url
+		pat = re.compile('<url src=\'(.*)\'></url>')
+		fpat = pat.search(urllib2.urlopen(self.infoURL % fileID).read())
+		if fpat: urlHandler = fpat.group(1)
+		else: raise ValueError('Movie URL not found!')
+
+		# strip tags "FLV_","H264_" from handler URL
+		for xtag in ['FLV_', 'H264_']:
+			if urlHandler.startswith(xtag):
+				urlHandler = urlHandler[len(xtag):]
+				
+		return self.storageURL % urllib2.unquote(urlHandler)
+
+	def getFileTitle(self, url):
+		"""Get user readable file title."""
+		pat = re.compile("<title>(.*)</title>")
+		self.checkURL(url)
+
+		urlData = urllib2.urlopen(url)
+
+		# don't download all page (download until </title>)
+		htmlHeader = urlData.read(1500)
+		while htmlHeader.find("</title>") == -1:
+			htmlHeader += urlData.read(1500)
+
+		urlData.close()
+		fpat = pat.search(htmlHeader)
+
+		if fpat:
+			titleRaw = fpat.group(1)
+			title = titleRaw.split('|')[0].strip()
+		else: title = 'VideoRT'
+
+		return title
+
+#******************************** MAIN ***************************************
+def prepareParser():
+	cmdP = optparse.OptionParser(usage="Usage: %prog [options] url(s)",
+			version=APP_VER)
+	cmdP.add_option("-g", "--get-url", help="print final URL only",
+			action="store_true", dest="get_url")
+	cmdP.add_option("-t", "--title", help="display title when '-g' is used",
+			action="store_true", dest="get_title")
+	cmdP.add_option("-q", "--quiet", help="activates quiet mode",
+			action="store_true", dest="quiet")
+	return cmdP
+
+def downloadAgent(dwLink, background = False, quiet = False):
+	global rt
+
+	try: downloadURL = rt.getDirectFileURL(dwLink)
+	except ValueError:
+		print("Error: URL does not seem to be a RedTube URL.")
+		return False
+
+	fileTitle = rt.getFileTitle(dwLink)
+	fileTitle = fileTitle.replace("/", "|").replace("'", "")
+	wgetOption = "-O '%s.flv'" % (fileTitle)
+
+	if background:
+		os.system("wget -nv %s '%s' &" % (wgetOption, downloadURL))
+	else:
+		if quiet: wgetOption += " -q"
+		os.system("wget %s '%s'" % (wgetOption, downloadURL))
+
+if __name__ == "__main__":
+	cmdPars = prepareParser()
+	cmd_opts, cmd_args = cmdPars.parse_args()
+
+	if len(cmd_args) == 0:
+		cmdPars.print_help()
+		sys.exit(1)
+
+	rt = RedTube()
+
+	# only print direct file URL
+	if cmd_opts.get_url:
+		for xurl in cmd_args:
+			if cmd_opts.get_title: print(rt.getFileTitle(xurl))
+			print(rt.getDirectFileURL(xurl))
+		sys.exit(0)
+
+	# simple download mode
+	for xurl in cmd_args:
+		downloadAgent(xurl, quiet = cmd_opts.quiet)

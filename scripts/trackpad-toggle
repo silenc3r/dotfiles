@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ $(synclient -l | awk '/TouchpadOff/ { print $NF }') -eq 0 ]; then
+    synclient TouchpadOff=1
+else
+    synclient TouchpadOff=0
+fi
