@@ -1,0 +1,2 @@
+ln -s -i $(pwd)/user-dirs.dirs ~/.config/user-dirs.dirs
+ln -s -i $(pwd)/user-dirs.locale ~/.config/user-dirs.locale
