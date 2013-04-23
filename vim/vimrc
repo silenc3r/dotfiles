@@ -1,305 +1,508 @@
-"-------------------------------------------------------------------------------
-" file:     $HOME/.vimrc
+"-----------------------------------------------------------------------------
 " author:   Dawid Zych
-"-------------------------------------------------------------------------------
+" vim: set foldmarker={,} foldlevel=0 foldmethod=marker: 
+"-----------------------------------------------------------------------------
 
-set nocompatible    " use vim settings instead of vi
-                    " this is mandatory for most of below settings to work
+" Environment {
+"
+    " Basics {
+        set nocompatible    " This must be in the first line
+    " }
 
-" =============== Pathogen Initialization ======================================
+    " Windows Compatible {
+        " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
+        " across (heterogeneous) systems easier.
+        if has('win32') || has('win64')
+          set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
+        endif
+    " }
 
-call pathogen#infect()
-call pathogen#helptags()
+    " Setup Bundle Support {
+        " The next three lines ensure that the ~/.vim/bundle/ system works
+        filetype on
+        filetype off
+        set rtp+=~/.vim/bundle/vundle
+        call vundle#rc()
 
-" =============== General Options ========================================== {{{
+        set background=dark           " Assume a dark background
+        filetype plugin indent on     " Automatically detect file types.
+        syntax on                     " Syntax highlighting
 
-set hidden                      " Don't write to disk upon buffer change
-set autoread                    " Auto reload files changed outside vim
-set encoding=utf-8
-set viewoptions+=unix,slash     " Unix-windows compatibility
-set history=1000
-set grepprg=grep\ -nH\ $*
-" set modelines=0               " Disable modelines (security)
-set noeb vb t_vb=               " Prevent screen flashing
-set ttyfast
-" set lazyredraw                  " Redraw window only when necessary
-set title
+        Bundle 'gmarik/vundle'
 
-set mouse=v                     " Use mouse only in visual mode
-set mousehide                   " Hide mouse cursor when typing
+        if executable('ack-grep')
+            let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+            Bundle 'mileszs/ack.vim'
+        elseif executable('ack')
+            Bundle 'mileszs/ack.vim'
+        elseif executable('ag')
+            Bundle 'mileszs/ack.vim'
+            let g:ackprg = 'ag --nogroup --nocolor --column'
+        endif
 
-" Key options
-set backspace=indent,eol,start  " Allow backspace in insert mode
-set tildeop                     " Extended tilde usage
+        Bundle 'kien/ctrlp.vim'
+        Bundle 'Lokaltog/vim-easymotion'
+        Bundle 'mbbill/undotree'
+        Bundle 'myusuf3/numbers.vim'
+        Bundle 'vim-scripts/sessionman.vim'
+        Bundle 'matchit.zip'
+        Bundle 'godlygeek/tabular'
+        if executable('ctags')
+            Bundle 'majutsushi/tagbar'
+        endif
 
+        " Git
+        Bundle 'tpope/vim-fugitive'
+        Bundle 'airblade/vim-gitgutter'
+        Bundle 'mattn/gist-vim'
 
-set splitbelow
-set splitright
+        " Bundle 'mattn/webapi-vim'
 
-syntax on                       " Turn on syntax highlighting
+        " Python
+        " Bundle 'klen/python-mode'
+        " Bundle 'python.vim'
+        " Bundle 'python_match.vim'
+        " Bundle 'pythoncomplete'
 
-" GUI options
-if has('autocmd')
-    au GUIEnter * set vb t_vb=
-endif
-set go-=m                       "remove menubar
-set go-=T
-set go-=r
-set gfn=Menlo\ 10
-set gcr=a:blinkon0              "Disable cursor blink
-" }}}
+        " JavaScript
+        " Bundle 'leshill/vim-json'
+        " Bundle 'groenewege/vim-less'
+        " Bundle 'pangloss/vim-javascript'
+        " Bundle 'briancollins/vim-jst'
+        " Bundle 'kchmck/vim-coffee-script'
 
-" =============== Searching ================================================ {{{
+        " HTML
+        " Bundle 'amirh/HTML-AutoCloseTag'
+        " Bundle 'hail2u/vim-css3-syntax'
+        " Bundle 'tpope/vim-haml'
 
-set hlsearch                    " Highlight searches by default
-set ignorecase                  " Case insensitive search...
-set smartcase                   " ...until upper-case letter is typed
-set incsearch                   " Show next match while entering search
-set gdefault                    " Set g flag on :s substitutions by default
-set showmatch                   " Show matching braces
-" }}}
+        " Ruby"
+        " Bundle 'tpope/vim-rails'
+        " let g:rubycomplete_buffer_loading = 1
 
-" =============== Backup and Undo ========================================== {{{
+        Bundle 'w0ng/vim-hybrid'
+        Bundle 'Yggdroot/indentLine'
+        Bundle 'tpope/vim-markdown'
+        Bundle 'Raimondi/delimitMate'
+        Bundle 'tomtom/tcomment_vim'
+        Bundle 'tpope/vim-surround'
+        Bundle 'tpope/vim-repeat'
+        Bundle 'Valloric/YouCompleteMe'
+        Bundle 'scrooloose/syntastic'
+        Bundle 'SirVer/ultisnips'
+        Bundle 'chrisbra/NrrwRgn'
+        Bundle 'Lokaltog/powerline', {'rtp':'/powerline/bindings/vim'}
+        Bundle 'spf13/vim-gocode'
+        Bundle 'jnwhiteh/vim-golang'
+        Bundle 'jnurmine/Zenburn'
+        " Bundle 'scrooloose/nerdtree'
+        " Bundle 'altercation/vim-colors-solarized'
+    " }
 
-set backup
-set backupdir=$HOME/.vim/backup
-set noswapfile
-set directory=$HOME/.vim/swap
-set undofile
-set undodir=$HOME/.vim/undo
-" }}}
+" }
 
-" =============== Colors =================================================== {{{
+" General {
 
-if ($TERM =~ "-256color") || has('gui')
-    set t_Co=256
-    " colorscheme wombat256mod
-    " colorscheme wombat256
-    " let g:solarized_termcolors=256
-    " colorscheme solarized
-    " let g:solarized_italic=0
-    " set background=dark
-    " colorscheme diablo3
-    " colorscheme ir_black
-    " let s:low_color=1
-    " colorscheme jellybeans
-    " colorscheme peaksea
-    " colorscheme werks
-    " colorscheme xoria256
-    " colorscheme candycode
-    " colorscheme mustang
-    " colorscheme miro8
-    " colorscheme bubblegum
-    " colorscheme molokai
-    colorscheme molokai_mod
-    " colorscheme molokai_tom
-    " colorscheme molokai_slosh
-    " let g:zenburn_high_Contrast=1
-    " colorscheme zenburn
-else
-    " colorscheme molokai
-endif
-" }}}
+    set mouse=a                   " Use mouse everywhere
+    set mousehide                 " Hide mouse cursor when typing
+    set encoding=utf-8
+    scriptencoding utf-8
 
-" =============== Visual options =========================================== {{{
+    if has ('x') && has ('gui')   " On Linux use + register for copy-paste
+        " XXX it doesn't work from terminal, though                " +y does
+        set clipboard=unnamedplus
+    elseif has ('gui')            " On mac and Windows, use * register for copy-paste
+        set clipboard=unnamed
+    endif
 
-set cursorline                  " Highlight cursor line
-set relativenumber              " Relative line numbering
-set textwidth=80
-set colorcolumn=+1
-set formatoptions=qrn1
-set list                        " Display tabs and trailing spaces 
-" set listchars=nbsp:·,eol:¬,extends:❯,precedes:❮,tab:▸\ 
-set listchars=nbsp:·,eol:¬,tab:▸\ 
-set virtualedit=block,onemore   " Allow for cursor beyond last character
-set nowrap
-set linebreak                   " Wrap lines at convenient points
-set scrolloff=0                 " Number of lines to keep above/below cursor
-set sidescroll=1                " Scroll one column at time
-set sidescrolloff=8
-" }}}
+    set hidden                    " Don't write to disk upon buffer change
+    set autoread                  " Auto reload files changed outside vim
+    set nospell                   " Disable spell checking
+    set shortmess+=filmnrxoOtT    " Abbrev. of messages (avoids 'hit enter')
+    set viewoptions+=unix,slash   " Unix-windows compatibility
+    set virtualedit=onemore,block " Allow for cursor beyond last character
+    set history=1000              " Store a ton of history (default is 20)
+    " set modelines=0             " Disable modelines (security)
+    set noeb vb t_vb=             " Prevent screen flashing
+    set ttyfast
+    " set lazyredraw              " Redraw window only when necessary
+    set title
+    set splitbelow
+    set splitright
 
-" =============== Statusline =============================================== {{{
+    set nobackup
+    set nowritebackup
+    set noswapfile
+    if has('persistent_undo')
+        set undofile              " Persistent undo is sexy
+        set undolevels=1000       " Maximum number of changes that can be undone
+        set undoreload=10000      " Maximum number lines to save for undo on a buffer reload
+    endif
 
-if has('statusline')
-    set laststatus=2                " status line, always
-    set statusline=%<%f\            " Filename
-    set statusline+=%w%h%m%r        " Options
-    set statusline+=\ [%{&ff}/%Y]   " filetype
-    set statusline+=\ [%{getcwd()}] " current dir
-    set statusline+=%=%-8.(%l,%c%V%)\ %p%% " Right aligned file nav info
-endif
-set showcmd                     " Display incomplete commands
-set shortmess+=mrI               " Abbrev. of messages (avoids 'hit enter')
-" }}}
+" }
 
-" =============== Indentation ============================================== {{{
+" Vim UI {
 
-set autoindent
-set smartindent
-set smarttab
-set tabstop=4                   " Tab width
-set softtabstop=4               " Let backspace delete indent
-set shiftwidth=4                " Indentation width
-set shiftround                  " Round indent to multiple of shiftwidth
-set expandtab
+    " XXX colors shoud be set here
+    if ($TERM =~ "-256color") || ($TERM =~ "-termite") || has('gui')
+        set t_Co=256
+        let g:hybrid_use_Xresources = 1
+        colorscheme hybrid
+        " colorscheme wombat256mod
+        " colorscheme wombat256
+        " let g:solarized_termcolors=256
+        " colorscheme solarized
+        " let g:solarized_italic=0
+        " colorscheme diablo3
+        " colorscheme ir_black
+        " let s:low_color=1
+        " colorscheme jellybeans
+        " colorscheme peaksea
+        " colorscheme werks
+        " colorscheme xoria256
+        " colorscheme candycode
+        " colorscheme mustang
+        " colorscheme miro8
+        " colorscheme bubblegum
+        " colorscheme molokai
+        " colorscheme molokai_mod
+        " colorscheme molokai_tom
+        " colorscheme molokai_slosh
+        " let g:zenburn_high_Contrast=1
+        " colorscheme zenburn
+    else
+        " colorscheme molokai
+    endif
 
-filetype plugin indent on       " Automatically detect file types
-" }}}
+    set tabpagemax=15           " Only show 15 tabs
+    set showmode                " Display the current mode
 
-" =============== Folding ================================================== {{{
+    set cursorline              " Highlight cursor line
+    highlight clear SignColumn  " SignColumn should match background
+    hi ColorColumn ctermbg=0
+    set colorcolumn=79
 
-if has ('folding')
+    if has('cmdline_info')
+        set ruler   " Show the ruler
+        set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)    " A ruler on steroids
+        set showcmd " Show partial commands in status line and
+                    " Selected characters/lines in visual mode
+    endif
+
+    if has('statusline')
+        set laststatus=2
+
+        " Broken down into easily includeable segments
+        set statusline=%<%f\                     " Filename
+        set statusline+=%w%h%m%r                 " Options
+        set statusline+=%{fugitive#statusline()} " Git Hotness
+        set statusline+=\ [%{&ff}/%Y]            " Filetype
+        set statusline+=\ [%{getcwd()}]          " Current dir
+        set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+    endif
+
+    set backspace=indent,eol,start " Allow backspace in insert mode
+    set linespace=0                " No extra spaces between rows
+    set nu                         " Line numbers on
+    set showmatch                  " Show matching braces
+    set incsearch                  " Show next match while entering search
+    set hlsearch                   " Highlight searches by default
+    set ignorecase                 " Case insensitive search...
+    set smartcase                  " ...until upper-case letter is typed
+    set winminheight=0             " Windows can be 0 line high
+    set gdefault                   " Set g flag on :s substitutions by default
+    set tildeop                    " Extended tilde usage
+    set scrolloff=0
+    set sidescroll=1
+    set sidescrolloff=8
     set foldenable
-    set foldmethod=indent
-    " set foldcolumn=1
     set foldminlines=3
-    set foldmarker={{{,}}}
-    set foldlevelstart=99
-endif
-" }}}
+    set list
+    set listchars=nbsp:·,extends:❯,precedes:❮,tab:»\ ,trail:·
+    " set listchars=nbsp:·,extends:❯,precedes:❮,tab:▸\
 
-" =============== Completion =============================================== {{{
+    " Completion {
+    set wildmenu                           " Show list instead of just completing
+    if exists("&wildignorecase")
+        set wildignorecase
+    endif
+    set wildignore+=*.o,*~,.lo,*.obj,*.pyc " Files to ignore while tab completing
+    set suffixes+=.in,.a                   " Files with lower priority while completing
+    set completeopt=menuone,longest        " Complete options for insert mode
+    set wildmode=longest,list:longest
+    " set wildmode=list:longest,full       " Command <Tab> completion, list matches, then longest common part, then all.
+    " }
 
-set wildmenu                    " Show list instead of just completing
-if exists("&wildignorecase")
-    set wildignorecase
-endif
-set wildignore+=*.o,*~,.lo,*.obj    " Files to ignore while tab completing
-set wildignore+=*vim/backup*
-set suffixes+=.in,.a            " Files with lower priority while completing
-set completeopt=menuone,longest " Complete options for insert mode
-set wildmode=longest,list:longest
-" }}}
+" }
 
-" Clipboard
-set clipboard=unnamedplus       " copy to clipboard, 'unnamed' in windows
+" Formatting {
 
-" =============== Keymaps =============== {{{
+    set nowrap                      " Don't wrap long lines
+    set autoindent                  " Indent at the same level of the previous line
+    set shiftwidth=4                " Use indents of 4 spaces
+    set shiftround                  " Round indent to multiple of shiftwidth
+    set expandtab                   " Tabs are spaces, not tabs
+    set smarttab
+    set tabstop=4                   " An indentation every four columns
+    set softtabstop=0               " Don't let backspace delete indent, use ^D
+    "set matchpairs+=<:>             " Match, to be used with %
+    set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+    " Remove trailing whitespaces and ^M chars
+    autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+    autocmd FileType go autocmd BufWritePre <buffer> Fmt
 
-" change <LocalLeader> to ,
-let maplocalleader = '\\'
-let mapleader = ','
+" }
 
-" Fuck you, manual key.
-nnoremap K <Nop>
 
-nnoremap ' `
-nnoremap ` '
+set undodir=$HOME/.vim/undo
 
-" Search mappings: These will make it so that going to the next one in a
-" search will center on the line it's found in.
-nnoremap N Nzz
-nnoremap n nzz
 
-nnoremap g; g;zz
-nnoremap g. g.zz
+" Keymaps {
 
-noremap <F5> :set list!<CR>
-noremap <F6> :set wrap!<CR>
-set pastetoggle=<F12>
+    " Remap <Leader> to SPACEBAR
+    let mapleader = ' ' 
+    " Fuck you, manual key.
+    nnoremap K <Nop>
 
-:nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-:nnoremap <leader>sv :source $MYVIMRC<cr>
+    " nnoremap ' `
+    " nnoremap ` '
 
-" Move lines up and down
-nnoremap - ddp
-nnoremap _ ddkP
+    " Search mappings: These will make it so that going to the next one in a
+    " search will center on the line it's found in.
+    nnoremap N Nzz
+    nnoremap n nzz
 
-" Make Y copy from current position to eol
-nnoremap Y y$
+    nnoremap g; g;zz
+    nnoremap g. g.zz
 
-" escape is too far
-inoremap jk <Esc>
-" shift is hard
-noremap ; :
+    " noremap <F5> :set list!<CR>
+    " noremap <F6> :set wrap!<CR>
 
-" save the current file as root
-cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>"
+    " nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+    " nnoremap <leader>sv :source $MYVIMRC<cr>
 
-" space bar un-highlights search
-:noremap <silent> <Space> :silent noh<Bar>echo<CR>
+    " fly between buffers
+    nnoremap <leader>l :ls<CR>:b<space>
 
-" unmap arrow keys
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+    " Make Y copy from current position to eol
+    nnoremap Y y$
 
-" use sane regexes
-nnoremap / /\v
-vnoremap / /\v
+    " save the current file as root
+    cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>"
 
-" reselect visual block after indent/outdent
-vnoremap < <gv
-vnoremap > >gv
+    " space bar un-highlights search
+    :noremap <silent> <Space> :silent noh<Bar>echo<CR>
 
-" move by display lines, not logical lines
-nnoremap j gj
-nnoremap k gk
-" Make logical line move accessible
-nnoremap <silent> gj j
-nnoremap <silent> gk k
-" H movest to begining of line, L to the end
-nnoremap H ^
-nnoremap L g_
-" Scroll faster
-nnoremap <C-e> 3<C-e>
-nnoremap <C-y> 3<C-y>
+    " unmap arrow keys
+    nnoremap <up> <nop>
+    nnoremap <down> <nop>
+    nnoremap <left> <nop>
+    nnoremap <right> <nop>
+    inoremap <up> <nop>
+    inoremap <down> <nop>
+    inoremap <left> <nop>
+    inoremap <right> <nop>
 
-nnoremap <Tab> %
+    " use sane regexes
+    nnoremap / /\v
+    vnoremap / /\v
 
-" Easier window/buffer navigation
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-nnoremap <C-n> :bn<CR>
-nnoremap <C-p> :bp<CR>
-noremap <leader>v <C-w>v
+    " reselect visual block after indent/outdent
+    vnoremap < <gv
+    vnoremap > >gv
 
-" Autocmds
-autocmd FileType text setlocal textwidth=80 colorcolumn=+1
+    " move by display lines, not logical lines
+    nnoremap <silent> j gj
+    nnoremap <silent> k gk
+    " Make logical line move accessible
+    nnoremap <silent> gj j
+    nnoremap <silent> gk k
+    " H movest to begining of line, L to the end
+    " nnoremap H ^
+    " nnoremap L g_
+    " Scroll faster
+    " nnoremap <C-e> 3<C-e>
+    " nnoremap <C-y> 3<C-y>
 
-" Abbreviations
-abbr lenght length
-abbr heigth height
-abbr widht width
+
+    " Easier window/buffer navigation
+    " nnoremap <C-j> <C-w>j
+    " nnoremap <C-k> <C-w>k
+    " nnoremap <C-h> <C-w>h
+    " nnoremap <C-l> <C-w>l
+    
+    " Same as above but maximizes split height after switch
+    noremap <C-J> <C-W>j<C-W>_
+    noremap <C-K> <C-W>k<C-W>_
+    noremap <C-L> <C-W>l<C-W>_
+    noremap <C-H> <C-W>h<C-W>_
+    " was 'map'
+
+    " Some annoying keyfixes"
+    if has("user_commands")
+        command! -bang -nargs=* -complete=file E e<bang> <args>
+        command! -bang -nargs=* -complete=file W w<bang> <args>
+        command! -bang -nargs=* -complete=file Wq wq<bang> <args>
+        command! -bang -nargs=* -complete=file WQ wq<bang> <args>
+        command! -bang Wa wa<bang>
+        command! -bang WA wa<bang>
+        command! -bang Q q<bang>
+        command! -bang QA qa<bang>
+        command! -bang Qa qa<bang>
+    endif
+
+    " Split window vertically
+    noremap <leader>v <C-w>v    
+
+    " Code folding options
+    nmap <leader>f0 :set foldlevel=0<CR>
+    nmap <leader>f1 :set foldlevel=1<CR>
+    nmap <leader>f2 :set foldlevel=2<CR>
+    nmap <leader>f3 :set foldlevel=3<CR>
+    nmap <leader>f4 :set foldlevel=4<CR>
+    nmap <leader>f5 :set foldlevel=5<CR>
+    nmap <leader>f6 :set foldlevel=6<CR>
+    nmap <leader>f7 :set foldlevel=7<CR>
+    nmap <leader>f8 :set foldlevel=8<CR>
+    nmap <leader>f9 :set foldlevel=9<CR>
+
+    " Toggle search highlighting
+    nmap <silent> <leader>/ :set invhlsearch<CR>
+
+    " Easier horizontal scrolling
+    map zl zL
+    map zh zH
+
+    nnoremap <leader>2 :set ts=2 sw=2<CR>
+    nnoremap <leader>4 :set ts=4 sw=4<CR>
+    nnoremap <leader>8 :set ts=8 sw=8<CR>
+
+" }
+
+    " Autocmds
+    autocmd FileType text setlocal textwidth=80 colorcolumn=+1
+
 
 """ Language specific options
-let python_highlight_all = 1
-let python_highlight_space_errors = 1
-let python_fold=1
+" let python_highlight_all = 1
+" let python_highlight_space_errors = 1
+" let python_fold=1
 
-" }}}
 
-" =============== Plugins =============== {{{
+" Plugins {
 
-" SnipMate
-" Setting the author var
-" If forking, please overwrite in your .vimrc.local file
-let g:snips_author = 'Steve Francia <steve.francia@gmail.com>'
-" Shortcut for reloading snippets, useful when developing
-nnoremap ,smr <esc>:exec ReloadAllSnippets()<cr>
+    " Misc {
+        " let g:NERDShutUp=1
+        " let b:match_ignorecase = 1
+    " }
 
-" NerdTree
-map <F4> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
-map <localleader>e :NERDTreeFind<CR>
-nmap <localleader>nt :NERDTreeFind<CR>
+    " Ctags {
+        set tags=./tags;/,~/.vimtags
+    " }
 
-let NERDTreeShowBookmarks=1
-let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-let NERDTreeChDirMode=0
-let NERDTreeQuitOnOpen=1
-let NERDTreeShowHidden=1
-let NERDTreeKeepTreeInNewTab=1
+    " NerdTree {
+        " map <C-e> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
+        " map <leader>e :NERDTreeFind<CR>
+        " nmap <leader>nt :NERDTreeFind<CR>
 
-" Notes
-let g:notes_directory = '~/Notes'
-let g:notes_suffix = '.note'
+        " let NERDTreeShowBookmarks=1
+        " let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+        " let NERDTreeChDirMode=0
+        " let NERDTreeQuitOnOpen=1
+        " let NERDTreeMouseMode=2
+        " let NERDTreeShowHidden=1
+        " let NERDTreeKeepTreeInNewTab=1
+        " let g:nerdtree_tabs_open_on_gui_startup=0
+    " }
 
-" }}}
+    " Tabularize {
+        nmap <Leader>a& :Tabularize /&<CR>
+        vmap <Leader>a& :Tabularize /&<CR>
+        nmap <Leader>a= :Tabularize /=<CR>
+        vmap <Leader>a= :Tabularize /=<CR>
+        nmap <Leader>a: :Tabularize /:<CR>
+        vmap <Leader>a: :Tabularize /:<CR>
+        nmap <Leader>a:: :Tabularize /:\zs<CR>
+        vmap <Leader>a:: :Tabularize /:\zs<CR>
+        nmap <Leader>a, :Tabularize /,<CR>
+        vmap <Leader>a, :Tabularize /,<CR>
+        nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+        vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+        nmap <Leader>a" :Tabularize /"<CR>
+        vmap <Leader>a" :Tabularize /"<CR>
+    " }
+
+    " Session List {
+        set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
+        nmap <leader>sl :SessionList<CR>
+        nmap <leader>ss :SessionSave<CR>
+    " }
+
+    " JSON {
+        nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+    " }
+
+    " PyMode {
+        let g:pymode_lint_checker = "pyflakes"
+        let g:pymode_utils_whitespaces = 0
+        let g:pymode_options = 0
+    " }
+
+    " ctrlp {
+        let g:ctrlp_working_path_mode = 2
+        nnoremap <silent> <D-t> :CtrlP<CR>
+        nnoremap <silent> <D-r> :CtrlPMRU<CR>
+        let g:ctrlp_custom_ignore = {
+            \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+            \ 'file': '\.exe$\|\.so$\|\.dll$' }
+
+        let g:ctrlp_user_command = {
+            \ 'types': {
+                \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+            \ },
+            \ 'fallback': 'find %s -type f'
+        \ }
+    "}
+
+    " TagBar {
+        nnoremap <silent> <leader>tt :TagbarToggle<CR>
+    "}
+
+    " PythonMode {
+    " Disable if python support not present
+        if !has('python')
+            let g:pymode = 1
+        endif
+    " }
+
+    " Fugitive {
+        nnoremap <silent> <leader>gs :Gstatus<CR>
+        nnoremap <silent> <leader>gd :Gdiff<CR>
+        nnoremap <silent> <leader>gc :Gcommit<CR>
+        nnoremap <silent> <leader>gb :Gblame<CR>
+        nnoremap <silent> <leader>gl :Glog<CR>
+        nnoremap <silent> <leader>gp :Git push<CR>
+    "}
+
+    " UndoTree {
+        nnoremap <Leader>u :UndotreeToggle<CR>
+        " If undotree is opened, it is likely one wants to interact with it.
+        let g:undotree_SetFocusWhenToggle=1
+    " }
+
+" }
+
+" Functions {
+
+    " UnBundle {
+    function! UnBundle(arg, ...)
+      let bundle = vundle#config#init_bundle(a:arg, a:000)
+      call filter(g:bundles, 'v:val["name_spec"] != "' . a:arg . '"')
+    endfunction
+
+    com! -nargs=+         UnBundle
+    \ call UnBundle(<args>)
+    " }
+
+" }
