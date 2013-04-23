@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $(setxkbmap -print -verbose 10 | awk '/layout/ {print $NF }') == "pl(intl)" ]; then
-    setxkbmap -layout "carpalx-pl_in(qgmlwy)" -option "caps:escape"
+    setxkbmap -layout "carpalx-pl_in(qgmlwy)" -option "caps:swapescape"
 else
-    setxkbmap -layout "pl(intl)" -option "caps:escape"
+    setxkbmap -layout "pl(intl)" -option "caps:swapescape"
 fi
