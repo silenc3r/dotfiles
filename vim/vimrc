@@ -184,24 +184,24 @@
     hi ColorColumn ctermbg=0
     set colorcolumn=79
 
-    if has('cmdline_info')
-        set ruler   " Show the ruler
-        set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)    " A ruler on steroids
-        set showcmd " Show partial commands in status line and
-                    " Selected characters/lines in visual mode
-    endif
+    " if has('cmdline_info')
+    "     set ruler   " Show the ruler
+    "     set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)    " A ruler on steroids
+    "     set showcmd " Show partial commands in status line and
+    "                 " Selected characters/lines in visual mode
+    " endif
 
-    if has('statusline')
-        set laststatus=2
+    " if has('statusline')
+        set laststatus=2    " Always display the statusline in all windows
 
         " Broken down into easily includeable segments
-        set statusline=%<%f\                     " Filename
-        set statusline+=%w%h%m%r                 " Options
-        set statusline+=%{fugitive#statusline()} " Git Hotness
-        set statusline+=\ [%{&ff}/%Y]            " Filetype
-        set statusline+=\ [%{getcwd()}]          " Current dir
-        set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
-    endif
+    "     set statusline=%<%f\                     " Filename
+    "     set statusline+=%w%h%m%r                 " Options
+    "     set statusline+=%{fugitive#statusline()} " Git Hotness
+    "     set statusline+=\ [%{&ff}/%Y]            " Filetype
+    "     set statusline+=\ [%{getcwd()}]          " Current dir
+    "     set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+    " endif
 
     set backspace=indent,eol,start " Allow backspace in insert mode
     set linespace=0                " No extra spaces between rows
@@ -404,7 +404,7 @@ set undodir=$HOME/.vim/undo
     " }
 
     " PowerLine {
-    " Don't lag on changing modes
+    " Don't lag on changing modes - fixes problems with YCM autocompletion
     if ! has('gui_running')
         set ttimeoutlen=10
         augroup FastEscape
@@ -414,6 +414,7 @@ set undodir=$HOME/.vim/undo
         augroup END
     endif
     " }
+
     " Ctags {
         set tags=./tags;/,~/.vimtags
     " }
@@ -521,6 +522,20 @@ set undodir=$HOME/.vim/undo
 
     com! -nargs=+         UnBundle
     \ call UnBundle(<args>)
+    " }
+
+    " Strip whitespace {
+        function! StripTrailingWhitespace()
+    " Preparation: save last search, and cursor position.
+            let _s=@/
+            let l = line(".")
+            let c = col(".")
+    " do the business:
+            %s/\s\+$//e
+    " clean up: restore previous search history, and cursor position
+            let @/=_s
+            call cursor(l, c)
+        endfunction
     " }
 
 " }
