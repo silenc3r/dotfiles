@@ -399,8 +399,10 @@ set undodir=$HOME/.vim/undo
     " }
 
     " Indent line {
-    " let g:indentLine_char="¦"
-    " let g:indentLine_first_char="¦"
+    " possible chars: | ¦ ┆ │
+    let g:indentLine_char="│"
+    let g:indentLine_first_char="│"
+    let g:indentLine_color_term = 0
     " }
 
     " PowerLine {
