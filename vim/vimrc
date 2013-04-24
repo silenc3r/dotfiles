@@ -1,10 +1,11 @@
 "-----------------------------------------------------------------------------
 " author:   Dawid Zych
+" based of spf13-vim
 " vim: set foldmarker={,} foldlevel=0 foldmethod=marker: 
 "-----------------------------------------------------------------------------
 
 " Environment {
-"
+
     " Basics {
         set nocompatible    " This must be in the first line
     " }
@@ -24,7 +25,6 @@
         set rtp+=~/.vim/bundle/vundle
         call vundle#rc()
 
-        set background=dark           " Assume a dark background
         filetype plugin indent on     " Automatically detect file types.
         syntax on                     " Syntax highlighting
 
@@ -109,7 +109,7 @@
     scriptencoding utf-8
 
     if has ('x') && has ('gui')   " On Linux use + register for copy-paste
-        " XXX it doesn't work from terminal, though                " +y does
+        " XXX it doesn't work from terminal, though "+y does
         set clipboard=unnamedplus
     elseif has ('gui')            " On mac and Windows, use * register for copy-paste
         set clipboard=unnamed
@@ -134,16 +134,18 @@
     set nowritebackup
     set noswapfile
     if has('persistent_undo')
-        set undofile              " Persistent undo is sexy
-        set undolevels=1000       " Maximum number of changes that can be undone
-        set undoreload=10000      " Maximum number lines to save for undo on a buffer reload
+        set undofile                " Persistent undo is sexy
+        set undolevels=1000         " Maximum number of changes that can be undone
+        set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+        set undodir=$HOME/.vim/undo
     endif
 
 " }
 
 " Vim UI {
 
-    " XXX colors shoud be set here
+    set background=dark           " Assume a dark background
+
     if ($TERM =~ "-256color") || ($TERM =~ "-termite") || has('gui')
         set t_Co=256
         let g:hybrid_use_Xresources = 1
@@ -172,12 +174,12 @@
         " let g:zenburn_high_Contrast = 1
         " let g:zenburn_old_Visual = 1
         " colorscheme zenburn
-    else
+    " else
         " colorscheme molokai
     endif
 
     set tabpagemax=15           " Only show 15 tabs
-    " set showmode                " Display the current mode
+    " set showmode              " Display the current mode
 
     set cursorline              " Highlight cursor line
     highlight clear SignColumn  " SignColumn should match background
@@ -239,16 +241,16 @@
 
 " Formatting {
 
-    set nowrap                      " Don't wrap long lines
-    set autoindent                  " Indent at the same level of the previous line
-    set shiftwidth=4                " Use indents of 4 spaces
-    set shiftround                  " Round indent to multiple of shiftwidth
-    set expandtab                   " Tabs are spaces, not tabs
+    set nowrap            " Don't wrap long lines
+    set autoindent        " Indent at the same level of the previous line
+    set shiftwidth=4      " Use indents of 4 spaces
+    set shiftround        " Round indent to multiple of shiftwidth
+    set expandtab         " Tabs are spaces, not tabs
     set smarttab
-    set tabstop=4                   " An indentation every four columns
-    set softtabstop=0               " Don't let backspace delete indent, use ^D
-    "set matchpairs+=<:>             " Match, to be used with %
-    set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
+    set tabstop=4         " An indentation every four columns
+    set softtabstop=0     " Don't let backspace delete indent, use ^D instead
+    " set matchpairs+=<:> " Match, to be used with %
+    set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
@@ -256,7 +258,6 @@
 " }
 
 
-set undodir=$HOME/.vim/undo
 
 
 " Keymaps {
@@ -399,7 +400,7 @@ set undodir=$HOME/.vim/undo
     " }
 
     " Indent line {
-    " possible chars: | ¦ ┆ │
+    " possible characters: | ¦ ┆ │
     let g:indentLine_char="│"
     let g:indentLine_first_char="│"
     let g:indentLine_color_term = 0
@@ -517,13 +518,13 @@ set undodir=$HOME/.vim/undo
 " Functions {
 
     " UnBundle {
-    function! UnBundle(arg, ...)
-      let bundle = vundle#config#init_bundle(a:arg, a:000)
-      call filter(g:bundles, 'v:val["name_spec"] != "' . a:arg . '"')
-    endfunction
+    " function! UnBundle(arg, ...)
+    "   let bundle = vundle#config#init_bundle(a:arg, a:000)
+    "   call filter(g:bundles, 'v:val["name_spec"] != "' . a:arg . '"')
+    " endfunction
 
-    com! -nargs=+         UnBundle
-    \ call UnBundle(<args>)
+    " com! -nargs=+         UnBundle
+    " \ call UnBundle(<args>)
     " }
 
     " Strip whitespace {
