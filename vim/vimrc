@@ -168,14 +168,16 @@
         " colorscheme molokai_mod
         " colorscheme molokai_tom
         " colorscheme molokai_slosh
-        " let g:zenburn_high_Contrast=1
+        " let g:zenburn_alternate_Visual = 1
+        " let g:zenburn_high_Contrast = 1
+        " let g:zenburn_old_Visual = 1
         " colorscheme zenburn
     else
         " colorscheme molokai
     endif
 
     set tabpagemax=15           " Only show 15 tabs
-    set showmode                " Display the current mode
+    " set showmode                " Display the current mode
 
     set cursorline              " Highlight cursor line
     highlight clear SignColumn  " SignColumn should match background
@@ -396,6 +398,22 @@ set undodir=$HOME/.vim/undo
         " let b:match_ignorecase = 1
     " }
 
+    " Indent line {
+    " let g:indentLine_char="¦"
+    " let g:indentLine_first_char="¦"
+    " }
+
+    " PowerLine {
+    " Don't lag on changing modes
+    if ! has('gui_running')
+        set ttimeoutlen=10
+        augroup FastEscape
+            autocmd!
+            au InsertEnter * set timeoutlen=0
+            au InsertLeave * set timeoutlen=1000
+        augroup END
+    endif
+    " }
     " Ctags {
         set tags=./tags;/,~/.vimtags
     " }
