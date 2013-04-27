@@ -1,2 +1,3 @@
 git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
+ln -s -i $(pwd)/vimrc ~/.vimrc
 vim +BundleInstall +qall
