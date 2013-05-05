@@ -146,7 +146,7 @@
 
     set background=dark           " Assume a dark background
 
-    if ($TERM =~ "-256color") || ($TERM =~ "-termite") || has('gui')
+    if ($TERM =~ "-256color") || ($TERM =~ "-termite") || has('gui') || ($TERM =~ "xterm")
         set t_Co=256
         let g:hybrid_use_Xresources = 1
         colorscheme hybrid
