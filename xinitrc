@@ -30,6 +30,8 @@ xset s 300 300 &
 
 synclient TouchpadOff=1 &
 
+SpiderOak &
+
 # set the cursor
 xsetroot -cursor_name left_ptr &
 setxkbmap -layout "pl(intl)" -option "caps:swapescape" &
