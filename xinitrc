@@ -1,5 +1,11 @@
 #!/bin/sh
 
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_DIRS="/usr/local/share/:/usr/share/"
+export XDG_CONFIG_DIRS="/etc/xdg"
+export XDG_CACHE_HOME="$HOME/.cache"
+
 # eval `cat $HOME/.fehbg` &                       # set wallpaper
 # xbindkeys &                                     # launch xbindkeys
 # xset +fp /usr/share/fonts/local/ &
@@ -17,7 +23,7 @@
 xset +dpms &
 xset dpms 0 0 300 &
 xset s 300 300 &
-# xrdb ~/.config/Xresources &
+xrdb ~/.config/Xresources &
 # (sleep 2 && /usr/bin/urxvtd -q -o -f) &
 #unclutter &
 
@@ -30,7 +36,7 @@ xset s 300 300 &
 
 synclient TouchpadOff=1 &
 
-SpiderOak &
+(sleep 5 && SpiderOak &)
 
 # set the cursor
 xsetroot -cursor_name left_ptr &
