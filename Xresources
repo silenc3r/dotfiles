@@ -10,7 +10,7 @@
 ! #include "/home/silencer/.xcolors/dark"
 ! #include "/home/silencer/.xcolors/dark2"
 ! #include "/home/silencer/.xcolors/whiterock"
-#include "/home/silencer/.xcolors/dc2"
+! #include "/home/silencer/.xcolors/dc2"
 ! #include "/home/silencer/.xcolors/euphrasia"
 ! #include "/home/silencer/.xcolors/dc3"
 ! #include "/home/silencer/.xcolors/ewloni"
@@ -24,8 +24,8 @@
 ! Fonts
 Xft.autohint: 0
 Xft.lcdfilter: lcddefault
-Xft.hintstyle: hintfull
-! Xft.hintstyle: hintslight
+! Xft.hintstyle: hintfull
+Xft.hintstyle: hintslight
 Xft.hinting: 1
 Xft.antialias: 1
 Xft.dpi: 96
