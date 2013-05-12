@@ -6,12 +6,7 @@ export XDG_DATA_DIRS="/usr/local/share/:/usr/share/"
 export XDG_CONFIG_DIRS="/etc/xdg"
 export XDG_CACHE_HOME="$HOME/.cache"
 
-# eval `cat $HOME/.fehbg` &                       # set wallpaper
 # xbindkeys &                                     # launch xbindkeys
-# xset +fp /usr/share/fonts/local/ &
-# xset +fp /usr/share/fonts/TTF &
-# xset +fp /usr/share/fonts/misc &
-# xset +fp /usr/share/fonts/artwiz-fonts &
 # xset +fp /home/silencer/.fonts/tamsynmod &
 # xset +fp /home/silencer/.fonts/helvetica &
 # xset +fp /home/silencer/.fonts/Garamond\ Premier\ \(pro\) &
@@ -19,13 +14,12 @@ export XDG_CACHE_HOME="$HOME/.cache"
 # xset +fp /home/silencer/.fonts/Neo\ Sans &
 # xset +fp /home/silencer/.fonts/Lucida.Grande &
 # (sleep 1 && xset fp rehash) &
-# xset s 1200 1200 &                            # set monitor to sleep 20 mins
 xset +dpms &
 xset dpms 0 0 300 &
 xset s 300 300 &
 xrdb ~/.config/Xresources &
-# (sleep 2 && /usr/bin/urxvtd -q -o -f) &
-#unclutter &
+# (sleep 2 && /usr/bin/urxvtd -q -o -f) &   # termite is better
+#unclutter &                                # termite takes care of it
 
 # mpd &
 # 
@@ -40,6 +34,7 @@ synclient TouchpadOff=1 &
 
 # set the cursor
 xsetroot -cursor_name left_ptr &
+nitrogen --restore &
 setxkbmap -layout "pl(intl)" -option "caps:swapescape" &
 exec xmonad
 # exec openbox
