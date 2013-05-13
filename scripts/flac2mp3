@@ -1,3 +1,5 @@
+#!/bin/bash
+
 for a in *.flac
 
 do
