@@ -1,0 +1,24 @@
+#!/usr/bin/awk -f
+
+BEGIN {
+    FS = "\t"
+    OFS = FS
+    "date +'%s'" | getline d
+    t = d - 1198800
+    close(d)
+    if (NR == 4 $7 > t) {
+        print "Your log file isn't even two weeks old, you can submit it without editing."
+        exit(1)
+    }
+}
+
+{
+    if (NR < 4)
+        print $0
+    else if ($6 == "L") {
+        if ($7 < t)
+            $7 = t
+        t = $7 + $5 + 2
+        print $0
+    }
+}
