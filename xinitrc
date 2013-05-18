@@ -17,7 +17,7 @@ export XDG_CACHE_HOME="$HOME/.cache"
 xset +dpms &
 xset dpms 0 0 300 &
 xset s 300 300 &
-xrdb ~/.config/Xresources &
+# xrdb ~/.config/Xresources &
 # (sleep 2 && /usr/bin/urxvtd -q -o -f) &   # termite is better
 #unclutter &                                # termite takes care of it
 
