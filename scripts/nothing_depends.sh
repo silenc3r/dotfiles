@@ -6,6 +6,9 @@
 # placed in the ignore list. You may browse through the script's output and
 # remove any packages you do not need.
 
+# Set locale to English
+LC_ALL=C
+
 # Enter groups and packages here which you know you wish to keep. They will
 # not be included in the list of unrequired packages later.
 ignoregrp="base base-devel"
