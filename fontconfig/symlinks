@@ -1,2 +1,1 @@
 ln -s -i $(pwd)/fonts.conf $XDG_CONFIG_HOME/fontconfig/fonts.conf
-ln -s -i $(pwd)/conf.d $XDG_CONFIG_HOME/fontconfig/conf.d
