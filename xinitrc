@@ -28,14 +28,15 @@ xset s 300 300 &
 #     (sleep 5 && mpdscribble) &
 # fi
 
-synclient TouchpadOff=1 &
 
 (sleep 5 && SpiderOak &)
 
-# set the cursor
-xsetroot -cursor_name left_ptr &
+synclient TouchpadOff=1 &
 nitrogen --restore &
-setxkbmap -layout "pl(intl)" -option "caps:swapescape" &
+xsetroot -cursor_name left_ptr &
+setxkbmap -layout "pl(intl)" \
+    -option "caps:swapescape" \
+    -option "terminate:ctrl_alt_bksp" &
 exec xmonad
 # exec openbox
 #wm_bin="$1"
