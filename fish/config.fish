@@ -8,4 +8,4 @@ set -x CDPATH "." "$HOME" $CDPATH
 set -x EDITOR vim
 set -x VISUAL vim
 
-set -x GOPATH $HOME/Dokumenty/code/go
+set -x GOPATH $HOME/code/go
