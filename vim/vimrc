@@ -28,6 +28,7 @@
 
         Bundle 'gmarik/vundle'
 
+        " Utils
         if executable('ack-grep')
             let g:ackprg="ack-grep -H --nocolor --nogroup --column"
             Bundle 'mileszs/ack.vim'
@@ -37,23 +38,44 @@
             Bundle 'mileszs/ack.vim'
             let g:ackprg = 'ag --nogroup --nocolor --column'
         endif
-
-        Bundle 'kien/ctrlp.vim'
-        Bundle 'Lokaltog/vim-easymotion'
-        Bundle 'mbbill/undotree'
-        Bundle 'vim-scripts/sessionman.vim'
-        Bundle 'matchit.zip'
-        Bundle 'godlygeek/tabular'
         if executable('ctags')
             Bundle 'majutsushi/tagbar'
         endif
+        Bundle 'kien/ctrlp.vim'
+        Bundle 'mbbill/undotree'
+        Bundle 'vim-scripts/sessionman.vim'
+        Bundle 'matchit.zip'
+        Bundle 'chrisbra/NrrwRgn'
+        Bundle 'Lokaltog/vim-easymotion'
+
+        " Bundle 'tpope/vim-markdown'
 
         " Git
         Bundle 'tpope/vim-fugitive'
         Bundle 'airblade/vim-gitgutter'
         Bundle 'mattn/gist-vim'
 
-        " Bundle 'mattn/webapi-vim'
+        " Text sculpting
+        Bundle 'godlygeek/tabular'
+        Bundle 'tomtom/tcomment_vim'
+        Bundle 'tpope/vim-surround'
+        Bundle 'tpope/vim-repeat'
+
+        " Autocompletion & Syntax check
+        Bundle 'Valloric/YouCompleteMe'
+        Bundle 'scrooloose/syntastic'
+        Bundle 'SirVer/ultisnips'
+        " Automatic closing of quotes, parenthesis, brackets, etc.
+        Bundle 'Raimondi/delimitMate'
+
+        " UI
+        Bundle 'Yggdroot/indentLine'
+        Bundle 'Lokaltog/powerline', {'rtp':'/powerline/bindings/vim'}
+
+        " Colorschemes
+        Bundle 'w0ng/vim-hybrid'
+        Bundle 'jnurmine/Zenburn'
+        Bundle 'chriskempson/base16-vim'
 
         " Python
         " Bundle 'klen/python-mode'
@@ -76,25 +98,6 @@
         " Ruby"
         " Bundle 'tpope/vim-rails'
         " let g:rubycomplete_buffer_loading = 1
-
-        Bundle 'w0ng/vim-hybrid'
-        Bundle 'Yggdroot/indentLine'
-        Bundle 'tpope/vim-markdown'
-        Bundle 'Raimondi/delimitMate'
-        Bundle 'tomtom/tcomment_vim'
-        Bundle 'tpope/vim-surround'
-        Bundle 'tpope/vim-repeat'
-        Bundle 'Valloric/YouCompleteMe'
-        " Bundle 'scrooloose/syntastic'
-        Bundle 'SirVer/ultisnips'
-        Bundle 'chrisbra/NrrwRgn'
-        Bundle 'Lokaltog/powerline', {'rtp':'/powerline/bindings/vim'}
-        Bundle 'spf13/vim-gocode'
-        Bundle 'jnwhiteh/vim-golang'
-        Bundle 'jnurmine/Zenburn'
-        Bundle 'chriskempson/base16-vim'
-        " Bundle 'scrooloose/nerdtree'
-        " Bundle 'altercation/vim-colors-solarized'
     " }
 
 " }
@@ -113,18 +116,17 @@
         set clipboard=unnamed
     endif
 
-    set backspace=indent,eol,start  " Allow backspace in insert mode
     set hidden                      " Don't write to disk upon buffer change
     set autoread                    " Auto reload files changed outside vim
     set shortmess+=mr               " Abbrev. of messages (avoids 'hit enter')
     set viewoptions+=unix,slash     " Unix-windows compatibility
     set virtualedit=onemore,block   " Allow for cursor beyond last character
+    set backspace=indent,eol,start  " Allow backspace in insert mode
     set history=1000                " Store a ton of history (default is 20)
     " set modelines=0                 " Disable modelines (security)
     set gdefault                    " Set g flag on :s substitutions by def.
     set tildeop                     " Let tilde behave like operator
 
-    " set nobackup                    " vim default
     set nowritebackup
     set noswapfile
     if has('persistent_undo')
@@ -169,7 +171,7 @@
             " A ruler on steroids
             " set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
             set showcmd " Show partial commands in status line and
-                        " Selected characters/lines in visual mode
+                        " selected characters/lines in visual mode
         endif
 
         if has('statusline')
@@ -201,9 +203,9 @@
     " set listchars=nbsp:·,extends:❯,precedes:❮,tab:▸\
 
     set cursorline              " Highlight cursor line
-    set colorcolumn=79
+    set colorcolumn=79          " Highlight chosen column
 
-    set relativenumber          " Set relative line numbering
+    set relativenumber  " Set relative line numbering
     " ...but change it to absolute numbering in insert mode:
     autocmd InsertLeave * :set relativenumber
     autocmd CursorMoved * :set relativenumber
@@ -301,6 +303,7 @@
     nmap <leader>f1 :set foldlevel=1<CR>
     nmap <leader>f2 :set foldlevel=2<CR>
 
+    " Quickly change tab length
     nnoremap <leader>2 :set ts=2 sw=2 sts=2<CR>
     nnoremap <leader>4 :set ts=4 sw=4 sts=4<CR>
     nnoremap <leader>8 :set ts=8 sw=8 sts=8<CR>
