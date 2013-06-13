@@ -6,9 +6,7 @@
 
 " Environment {
 
-    " Basics {
-        set nocompatible    " This must be in the first line
-    " }
+    set nocompatible    " This must be in the first line
 
     " Windows Compatible {
         " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
@@ -43,7 +41,6 @@
         Bundle 'kien/ctrlp.vim'
         Bundle 'Lokaltog/vim-easymotion'
         Bundle 'mbbill/undotree'
-        Bundle 'myusuf3/numbers.vim'
         Bundle 'vim-scripts/sessionman.vim'
         Bundle 'matchit.zip'
         Bundle 'godlygeek/tabular'
@@ -88,13 +85,14 @@
         Bundle 'tpope/vim-surround'
         Bundle 'tpope/vim-repeat'
         Bundle 'Valloric/YouCompleteMe'
-        Bundle 'scrooloose/syntastic'
+        " Bundle 'scrooloose/syntastic'
         Bundle 'SirVer/ultisnips'
         Bundle 'chrisbra/NrrwRgn'
         Bundle 'Lokaltog/powerline', {'rtp':'/powerline/bindings/vim'}
         Bundle 'spf13/vim-gocode'
         Bundle 'jnwhiteh/vim-golang'
         Bundle 'jnurmine/Zenburn'
+        Bundle 'chriskempson/base16-vim'
         " Bundle 'scrooloose/nerdtree'
         " Bundle 'altercation/vim-colors-solarized'
     " }
@@ -104,137 +102,138 @@
 " General {
 
     set mouse=a                   " Use mouse everywhere
-    set mousehide                 " Hide mouse cursor when typing
     set encoding=utf-8
     scriptencoding utf-8
 
-    if has ('x') && has ('gui')   " On Linux use + register for copy-paste
-        " XXX it doesn't work from terminal, though "+y does
+    if has('x11') && system('uname')!~'Darwin'
+        " On Linux use + register for copy-paste
         set clipboard=unnamedplus
-    elseif has ('gui')            " On mac and Windows, use * register for copy-paste
+    elseif has ('gui')
+        " On mac and Windows, use * register for copy-paste
         set clipboard=unnamed
     endif
 
-    set hidden                    " Don't write to disk upon buffer change
-    set autoread                  " Auto reload files changed outside vim
-    set nospell                   " Disable spell checking
-    set shortmess+=filmnrxoOtT    " Abbrev. of messages (avoids 'hit enter')
-    set viewoptions+=unix,slash   " Unix-windows compatibility
-    set virtualedit=onemore,block " Allow for cursor beyond last character
-    set history=1000              " Store a ton of history (default is 20)
-    " set modelines=0             " Disable modelines (security)
-    set noeb vb t_vb=             " Prevent screen flashing
-    set ttyfast
-    " set lazyredraw              " Redraw window only when necessary
-    set title
-    set splitbelow
-    set splitright
+    set backspace=indent,eol,start  " Allow backspace in insert mode
+    set hidden                      " Don't write to disk upon buffer change
+    set autoread                    " Auto reload files changed outside vim
+    set shortmess+=mr               " Abbrev. of messages (avoids 'hit enter')
+    set viewoptions+=unix,slash     " Unix-windows compatibility
+    set virtualedit=onemore,block   " Allow for cursor beyond last character
+    set history=1000                " Store a ton of history (default is 20)
+    " set modelines=0                 " Disable modelines (security)
+    set gdefault                    " Set g flag on :s substitutions by def.
+    set tildeop                     " Let tilde behave like operator
 
-    set nobackup
+    " set nobackup                    " vim default
     set nowritebackup
     set noswapfile
     if has('persistent_undo')
         set undofile                " Persistent undo is sexy
-        set undolevels=1000         " Maximum number of changes that can be undone
-        set undoreload=10000        " Maximum number lines to save for undo on a buffer reload
+        set undolevels=1000         " Maximum number of undo
         set undodir=$HOME/.vim/undo
     endif
 
 " }
 
-" Vim UI {
+" User Interface {
 
-    set background=dark           " Assume a dark background
+    " Colors {
+        set background=dark         " Assume a dark background
 
-    if ($TERM =~ "-256color") || ($TERM =~ "-termite") || has('gui') || ($TERM =~ "xterm")
-        set t_Co=256
-        let g:hybrid_use_Xresources = 1
-        colorscheme hybrid
-        " colorscheme wombat256mod
-        " colorscheme wombat256
-        " let g:solarized_termcolors=256
-        " colorscheme solarized
-        " let g:solarized_italic=0
-        " colorscheme diablo3
-        " colorscheme ir_black
-        " let s:low_color=1
-        " colorscheme jellybeans
-        " colorscheme peaksea
-        " colorscheme werks
-        " colorscheme xoria256
-        " colorscheme candycode
-        " colorscheme mustang
-        " colorscheme miro8
-        " colorscheme bubblegum
-        " colorscheme molokai
-        " colorscheme molokai_mod
-        " colorscheme molokai_tom
-        " colorscheme molokai_slosh
-        " let g:zenburn_alternate_Visual = 1
-        " let g:zenburn_high_Contrast = 1
-        " let g:zenburn_old_Visual = 1
-        " colorscheme zenburn
-    " else
-        " colorscheme molokai
-    endif
+        if ($TERM =~ "-256color") || ($TERM =~ "-termite") || has('gui')
+            set t_Co=256
+            " Hybrid {
+                " let g:hybrid_use_Xresources = 1
+                " colorscheme hybrid
+                " hi ColorColumn ctermbg=0
+            " }
+            " Base16 {
+                let base16colorspace=256
+                colorscheme base16-tomorrow
+            " }
+            " Zenburn {
+                " let g:zenburn_alternate_Visual = 1
+                " let g:zenburn_high_Contrast = 1
+                " let g:zenburn_old_Visual = 1
+                " colorscheme zenburn
+                " hi ColorColumn ctermbg=233
+            " }
+        " else
+            " colorscheme molokai
+        endif
+    " }
 
-    set tabpagemax=15           " Only show 15 tabs
-    " set showmode              " Display the current mode
+    " Status & Command line {
+        if has('cmdline_info')
+            " set ruler   " Show the ruler
+            " A ruler on steroids
+            " set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
+            set showcmd " Show partial commands in status line and
+                        " Selected characters/lines in visual mode
+        endif
 
-    set cursorline              " Highlight cursor line
-    highlight clear SignColumn  " SignColumn should match background
-    hi ColorColumn ctermbg=0
-    set colorcolumn=79
+        if has('statusline')
+            set laststatus=2    " Always display the statusline in all windows
+            " " Broken down into easily includeable segments
+            " set statusline=%<%f\                     " Filename
+            " set statusline+=%w%h%m%r                 " Options
+            " set statusline+=%{fugitive#statusline()} " Git Hotness
+            " set statusline+=\ [%{&ff}/%Y]            " Filetype
+            " set statusline+=\ [%{getcwd()}]          " Current dir
+            " set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+        endif
+    " }
 
-    " if has('cmdline_info')
-    "     set ruler   " Show the ruler
-    "     set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)    " A ruler on steroids
-    "     set showcmd " Show partial commands in status line and
-    "                 " Selected characters/lines in visual mode
-    " endif
-
-    " if has('statusline')
-        set laststatus=2    " Always display the statusline in all windows
-
-        " Broken down into easily includeable segments
-    "     set statusline=%<%f\                     " Filename
-    "     set statusline+=%w%h%m%r                 " Options
-    "     set statusline+=%{fugitive#statusline()} " Git Hotness
-    "     set statusline+=\ [%{&ff}/%Y]            " Filetype
-    "     set statusline+=\ [%{getcwd()}]          " Current dir
-    "     set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
-    " endif
-
-    set backspace=indent,eol,start " Allow backspace in insert mode
-    set linespace=0                " No extra spaces between rows
-    set nu                         " Line numbers on
-    set showmatch                  " Show matching braces
-    set incsearch                  " Show next match while entering search
-    set hlsearch                   " Highlight searches by default
-    set ignorecase                 " Case insensitive search...
-    set smartcase                  " ...until upper-case letter is typed
-    set winminheight=0             " Windows can be 0 line high
-    set gdefault                   " Set g flag on :s substitutions by default
-    set tildeop                    " Extended tilde usage
-    set scrolloff=0
-    set sidescroll=1
+    set ttyfast                " Always assume fast terminal connection
+    set vb t_vb=               " Prevent screen flashing
+    set title
+    set splitbelow
+    set splitright
+    " set linespace=0            " No extra spaces between rows - default-ish
+    set winminheight=0         " Windows can be 0 line high
+    " set scrolloff=0            " Min nr of lines to keep above/below cursor
+    set sidescroll=1           " Minimal number of columns to scroll horiz.
     set sidescrolloff=8
-    set foldenable
-    set foldminlines=3
+    " set foldenable             " enable folding - default
+    " set foldminlines=3         " min number of lines to fold
     set list
     set listchars=nbsp:·,extends:❯,precedes:❮,tab:»\ ,trail:·
     " set listchars=nbsp:·,extends:❯,precedes:❮,tab:▸\
 
+    set cursorline              " Highlight cursor line
+    set colorcolumn=79
+
+    set relativenumber          " Set relative line numbering
+    " ...but change it to absolute numbering in insert mode:
+    autocmd InsertLeave * :set relativenumber
+    autocmd CursorMoved * :set relativenumber
+    " Set absolute line numbering when window loses focus (gui only)
+    autocmd FocusLost * :set number
+    autocmd InsertEnter * :set number
+
+    " Search {
+        set incsearch               " Show next match while entering search
+        set hlsearch                " Highlight searches by default
+        set ignorecase              " Case insensitive search...
+        set smartcase               " ...until upper-case letter is typed
+        set showmatch               " Show matching braces
+    " }
+
     " Completion {
-    set wildmenu                           " Show list instead of just completing
-    if exists("&wildignorecase")
-        set wildignorecase
-    endif
-    set wildignore+=*.o,*~,.lo,*.obj,*.pyc " Files to ignore while tab completing
-    set suffixes+=.in,.a                   " Files with lower priority while completing
-    set completeopt=menuone,longest        " Complete options for insert mode
-    set wildmode=longest,list:longest
-    " set wildmode=list:longest,full       " Command <Tab> completion, list matches, then longest common part, then all.
+        " Show scrollable menu instead of just completing
+        set wildmenu
+        if exists("&wildignorecase")
+            set wildignorecase
+        endif
+        " Files to ignore while tab completing
+        set wildignore+=*.o,*~,.lo,*.obj,*.pyc 
+        " Files with lower priority while completing
+        set suffixes+=.in,.a
+        " Complete options for insert mode
+        set completeopt=menuone,longest
+        " Command <Tab> completion, list matches, then longest common part,
+        " then all.
+        set wildmode=list:longest,full
     " }
 
 " }
@@ -248,63 +247,47 @@
     set expandtab         " Tabs are spaces, not tabs
     set smarttab
     set tabstop=4         " An indentation every four columns
-    set softtabstop=0     " Don't let backspace delete indent, use ^D instead
-    " set matchpairs+=<:> " Match, to be used with %
+    set softtabstop=4     " Let backspace delete indent
     set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
+    autocmd FileType text setlocal textwidth=80 colorcolumn=+1
 
 " }
-
-
-
 
 " Keymaps {
 
     " Remap <Leader> to SPACEBAR
-    let mapleader = ' ' 
+    let mapleader = ' '
     " Fuck you, manual key.
     nnoremap K <Nop>
 
     " nnoremap ' `
     " nnoremap ` '
 
-    " Search mappings: These will make it so that going to the next one in a
-    " search will center on the line it's found in.
+    " Toggle search highlighting
+    nmap <silent> <leader>h :set invhlsearch<CR>
+
+    " While searching center on the line with current result
     nnoremap N Nzz
     nnoremap n nzz
-
     nnoremap g; g;zz
     nnoremap g. g.zz
 
-    " noremap <F5> :set list!<CR>
-    " noremap <F6> :set wrap!<CR>
+    " Scroll faster
+    nnoremap <C-e> 3<C-e>
+    nnoremap <C-y> 3<C-y>
 
-    " nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-    " nnoremap <leader>sv :source $MYVIMRC<cr>
+    " Easier horizontal scrolling
+    nnoremap zl 15zl
+    nnoremap zh 15zh
 
     " fly between buffers
     nnoremap <leader>l :ls<CR>:b<space>
 
     " Make Y copy from current position to eol
     nnoremap Y y$
-
-    " save the current file as root
-    cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>"
-
-    " space bar un-highlights search
-    :noremap <silent> <Space> :silent noh<Bar>echo<CR>
-
-    " unmap arrow keys
-    nnoremap <up> <nop>
-    nnoremap <down> <nop>
-    nnoremap <left> <nop>
-    nnoremap <right> <nop>
-    inoremap <up> <nop>
-    inoremap <down> <nop>
-    inoremap <left> <nop>
-    inoremap <right> <nop>
 
     " use sane regexes
     nnoremap / /\v
@@ -314,32 +297,29 @@
     vnoremap < <gv
     vnoremap > >gv
 
-    " move by display lines, not logical lines
-    nnoremap <silent> j gj
-    nnoremap <silent> k gk
-    " Make logical line move accessible
-    nnoremap <silent> gj j
-    nnoremap <silent> gk k
-    " H movest to begining of line, L to the end
-    " nnoremap H ^
-    " nnoremap L g_
-    " Scroll faster
-    " nnoremap <C-e> 3<C-e>
-    " nnoremap <C-y> 3<C-y>
+    " Code folding options
+    nmap <leader>f1 :set foldlevel=1<CR>
+    nmap <leader>f2 :set foldlevel=2<CR>
 
+    nnoremap <leader>2 :set ts=2 sw=2 sts=2<CR>
+    nnoremap <leader>4 :set ts=4 sw=4 sts=4<CR>
+    nnoremap <leader>8 :set ts=8 sw=8 sts=8<CR>
 
-    " Easier window/buffer navigation
-    " nnoremap <C-j> <C-w>j
-    " nnoremap <C-k> <C-w>k
-    " nnoremap <C-h> <C-w>h
-    " nnoremap <C-l> <C-w>l
-    
-    " Same as above but maximizes split height after switch
-    noremap <C-J> <C-W>j<C-W>_
-    noremap <C-K> <C-W>k<C-W>_
-    noremap <C-L> <C-W>l<C-W>_
-    noremap <C-H> <C-W>h<C-W>_
-    " was 'map'
+    " nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+    " nnoremap <leader>sv :source $MYVIMRC<cr>
+
+    " Split window vertically
+    noremap <leader>v <C-w>v
+
+    " Easier window navigation, <C-W>_ maximizes split after switch"
+    nnoremap <C-J> <C-W>j<C-W>_
+    nnoremap <C-K> <C-W>k<C-W>_
+    nnoremap <C-L> <C-W>l<C-W>_
+    nnoremap <C-H> <C-W>h<C-W>_
+
+    " save the current file as root
+    " cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>"
+    cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
 
     " Some annoying keyfixes"
     if has("user_commands")
@@ -354,43 +334,7 @@
         command! -bang Qa qa<bang>
     endif
 
-    " Split window vertically
-    noremap <leader>v <C-w>v    
-
-    " Code folding options
-    nmap <leader>f0 :set foldlevel=0<CR>
-    nmap <leader>f1 :set foldlevel=1<CR>
-    nmap <leader>f2 :set foldlevel=2<CR>
-    nmap <leader>f3 :set foldlevel=3<CR>
-    nmap <leader>f4 :set foldlevel=4<CR>
-    nmap <leader>f5 :set foldlevel=5<CR>
-    nmap <leader>f6 :set foldlevel=6<CR>
-    nmap <leader>f7 :set foldlevel=7<CR>
-    nmap <leader>f8 :set foldlevel=8<CR>
-    nmap <leader>f9 :set foldlevel=9<CR>
-
-    " Toggle search highlighting
-    nmap <silent> <leader>/ :set invhlsearch<CR>
-
-    " Easier horizontal scrolling
-    map zl zL
-    map zh zH
-
-    nnoremap <leader>2 :set ts=2 sw=2<CR>
-    nnoremap <leader>4 :set ts=4 sw=4<CR>
-    nnoremap <leader>8 :set ts=8 sw=8<CR>
-
 " }
-
-    " Autocmds
-    autocmd FileType text setlocal textwidth=80 colorcolumn=+1
-
-
-""" Language specific options
-" let python_highlight_all = 1
-" let python_highlight_space_errors = 1
-" let python_fold=1
-
 
 " Plugins {
 
@@ -403,7 +347,7 @@
     " possible characters: | ¦ ┆ │
     let g:indentLine_char="│"
     let g:indentLine_first_char="│"
-    let g:indentLine_color_term = 0
+    " let g:indentLine_color_term = 0
     " }
 
     " PowerLine {
@@ -461,13 +405,13 @@
     " }
 
     " JSON {
-        nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+        " nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
     " }
 
     " PyMode {
-        let g:pymode_lint_checker = "pyflakes"
-        let g:pymode_utils_whitespaces = 0
-        let g:pymode_options = 0
+        " let g:pymode_lint_checker = "pyflakes"
+        " let g:pymode_utils_whitespaces = 0
+        " let g:pymode_options = 0
     " }
 
     " ctrlp {
@@ -493,9 +437,9 @@
 
     " PythonMode {
     " Disable if python support not present
-        if !has('python')
-            let g:pymode = 1
-        endif
+        " if !has('python')
+        "     let g:pymode = 1
+        " endif
     " }
 
     " Fugitive {
@@ -516,16 +460,6 @@
 " }
 
 " Functions {
-
-    " UnBundle {
-    " function! UnBundle(arg, ...)
-    "   let bundle = vundle#config#init_bundle(a:arg, a:000)
-    "   call filter(g:bundles, 'v:val["name_spec"] != "' . a:arg . '"')
-    " endfunction
-
-    " com! -nargs=+         UnBundle
-    " \ call UnBundle(<args>)
-    " }
 
     " Strip whitespace {
         function! StripTrailingWhitespace()
