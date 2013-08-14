@@ -9,3 +9,5 @@ set -x EDITOR vim
 set -x VISUAL vim
 
 set -x GOPATH $HOME/code/go
+
+bash ~/Pobrane/base16-tomorrow.dark.sh
