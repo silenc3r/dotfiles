@@ -1,107 +1,142 @@
-#-----------------------------------------------------------------------------
+#----------------------------------------------------
 # file:     ~/.bashrc
-# author:   Dawid Zych
-# vim:fenc=utf-8:nu:ai:et:ts=4:sw=4:fdm=indent:fdn=1:ft=conf:
-#-----------------------------------------------------------------------------
+# author:   Dawid Zych  dawidzych@fastmail.fm
+# vim:fenc=utf-8:nu:ai:et:ts=4:sw=4:fdm=indent:fdn=1:
+#----------------------------------------------------
 
-# Check for an interactive session
-[ -z "$PS1" ] && return
+# If not running interactively, don't do anything
+[[ $- != *i* ]] && return
+
+. /usr/share/doc/pkgfile/command-not-found.bash
+# . $HOME/Pobrane/base16-tomorrow.dark.sh
 
 # aliases
-alias dir='dir --color'
-alias ls='ls -h --group-directories-first --color=auto'
-alias la='ls -A'
-alias ll='ls -lF'
-alias lla='ls -alF'
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls -hF --color=auto'
+
+    alias dmesg='dmesg --color'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# other ls aliases
+alias ll='ls -l'
+alias la='ll -A --group-directories-first'
+alias lA='ls -A --group-directories-first'
 
 # cd
 alias cd..='cd ..'
 alias ..='cd ..'
-alias ...='cd ../..'
-alias cd...='cd ../..'
 
-alias grep='grep --color=auto'
 alias su='su -'
 alias ping='ping -c 3'
 alias mkdir='mkdir -p -v'
 alias df='df -h'
-alias du='du -h'
-
-# audio splitting
-alias splitflac='shntool split -f *.cue -o flac *.flac'
-alias splitape='shntool split -f *.cue -o flac *.ape'
-alias splitwv='shntool split -f *.cue -o flac *.wv'
-alias splitwav='shntool split -f *.cue -o flac *.wav'
-alias cptag='cuetag.sh *.cue split-track*.flac'
+alias du='du -c -h'
 
 # safety features
 #alias cp='cp -i'
 #alias mv='mv -i'
 alias rm='rm -I'
-
-alias yv='youtube-viewer'
+alias ln='ln -i'
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+# clear screen for real (it does not work in Terminology)
+alias cls=' echo -ne "\033c"'
 
 # set -o vi
 
-# bash prompt style
-PS1='\[\e[0;32m\]\u@\h \[\e[1;33m\]\W\[\e[0;32m\] $\[\e[0m\] '
 
 # path
-PATH=$PATH:/home/silencer/bin/
+PATH="$HOME/bin:$PATH"
+# CDPATH=".:$HOME:/mnt/Storage:$CDPATH"
 
-# export thingy
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
+# -- Export thingy
+# export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
 # export _JAVA_AWT_WM_NONREPARENTING=1
-export JAVA_FONTS=/usr/share/fonts/TTF
-export R600_ENABLE_S3TC=1
+# export JAVA_FONTS=/usr/share/fonts/TTF
+# export R600_ENABLE_S3TC=1
 # export AWT_TOOLKIT=MToolkit
 export EDITOR="vim"
-if [ -n "$DISPLAY" ]; then
-     BROWSER=firefox
-fi
-export GREP_COLOR="1;33"
-# export MPD_HOST=/mnt/md0/Audio/.mpd/socket
-export TERM_PROGRAM="rxvt-unicode-256color"
+export VISUAL="/usr/bin/vim -X"
 
-if [[ -f "$HOME/.config/dircolors" ]] && [[ $(tput colors) == "256" ]]; then
-    # https://github.com/trapd00r/LS_COLORS
-    eval $( dircolors -b $HOME/.config/dircolors )
+if [ -n "$DISPLAY" ]; then
+    BROWSER=firefox
 fi
+export GREP_COLOR="1;31"
+# export MPD_HOST=/mnt/md0/Audio/.mpd/socket
+# export TERM_PROGRAM="rxvt-unicode-256color"
+
+# if [[ -f "$HOME/.dotfiles/dircolors" ]] && [[ $(tput colors) == "256" ]]; then
+#     # https://github.com/trapd00r/LS_COLORS
+#     eval $( dircolors -b $HOME/.dotfiles/dircolors )
+# fi
 # -- disable ^S/^Q flow control -------------------------------------------
 if tty -s ; then
     stty -ixon
     stty -ixoff
 fi
 
-shopt -s histappend
-export HISTFILE="$HOME/.bash_history_`hostname`"   # hostname appended to bash history filename
-# file must be created manually, otherwise you won't have permission to edit it
-export HISTSIZE=1000000                            # bash history will save N commands
-export HISTFILESIZE=${HISTSIZE}                    # bash will remember N commands
-export HISTCONTROL="ignoreboth:erasedups"          # ingore duplicates and spaces (ignoreboth, ignoredups, ignorespace)
+# stty werase undef
+# bind '"\C-w": backward-kill-word'
 
-# don't append the following to history: consecutive duplicate
-# commands, ls, bg and fg, and exit
-HISTIGNORE="&:ls:[bf]g:exit:reset:clear:cd*:startx:..:..."
-HISTIGNORE=${HISTIGNORE}':%1:%2:shutdown*'
-export HISTIGNORE
-PROMPT_COMMAND='history -a; history -n'
+# enable recursive globbing
+shopt -s extglob
+# cd when entering just a path
+shopt -s autocd
+shopt -s checkwinsize
+
+# prevent printing ^C at cancelled command
+# stty -ctlecho
+# When cancelling command with Ctrl-C replace text from the cursor position to
+# the end of the line with red ✗.
+# trap 'echo -ne "\033[1;31m"✗"\033[0K\033[0m"' INT
+
+
+# Append to ~/.bash_history instead of overwriting it -- this stops terminals
+# from overwriting one another's histories.
+shopt -s histappend
+# store multiline commands as single entries in history file
+shopt -s cmdhist
+# load 10000 last commands from history, if you need more just grep a file.
+HISTSIZE=10000
+# Don't truncate ~/.bash_history -- keep all your history, ever.
+unset HISTFILESIZE
+# Add a timestamp to each history entry.
+# HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S  "
+# Don't remember trivial 1-, 2- and 3-letter commands.
+HISTIGNORE=?:??:???
+HISTIGNORE=${HISTIGNORE}':exit:reset:clear:mpv*:startx:shutdown'
+# ingore duplicates and spaces
+HISTCONTROL="ignoreboth:erasedups"
+
+# Show abbreviated path in prompt
+PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] && printf "~";IFS=/; for q in ${p:1}; do printf /${q:0:1}; done; printf "${q:1}")'
+# Save each history entry immediately (protects against terminal crashes/
+# disconnections, and interleaves commands from multiple terminals in correct
+# chronological order).
+PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+# bash prompt style
+PS1='\[\033[1;32m\]\A\[\033[m\] \u@\h \[\033[0;32m\]${PS1X}\[\033[m\] $ '
 
 # bash sudo completion
-complete -cf sudo
-if [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-fi
+# complete -cf sudo
+[ -f /etc/bash_completion ] && source /etc/bash_completion
 
-## TTY Colors
+# cycle through possible completions
+# [[ $- = *i* ]] && bind TAB:menu-complete
+
 # -- LESS man page colors
-export LESS_TERMCAP_mb=$'\E[01;31m'
-export LESS_TERMCAP_md=$'\E[01;31m'
-export LESS_TERMCAP_me=$'\E[0m'
-export LESS_TERMCAP_se=$'\E[0m'                           
-export LESS_TERMCAP_so=$'\E[01;44;33m'                                 
-export LESS_TERMCAP_ue=$'\E[0m'
-export LESS_TERMCAP_us=$'\E[01;32m'
+export LESS_TERMCAP_mb=$'\033[0m'
+export LESS_TERMCAP_md=$'\033[0;34m'
+export LESS_TERMCAP_me=$'\033[0m'
+export LESS_TERMCAP_se=$'\033[0m'
+export LESS_TERMCAP_so=$'\033[1;7;37;40m'
+export LESS_TERMCAP_ue=$'\033[0m'
+export LESS_TERMCAP_us=$'\033[2;37m'
 
 # -- linux console colors (jwr dark)
 if [ "$TERM" = "linux" ]; then
@@ -127,13 +162,11 @@ fi
 # pacman with sudo
 pacman() {
     case $1 in
-        -S | -D | -S[^sih]* | -R* | -U*)
-            /usr/bin/sudo /usr/bin/pacman "$@" ;;
-    *)      /usr/bin/pacman "$@" ;;
+        -S | -D | -S[^ghilps]* | -R* | -U*)
+            LC_ALL=C /usr/bin/sudo /usr/bin/pacman "$@" ;;
+    *)      LC_ALL=C /usr/bin/pacman "$@" ;;
     esac
 }
 
-# Calculator
-? () { echo "$*" | bc -l; } # $ ? 1337 - 1295 => 42
 # mkcd
 mkcd () { mkdir -p "$@" && cd "$@"; }
