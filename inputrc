@@ -1,5 +1,20 @@
 set show-all-if-ambiguous on
+set show-all-if-unmodified on
 set completion-ignore-case on
 set completion-map-case on
-"\e[A":history-search-backward
-"\e[B":history-search-forward
+set match-hidden-files off
+set completion-prefix-display-length 2
+set blink-matching-paren on
+set visible-stats on
+set completion-query-items 9000
+#"\e[A":history-search-backward
+#"\e[B":history-search-forward
+"\C-p":history-search-backward
+"\C-n":history-search-forward
+
+"\e[1;5C": forward-word   # ctrl + right
+"\e[1;5D": backward-word  # ctrl + left
+
+# Sane Ctrl-W behavior
+set bind-tty-special-chars off
+"\C-w":backward-kill-word
