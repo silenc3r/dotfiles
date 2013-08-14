@@ -66,10 +66,10 @@ Xft.rgba: rgb
 ! URxvt*italicFont: xft:inconsolata-g:medium:italic:pixelsize=12
 ! URxvt*boldItalicFont: xft:inconsolata-g:bold:italic:pixelsize=12
 
-URxvt*font: xft:consolas:regular:pixelsize=12.5
-URxvt*boldFont: xft:consolas:bold:pixelsize=12.5
-URxvt*italicFont: xft:consolas:medium:italic:pixelsize=12.5
-URxvt*boldItalicFont: xft:consolas:bold:italic:pixelsize=12.5
+! URxvt*font: xft:consolas:regular:pixelsize=12.5
+! URxvt*boldFont: xft:consolas:bold:pixelsize=12.5
+! URxvt*italicFont: xft:consolas:medium:italic:pixelsize=12.5
+! URxvt*boldItalicFont: xft:consolas:bold:italic:pixelsize=12.5
 
 !! nice but a bit too slim
 ! URxvt*font:         xft:envy code r:medium:pixelsize=13
@@ -132,54 +132,54 @@ URxvt*boldItalicFont: xft:consolas:bold:italic:pixelsize=12.5
 ! URxvt*italicFont: -*-terminus-medium-r-*-*-12-*-*-*-*-*-*-2
 ! URxvt*boldItalicFont: -*-terminus-bold-r-*-*-12-*-*-*-*-*-*-2
 
-urxvt*saveLines: 8192
-urxvt*scrollBar: false
-urxvt*jumpScroll: true
-urxvt*skipScroll: true
-urxvt*scrollTtyKeypress: true
-urxvt*scrollWithBuffer: true
-urxvt*scrollTtyOutput: false
-urxvt*visualBell: false
-urxvt*urgentOnBell: true
-urxvt*borderLess: false
-urxvt*transparent: false
-urxvt*buffered: true
+! urxvt*saveLines: 8192
+! urxvt*scrollBar: false
+! urxvt*jumpScroll: true
+! urxvt*skipScroll: true
+! urxvt*scrollTtyKeypress: true
+! urxvt*scrollWithBuffer: true
+! urxvt*scrollTtyOutput: false
+! urxvt*visualBell: false
+! urxvt*urgentOnBell: true
+! urxvt*borderLess: false
+! urxvt*transparent: false
+! urxvt*buffered: true
 ! URxvt.letterSpace: -0.5
 
-! urxvt*foreground: #999999
-! urxvt*background: #1A1A1A
-! urxvt*cursorColor: #5E468C
+! *foreground: #999999
+! *background: #1A1A1A
+! *cursorColor: #5E468C
 
-urxvt*intesityStyles:   true
-urxvt*termName:         rxvt-unicode-256color
-urxvt*title:            rxvt-unicode-256color
-urxvt*loginShell: true
-
-! -- Urxvt perls
-urxvt*perl-ext-common:  default,clipboard,keyboard-select,url-select
-! keyboard-select
-urxvt*keysym.M-Escape:  perl:keyboard-select:activate
-urxvt*keysym.M-s:       perl:keyboard-select:search
-! url-select
-URxvt*keysym.M-u:       perl:url-select:select_next
-URxvt*underlineURLs:    true
-URxvt*urlLauncher:      /usr/bin/firefox
-URxvt*urlButton:        2
-! clipboard
-urxvt*keysym.M-c:       perl:clipboard:copy
-urxvt*keysym.M-v:       perl:clipboard:paste
-urxvt*keysym.M-C-v:     perl:clipboard:paste_escaped
-
-! Xterm
-xterm*toolBar:          false
-xterm*scrollBar:        false
-xterm*rightScrollBar:   false
-xterm*background:       #1A1A1A
-xterm*foreground:       #A9A9A9
-! xterm*cursorColor:      #5E468C
+! urxvt*intesityStyles:   true
+! urxvt*termName:         rxvt-unicode-256color
+! urxvt*title:            rxvt-unicode-256color
+! urxvt*loginShell: true
+! 
+! ! -- Urxvt perls
+! urxvt*perl-ext-common:  default,clipboard,keyboard-select,url-select
+! ! keyboard-select
+! urxvt*keysym.M-Escape:  perl:keyboard-select:activate
+! urxvt*keysym.M-s:       perl:keyboard-select:search
+! ! url-select
+! URxvt*keysym.M-u:       perl:url-select:select_next
+! URxvt*underlineURLs:    true
+! URxvt*urlLauncher:      /usr/bin/firefox
+! URxvt*urlButton:        2
+! ! clipboard
+! urxvt*keysym.M-c:       perl:clipboard:copy
+! urxvt*keysym.M-v:       perl:clipboard:paste
+! urxvt*keysym.M-C-v:     perl:clipboard:paste_escaped
+! 
+! ! Xterm
+! xterm*toolBar:          false
+! xterm*scrollBar:        false
+! xterm*rightScrollBar:   false
+! xterm*background:       #1A1A1A
+! xterm*foreground:       #A9A9A9
+! ! xterm*cursorColor:      #5E468C
 
 xterm*font: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
-xterm*boldFont: -*-terminusmod-bold-*-*-*-12-*-*-*-*-*-*-*
+xterm*boldFont: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 xterm*italicFont: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 xterm*boldItalicFont: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 
@@ -188,4 +188,4 @@ xterm*boldItalicFont: -*-terminus-medium-*-*-*-12-*-*-*-*-*-*-*
 ! xterm*italicFont: -*-profont-medium-*-*-*-12-*-*-*-*-*-*-*
 ! xterm*boldItalicFont: -*-profont-medium-*-*-*-12-*-*-*-*-*-*-*
 
-gnuplot*background:     white
+! gnuplot*background:     white
