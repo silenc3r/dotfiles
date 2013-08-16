@@ -3,7 +3,7 @@ set show-all-if-unmodified on
 set completion-ignore-case on
 set completion-map-case on
 set match-hidden-files off
-set completion-prefix-display-length 2
+# set completion-prefix-display-length 2
 set blink-matching-paren on
 set visible-stats on
 set completion-query-items 9000

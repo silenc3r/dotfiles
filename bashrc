@@ -109,7 +109,7 @@ unset HISTFILESIZE
 # HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S  "
 # Don't remember trivial 1-, 2- and 3-letter commands.
 HISTIGNORE=?:??:???
-HISTIGNORE=${HISTIGNORE}':exit:reset:clear:mpv*:startx:shutdown'
+HISTIGNORE=${HISTIGNORE}':exit:reset:clear:startx:shutdown'
 # ingore duplicates and spaces
 HISTCONTROL="ignoreboth:erasedups"
 
@@ -120,7 +120,7 @@ PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] && printf "~";
 # chronological order).
 PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
 # bash prompt style
-PS1='\[\033[1;32m\]\A\[\033[m\] \u@\h \[\033[0;32m\]${PS1X}\[\033[m\] $ '
+PS1='\[\033[0m\]\[\033[1m\]\A\[\033[0m\] \u@\h \[\033[0;32m\]${PS1X}\[\033[0m\] $ '
 
 # bash sudo completion
 # complete -cf sudo
@@ -131,12 +131,12 @@ PS1='\[\033[1;32m\]\A\[\033[m\] \u@\h \[\033[0;32m\]${PS1X}\[\033[m\] $ '
 
 # -- LESS man page colors
 export LESS_TERMCAP_mb=$'\033[0m'
-export LESS_TERMCAP_md=$'\033[0;34m'
+export LESS_TERMCAP_md=$'\033[1;34m'
 export LESS_TERMCAP_me=$'\033[0m'
 export LESS_TERMCAP_se=$'\033[0m'
-export LESS_TERMCAP_so=$'\033[1;7;37;40m'
+export LESS_TERMCAP_so=$'\033[1;7m'
 export LESS_TERMCAP_ue=$'\033[0m'
-export LESS_TERMCAP_us=$'\033[2;37m'
+export LESS_TERMCAP_us=$'\033[0;35m'
 
 # -- linux console colors (jwr dark)
 if [ "$TERM" = "linux" ]; then
