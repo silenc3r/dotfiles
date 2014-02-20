@@ -12,7 +12,7 @@
 
 # aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    test -r ~/.config/dircolors && eval "$(dircolors -b ~/.config/dircolors)" || eval "$(dircolors -b)"
     alias ls='ls -hF --color=auto'
 
     alias dmesg='dmesg --color'
@@ -22,6 +22,7 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # other ls aliases
+alias l1='ls -1'
 alias ll='ls -l'
 alias la='ll -A --group-directories-first'
 alias lA='ls -A --group-directories-first'
@@ -37,18 +38,16 @@ alias df='df -h'
 alias du='du -c -h'
 
 # safety features
-#alias cp='cp -i'
-#alias mv='mv -i'
 alias rm='rm -I'
 alias ln='ln -i'
 alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
+
 # clear screen for real (it does not work in Terminology)
 alias cls=' echo -ne "\033c"'
 
 # set -o vi
-
 
 # path
 PATH="$HOME/bin:$PATH"
@@ -60,7 +59,7 @@ PATH="$HOME/bin:$PATH"
 # export JAVA_FONTS=/usr/share/fonts/TTF
 # export R600_ENABLE_S3TC=1
 # export AWT_TOOLKIT=MToolkit
-export EDITOR="vim"
+export EDITOR="vi"
 export VISUAL="/usr/bin/vim -X"
 
 if [ -n "$DISPLAY" ]; then
@@ -110,7 +109,7 @@ unset HISTFILESIZE
 # Don't remember trivial 1-, 2- and 3-letter commands.
 HISTIGNORE=?:??:???
 HISTIGNORE=${HISTIGNORE}':exit:reset:clear:startx:shutdown'
-# ingore duplicates and spaces
+# ingore duplicates and commands starting with spacebar
 HISTCONTROL="ignoreboth:erasedups"
 
 # Show abbreviated path in prompt
@@ -126,10 +125,16 @@ PS1='\[\033[0m\]\[\033[1m\]\A\[\033[0m\] \u@\h \[\033[0;32m\]${PS1X}\[\033[0m\] 
 # complete -cf sudo
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 
+# Initialize fasd
+eval "$(fasd --init auto)"
+
 # cycle through possible completions
 # [[ $- = *i* ]] && bind TAB:menu-complete
 
-# -- LESS man page colors
+# less source highlighting (requires source-highlight)
+export LESSOPEN="| /usr/bin/source-highlight-esc.sh %s"
+export LESS='-R '
+# less man page colors
 export LESS_TERMCAP_mb=$'\033[0m'
 export LESS_TERMCAP_md=$'\033[1;34m'
 export LESS_TERMCAP_me=$'\033[0m'
@@ -170,3 +175,23 @@ pacman() {
 
 # mkcd
 mkcd () { mkdir -p "$@" && cd "$@"; }
+
+# # marks
+# export MARKPATH=$HOME/.marks
+# function jump {
+#     cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
+# }
+# function mark {
+#     mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
+# }
+# function unmark {
+#     rm -i $MARKPATH/$1
+# }
+# function marks {
+#     ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
+# }
+# _jump() {
+#     local cur=${COMP_WORDS[COMP_CWORD]}
+#     COMPREPLY=( $(compgen -W "$( ls $MARKPATH )" -- $cur) )
+# }
+# complete -F _jump jump
