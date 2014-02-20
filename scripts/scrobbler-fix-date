@@ -6,7 +6,7 @@ BEGIN {
     "date +'%s'" | getline d
     t = d - 1198800
     close(d)
-    if (NR == 4 $7 > t) {
+    if (NR == 4 && $7 > t) {
         print "Your log file isn't even two weeks old, you can submit it without editing."
         exit(1)
     }
