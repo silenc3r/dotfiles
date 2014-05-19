@@ -12,9 +12,12 @@ xset +dpms &
 xset dpms 0 0 600 &
 xset s 600 600 &
 xrdb -merge ~/.config/Xresources &
-/usr/bin/start-pulseaudio-x11 &
+# /usr/bin/start-pulseaudio-x11 &
 
-(sleep 5 && SpiderOak \--headless) &
+# (sleep 5 && SpiderOak \--headless) &
+# (sleep 5 && SpiderOak) &
+
+compton --config ~/.config/compton/compton.conf &
 
 # redshift &
 xsetroot -cursor_name left_ptr
@@ -23,4 +26,4 @@ setxkbmap -layout "pl(intl)" \
     -option "caps:swapescape" \
     -option "terminate:ctrl_alt_bksp" &
 
-exec xmonad
+# exec xmonad

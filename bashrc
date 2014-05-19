@@ -113,13 +113,16 @@ HISTIGNORE=${HISTIGNORE}':exit:reset:clear:startx:shutdown'
 HISTCONTROL="ignoreboth:erasedups"
 
 # Show abbreviated path in prompt
-PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] && printf "~";IFS=/; for q in ${p:1}; do printf /${q:0:1}; done; printf "${q:1}")'
+# PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] && printf "~";IFS=/; for q in ${p:1}; do printf /${q:0:1}; done; printf "${q:1}")'
 # Save each history entry immediately (protects against terminal crashes/
 # disconnections, and interleaves commands from multiple terminals in correct
 # chronological order).
-PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+# PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+PROMPT_COMMAND="history -a; history -n"
 # bash prompt style
-PS1='\[\033[0m\]\[\033[1m\]\A\[\033[0m\] \u@\h \[\033[0;32m\]${PS1X}\[\033[0m\] $ '
+# PS1='\[\033[0m\]\[\033[1m\]\A\[\033[0m\] \u@\h \[\033[0;32m\]${PS1X}\[\033[0m\] $ '
+PROMPT_DIRTRIM=2
+PS1='\[\033[0;32m\]\w\[\033[0m\]❯ '
 
 # bash sudo completion
 # complete -cf sudo
