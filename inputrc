@@ -12,9 +12,14 @@ set completion-query-items 9000
 "\C-p":history-search-backward
 "\C-n":history-search-forward
 
-"\e[1;5C": forward-word   # ctrl + right
-"\e[1;5D": backward-word  # ctrl + left
+# mappings for Ctrl-left-arrow and Ctrl-right-arrow for word moving
+"\e[1;5C": forward-word
+"\e[1;5D": backward-word
+"\e[5C": forward-word
+"\e[5D": backward-word
+"\e\e[C": forward-word
+"\e\e[D": backward-word
 
 # Sane Ctrl-W behavior
-set bind-tty-special-chars off
-"\C-w":backward-kill-word
+#set bind-tty-special-chars off
+#"\C-w":backward-kill-word
