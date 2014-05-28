@@ -51,7 +51,6 @@ alias cls=' echo -ne "\033c"'
 
 # path
 PATH="$HOME/bin:$PATH"
-# CDPATH=".:$HOME:/mnt/Storage:$CDPATH"
 
 # -- Export thingy
 # export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
@@ -87,13 +86,6 @@ shopt -s extglob
 # cd when entering just a path
 shopt -s autocd
 shopt -s checkwinsize
-
-# prevent printing ^C at cancelled command
-# stty -ctlecho
-# When cancelling command with Ctrl-C replace text from the cursor position to
-# the end of the line with red ✗.
-# trap 'echo -ne "\033[1;31m"✗"\033[0K\033[0m"' INT
-
 
 # Append to ~/.bash_history instead of overwriting it -- this stops terminals
 # from overwriting one another's histories.
@@ -147,25 +139,25 @@ export LESS_TERMCAP_ue=$'\033[0m'
 export LESS_TERMCAP_us=$'\033[0;35m'
 
 # -- linux console colors (jwr dark)
-if [ "$TERM" = "linux" ]; then
-    echo -en "\e]P0000000" #black
-    echo -en "\e]P83d3d3d" #darkgrey
-    echo -en "\e]P18c4665" #darkred
-    echo -en "\e]P9bf4d80" #red
-    echo -en "\e]P2287373" #darkgreen
-    echo -en "\e]PA53a6a6" #green
-    echo -en "\e]P37c7c99" #brown
-    echo -en "\e]PB9e9ecb" #yellow
-    echo -en "\e]P4395573" #darkblue
-    echo -en "\e]PC477ab3" #blue
-    echo -en "\e]P55e468c" #darkmagenta
-    echo -en "\e]PD7e62b3" #magenta
-    echo -en "\e]P631658c" #darkcyan
-    echo -en "\e]PE6096bf" #cyan
-    echo -en "\e]P7899ca1" #lightgrey
-    echo -en "\e]PFc0c0c0" #white
-    clear # bring us back to default input colours
-fi
+# if [ "$TERM" = "linux" ]; then
+#     echo -en "\e]P0000000" #black
+#     echo -en "\e]P83d3d3d" #darkgrey
+#     echo -en "\e]P18c4665" #darkred
+#     echo -en "\e]P9bf4d80" #red
+#     echo -en "\e]P2287373" #darkgreen
+#     echo -en "\e]PA53a6a6" #green
+#     echo -en "\e]P37c7c99" #brown
+#     echo -en "\e]PB9e9ecb" #yellow
+#     echo -en "\e]P4395573" #darkblue
+#     echo -en "\e]PC477ab3" #blue
+#     echo -en "\e]P55e468c" #darkmagenta
+#     echo -en "\e]PD7e62b3" #magenta
+#     echo -en "\e]P631658c" #darkcyan
+#     echo -en "\e]PE6096bf" #cyan
+#     echo -en "\e]P7899ca1" #lightgrey
+#     echo -en "\e]PFc0c0c0" #white
+#     clear # bring us back to default input colours
+# fi
 
 # pacman with sudo
 pacman() {
