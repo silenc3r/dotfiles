@@ -21,8 +21,6 @@
         filetype off
         set rtp+=~/.vim/bundle/vundle
         call vundle#rc()
-
-
         Bundle 'gmarik/vundle'
 
         " Utils
@@ -65,7 +63,7 @@
         " Bundle 'SirVer/ultisnips'
         " Automatic closing of quotes, parenthesis, brackets, etc.
         Bundle 'Raimondi/delimitMate'
-        Bundle 'zah/nimrod.vim'
+        " Bundle 'zah/nimrod.vim'
 
         " UI
         Bundle 'Yggdroot/indentLine'
@@ -85,25 +83,7 @@
         " Bundle 'python.vim'
         " Bundle 'python_match.vim'
         " Bundle 'pythoncomplete'
-
-        " JavaScript
-        " Bundle 'leshill/vim-json'
-        " Bundle 'groenewege/vim-less'
-        " Bundle 'pangloss/vim-javascript'
-        " Bundle 'briancollins/vim-jst'
-        " Bundle 'kchmck/vim-coffee-script'
-
-        " HTML
-        " Bundle 'amirh/HTML-AutoCloseTag'
-        " Bundle 'hail2u/vim-css3-syntax'
-        " Bundle 'tpope/vim-haml'
-
-        " Ruby"
-        " Bundle 'tpope/vim-rails'
-        " let g:rubycomplete_buffer_loading = 1
     " }
-
-
 " }
 
 " General {
@@ -122,22 +102,17 @@
         set clipboard=unnamed
     endif
 
-    set hidden                      " Don't write to disk upon buffer change
-    set autoread                    " Auto reload files changed outside vim
-    set shortmess+=mr               " Abbrev. of messages (avoids 'hit enter')
-    set viewoptions+=unix,slash     " Unix-windows compatibility
-    set virtualedit=onemore,block   " Allow for cursor beyond last character
-    set backspace=indent,eol,start  " Allow backspace in insert mode
-    set history=1000                " Store a ton of history (default is 20)
-    " set modelines=0                 " Disable modelines (security)
-    set gdefault                    " Set g flag on :s substitutions by def.
-    set tildeop                     " Let tilde behave like operator
+    set hidden                    " Don't write to disk upon buffer change
+    set autoread                  " Auto reload files changed outside vim
+    set shortmess+=mr             " Abbrev. of messages (avoids 'hit enter')
+    set viewoptions+=unix,slash   " Unix-windows compatibility
+    set history=1000              " Store a ton of history (default is 20)
 
     set nowritebackup
     set noswapfile
     if has('persistent_undo')
-        set undofile                " Persistent undo is sexy
-        set undolevels=1000         " Maximum number of undo
+        set undofile              " Persistent undo is sexy
+        set undolevels=1000       " Maximum number of undo
         set undodir=$HOME/.vim/undo
     endif
 
@@ -150,12 +125,12 @@
 
         if ($TERM =~ "-256color") || ($TERM =~ "-termite") || has('gui')
             " set t_Co=256
-            " Zenburn {
+            " Zenburn <<<
                 " let g:zenburn_alternate_Visual = 1
                 " let g:zenburn_high_Contrast = 1
                 " colorscheme zenburn
                 " hi ColorColumn ctermbg=233
-            " }
+            " <<<
             colorscheme Tomorrow-Night
             " colorscheme ir_black
             " colorscheme kolor
@@ -167,56 +142,34 @@
         endif
     " }
 
-    " Status & Command line {
-        if has('cmdline_info')
-            " set ruler   " Show the ruler
-            " A ruler on steroids
-            " set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%)
-            set showcmd " Show partial commands in status line and
-                        " selected characters/lines in visual mode
-        endif
-
-        if has('statusline')
-            set laststatus=2    " Always display the statusline in all windows
-            " " Broken down into easily includeable segments
-            " set statusline=%<%f\                     " Filename
-            " set statusline+=%w%h%m%r                 " Options
-            " set statusline+=%{fugitive#statusline()} " Git Hotness
-            " set statusline+=\ [%{&ff}/%Y]            " Filetype
-            " set statusline+=\ [%{getcwd()}]          " Current dir
-            " set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
-        endif
-    " }
-
-    set ttyfast                " Always assume fast terminal connection
-    set lazyredraw             " Avoid scrolling problems
-    set vb t_vb=               " Prevent screen flashing
+    set showcmd                 " Show partial commands in status line and
+                                " selected characters/lines in visual mode
+    set laststatus=2            " Always display the statusline in all windows
+    set winminheight=0          " Windows can be 0 line high (only statusbar)
+    set ttyfast                 " Always assume fast terminal connection
+    set lazyredraw              " Avoid scrolling problems
+    set vb t_vb=                " Prevent screen flashing
     set title
-    set splitbelow
-    set splitright
-    " set linespace=0            " No extra spaces between rows - default-ish
-    set winminheight=0         " Windows can be 0 line high
-    " set scrolloff=0            " Min nr of lines to keep above/below cursor
-    set sidescroll=1           " Minimal number of columns to scroll horiz.
+    set splitbelow              " Put new window below the current one
+    set splitright              " Put new window right of the current one
+    set scrolloff=5             " Min nr of lines to keep above/below cursor
+    set sidescroll=2            " Minimal number of columns to scroll horiz.
     set sidescrolloff=8
-    " set foldenable             " enable folding - default
-    " set foldminlines=3         " min number of lines to fold
     set list
     set listchars=nbsp:␣,extends:❯,precedes:❮,tab:»\ ,trail:·
     " set listchars=nbsp:·,extends:❯,precedes:❮,tab:»\ ,trail:·
     " set listchars=nbsp:·,extends:❯,precedes:❮,tab:▸\
+    set virtualedit=onemore,block " Allow for cursor beyond last character
 
     set cursorline              " Highlight cursor line
     set colorcolumn=79          " Highlight chosen column
 
-    set number          " Fix displaying 0 as current line number
-    set relativenumber  " Set relative line numbering
+    set number          " Display current line number
+    set relativenumber  " Use relative line numbering
     " ...but change it to absolute numbering in insert mode:
+    autocmd InsertEnter * :set relativenumber!
     autocmd InsertLeave * :set relativenumber
     autocmd CursorMoved * :set relativenumber
-    " Set absolute line numbering when window loses focus (gui only)
-    autocmd FocusLost * :set number
-    autocmd InsertEnter * :set number
 
     " Search {
         set incsearch               " Show next match while entering search
@@ -229,38 +182,38 @@
     " Completion {
         " Show scrollable menu instead of just completing
         set wildmenu
-        if exists("&wildignorecase")
-            set wildignorecase
-        endif
+        set wildignorecase
         " Files to ignore while tab completing
         set wildignore+=*.o,*~,.lo,*.obj,*.pyc
         " Files with lower priority while completing
         set suffixes+=.in,.a
         " Complete options for insert mode
-        set completeopt=menu,menuone,longest
-        " Command <Tab> completion, list matches, then longest common part,
+        set completeopt=menuone,longest
+        " Command <Tab> completion: list matches, then longest common part,
         " then all.
         set wildmode=list:longest,full
     " }
 
 " }
 
-" Formatting {
-
-    set nowrap            " Don't wrap long lines
-    set autoindent        " Indent at the same level of the previous line
-    set shiftwidth=4      " Use indents of 4 spaces
-    set shiftround        " Round indent to multiple of shiftwidth
-    set expandtab         " Tabs are spaces, not tabs
+" Formatting & Editting {
+    set nowrap                 " Don't wrap long lines
+    set autoindent             " Indent at the same level of the previous line
+    set shiftwidth=4           " Use indents of 4 spaces
+    " set shiftround           " Round indent to multiple of shiftwidth
+    set expandtab              " Tabs are spaces, not tabs
     set smarttab
-    set tabstop=4         " An indentation every four columns
-    set softtabstop=4     " Let backspace delete indent
-    set pastetoggle=<F12> " pastetoggle (sane indentation on pastes)
+    set tabstop=4              " An indentation every four columns
+    set softtabstop=4          " Let backspace delete indent
+    set pastetoggle=<F12>      " pastetoggle (sane indentation on pastes)
+    set gdefault               " Set g flag on :s substitutions by def.
+    set tildeop                " Let tilde work with movement keys
+    set backspace=indent,start " Allow backspace in insert mode
+
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd FileType text setlocal textwidth=80 colorcolumn=+1
-
 " }
 
 " Keymaps {
@@ -269,9 +222,6 @@
     let mapleader = ' '
     " Fuck you, manual key.
     nnoremap K <Nop>
-
-    " nnoremap ' `
-    " nnoremap ` '
 
     " Toggle search highlighting
     nmap <silent> <leader>h :set invhlsearch<CR>
@@ -283,8 +233,8 @@
     nnoremap g. g.zzzv
 
     " Scroll faster
-    nnoremap <C-e> 3<C-e>
-    nnoremap <C-y> 3<C-y>
+    nnoremap <C-e> 5<C-e>
+    nnoremap <C-y> 5<C-y>
 
     " Easier horizontal scrolling
     nnoremap zl 15zl
@@ -313,20 +263,16 @@
     nnoremap <leader>4 :set ts=4 sw=4 sts=4<CR>
     nnoremap <leader>8 :set ts=8 sw=8 sts=8<CR>
 
-    " nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-    " nnoremap <leader>sv :source $MYVIMRC<cr>
-
     " Split window vertically
     noremap <leader>v <C-w>v
 
-    " Easier window navigation, <C-W>_ maximizes split after switch"
+    " Easier window navigation, <C-W>_ maximizes window after switch"
     nnoremap <C-J> <C-W>j<C-W>_
     nnoremap <C-K> <C-W>k<C-W>_
     nnoremap <C-L> <C-W>l<C-W>_
     nnoremap <C-H> <C-W>h<C-W>_
 
     " save the current file as root
-    " cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>"
     cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
 
     " Some annoying keyfixes"
@@ -341,20 +287,14 @@
         command! -bang QA qa<bang>
         command! -bang Qa qa<bang>
     endif
-
 " }
 
 " Plugins {
 
-    " Misc {
-        " let g:NERDShutUp=1
-        " let b:match_ignorecase = 1
-    " }
-
     " Indent line {
     " possible characters: | ¦ ┆ │
-    let g:indentLine_char="|"
-    let g:indentLine_first_char="|"
+    let g:indentLine_char="│"
+    let g:indentLine_first_char="│"
     " let g:indentLine_color_term = 0
     " let g:indentLine_noConcealCursor=1
     " }
@@ -377,11 +317,6 @@
         set tags=./tags;/,~/.vimtags
     " }
 
-    " " UltiSnips {
-    "     let g:UltiSnipsJumpForwardTrigger="<tab>"
-    "     au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-    " " }
-
     " Syntastic {
         " Better :sign interface symbols
         let g:syntastic_error_symbol = '✗'
@@ -389,21 +324,6 @@
         " Use flake8
         let g:syntastic_python_checkers = ['flake8']
         let g:syntastic_python_flake8_args = '--ignore="E501,E302,E261,E701,E241,E126,E127,E128,W801"'
-    " }
-
-    " NerdTree {
-        " map <C-e> :NERDTreeToggle<CR>:NERDTreeMirror<CR>
-        " map <leader>e :NERDTreeFind<CR>
-        " nmap <leader>nt :NERDTreeFind<CR>
-
-        " let NERDTreeShowBookmarks=1
-        " let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
-        " let NERDTreeChDirMode=0
-        " let NERDTreeQuitOnOpen=1
-        " let NERDTreeMouseMode=2
-        " let NERDTreeShowHidden=1
-        " let NERDTreeKeepTreeInNewTab=1
-        " let g:nerdtree_tabs_open_on_gui_startup=0
     " }
 
     " Tabularize {
@@ -425,16 +345,6 @@
         vmap <Leader>a// :Tabularize /\/\/<CR>
         nmap <Leader>a/ :Tabularize /\/<CR>
         vmap <Leader>a/ :Tabularize /\/<CR>
-    " }
-
-    " " Session List {
-    "     set sessionoptions=blank,buffers,curdir,folds,tabpages,winsize
-    "     nmap <leader>sl :SessionList<CR>
-    "     nmap <leader>ss :SessionSave<CR>
-    " " }
-
-    " JSON {
-        " nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
     " }
 
     " PyMode {
@@ -464,13 +374,6 @@
         nnoremap <silent> <leader>tt :TagbarToggle<CR>
     "}
 
-    " PythonMode {
-    " Disable if python support not present
-        " if !has('python')
-        "     let g:pymode = 1
-        " endif
-    " }
-
     " Fugitive {
         nnoremap <silent> <leader>gs :Gstatus<CR>
         nnoremap <silent> <leader>gd :Gdiff<CR>
@@ -485,7 +388,6 @@
         " If undotree is opened, it is likely one wants to interact with it.
         let g:undotree_SetFocusWhenToggle=1
     " }
-
 " }
 
 " Functions {
@@ -503,22 +405,4 @@
             call cursor(l, c)
         endfunction
     " }
-
-    " " UltiSnips_complete {
-    " function! g:UltiSnips_Complete()
-    "     call UltiSnips_ExpandSnippet()
-    "     if g:ulti_expand_res == 0
-    "         if pumvisible()
-    "             return "\<C-n>"
-    "         else
-    "             call UltiSnips_JumpForwards()
-    "             if g:ulti_jump_forwards_res == 0
-    "             return "\<TAB>"
-    "             endif
-    "         endif
-    "     endif
-    "     return ""
-    " endfunction
-    " " }
 " }
-
