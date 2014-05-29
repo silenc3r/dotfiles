@@ -19,70 +19,73 @@
     " Setup Bundle Support {
         " The next three lines ensure that the ~/.vim/bundle/ system works
         filetype off
-        set rtp+=~/.vim/bundle/vundle
-        call vundle#rc()
-        Bundle 'gmarik/vundle'
+        set rtp+=~/.vim/bundle/Vundle.vim
+        call vundle#begin()
+        Plugin 'gmarik/Vundle.vim'
 
         " Utils
-        if executable('ack-grep')
+        if executable('ag')
+            Plugin 'rking/ag.vim'
+        elseif executable('ack-grep')
             let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-            Bundle 'mileszs/ack.vim'
+            Plugin 'mileszs/ack.vim'
         elseif executable('ack')
-            Bundle 'mileszs/ack.vim'
-        elseif executable('ag')
-            Bundle 'mileszs/ack.vim'
-            let g:ackprg = 'ag --nogroup --nocolor --column'
+            Plugin 'mileszs/ack.vim'
         endif
-        if executable('ctags')
-            Bundle 'majutsushi/tagbar'
-        endif
-        " Bundle 'kien/ctrlp.vim'
-        " Bundle 'Shougo/unite.vim'
-        " Bundle 'techlivezheng/vim-plugin-minibufexpl'
-        Bundle 'mbbill/undotree'
-        Bundle 'matchit.zip'
-        " Bundle 'chrisbra/NrrwRgn'
-        " Bundle 'Lokaltog/vim-easymotion'
 
-        " Bundle 'tpope/vim-markdown'
+        if executable('ctags')
+            Plugin 'majutsushi/tagbar'
+        endif
+
+        Plugin 'lord-garbage/tslime.vim'
+        " Plugin 'kien/ctrlp.vim'
+        " Plugin 'Shougo/unite.vim'
+        Plugin 'tpope/vim-vinegar'
+        Plugin 'mbbill/undotree'
+        Plugin 'matchit.zip'
+        " Plugin 'chrisbra/NrrwRgn'
+        " Plugin 'Lokaltog/vim-easymotion'
+
+        " Plugin 'tpope/vim-markdown'
 
         " Git
-        Bundle 'tpope/vim-fugitive'
-        Bundle 'mhinz/vim-signify'
-        " Bundle 'mattn/gist-vim'
+        Plugin 'tpope/vim-fugitive'
+        Plugin 'mhinz/vim-signify'
+        " Plugin 'mattn/gist-vim'
 
         " Text sculpting
-        Bundle 'godlygeek/tabular'
-        Bundle 'tomtom/tcomment_vim'
-        Bundle 'tpope/vim-surround'
-        Bundle 'tpope/vim-repeat'
+        Plugin 'godlygeek/tabular'
+        Plugin 'tomtom/tcomment_vim'
+        Plugin 'tpope/vim-surround'
+        Plugin 'tpope/vim-repeat'
 
         " Autocompletion & Syntax check
-        Bundle 'Valloric/YouCompleteMe'
-        Bundle 'scrooloose/syntastic'
-        " Bundle 'SirVer/ultisnips'
+        Plugin 'Valloric/YouCompleteMe'
+        Plugin 'scrooloose/syntastic'
+        " Plugin 'SirVer/ultisnips'
         " Automatic closing of quotes, parenthesis, brackets, etc.
-        Bundle 'Raimondi/delimitMate'
-        " Bundle 'zah/nimrod.vim'
+        Plugin 'Raimondi/delimitMate'
 
         " UI
-        Bundle 'Yggdroot/indentLine'
-        Bundle 'bling/vim-airline'
+        " Plugin 'Yggdroot/indentLine'
+        Plugin 'bling/vim-airline'
 
         " Colorschemes
-        Bundle 'jnurmine/Zenburn'
-        Bundle 'chriskempson/vim-tomorrow-theme'
-        " Bundle 'twerth/ir_black'
-        " Bundle 'zeis/vim-kolor'
-        " Bundle 'sickill/vim-monokai'
-        " Bundle 'nanotech/jellybeans.vim'
-        " Bundle "daylerees/colour-schemes", { "rtp": "vim-themes/" }
+        Plugin 'jnurmine/Zenburn'
+        Plugin 'chriskempson/vim-tomorrow-theme'
+        " Plugin 'twerth/ir_black'
+        " Plugin 'zeis/vim-kolor'
+        " Plugin 'sickill/vim-monokai'
+        " Plugin 'nanotech/jellybeans.vim'
+        " Plugin "daylerees/colour-schemes", { "rtp": "vim-themes/" }
 
         " Python
-        " Bundle 'klen/python-mode'
-        " Bundle 'python.vim'
-        " Bundle 'python_match.vim'
-        " Bundle 'pythoncomplete'
+        " Plugin 'klen/python-mode'
+        " Plugin 'python.vim'
+        " Plugin 'python_match.vim'
+        " Plugin 'pythoncomplete'
+
+        call vundle#end()
     " }
 " }
 
@@ -192,6 +195,7 @@
         " Command <Tab> completion: list matches, then longest common part,
         " then all.
         set wildmode=list:longest,full
+        set complete-=i
     " }
 
 " }
