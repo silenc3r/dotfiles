@@ -8,7 +8,10 @@
 [[ $- != *i* ]] && return
 
 . /usr/share/doc/pkgfile/command-not-found.bash
-# . $HOME/Pobrane/base16-tomorrow.dark.sh
+
+# BASE16_SCHEME="solarized"
+# BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
+# [[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
 
 # aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -121,7 +124,11 @@ PS1='\[\033[0;32m\]\w\[\033[0m\]❯ '
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 
 # Initialize fasd
-eval "$(fasd --init auto)"
+# eval "$(fasd --init auto)"
+
+# z init
+export _Z_DATA="$HOME/.cache/z"
+. /usr/lib/z.sh
 
 # cycle through possible completions
 # [[ $- = *i* ]] && bind TAB:menu-complete
