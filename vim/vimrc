@@ -73,11 +73,12 @@
         " Colorschemes
         Plugin 'jnurmine/Zenburn'
         Plugin 'chriskempson/vim-tomorrow-theme'
-        " Plugin 'twerth/ir_black'
-        " Plugin 'zeis/vim-kolor'
+        Plugin 'chriskempson/base16-vim'
+        Plugin 'twilight'
+        Plugin 'zeis/vim-kolor'
         " Plugin 'sickill/vim-monokai'
-        " Plugin 'nanotech/jellybeans.vim'
-        " Plugin "daylerees/colour-schemes", { "rtp": "vim-themes/" }
+        Plugin 'nanotech/jellybeans.vim'
+        Plugin 'altercation/vim-colors-solarized'
 
         " Python
         " Plugin 'klen/python-mode'
@@ -134,11 +135,16 @@
                 " colorscheme zenburn
                 " hi ColorColumn ctermbg=233
             " <<<
+            " colorscheme Tomorrow-Night-Eighties
             colorscheme Tomorrow-Night
-            " colorscheme ir_black
             " colorscheme kolor
             " colorscheme Monokai
+            " let base16colorspace=256
+            " colorscheme base16-solarized
             " colorscheme jellybeans
+            " set background=dark
+            " let g:solarized_termcolors=256
+            " colorscheme solarized
         " else
             " colorscheme molokai
             " hi Comment cterm=italic
