@@ -1,13 +1,12 @@
 #----------------------------------------------------
 # file:     ~/.bashrc
 # author:   Dawid Zych  dawidzych@fastmail.fm
-# vim:fenc=utf-8:nu:ai:et:ts=4:sw=4:fdm=indent:fdn=1:
 #----------------------------------------------------
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-. /usr/share/doc/pkgfile/command-not-found.bash
+[ -x /usr/bin/pkgfile ] && . /usr/share/doc/pkgfile/command-not-found.bash
 
 # BASE16_SCHEME="solarized"
 # BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
@@ -26,13 +25,15 @@ fi
 
 # other ls aliases
 alias l1='ls -1'
-alias ll='ls -l'
-alias la='ll -A --group-directories-first'
+alias ll='ls -l --group-directories-first'
+alias la='ll -A'
 alias lA='ls -A --group-directories-first'
+# list hidden files only
+alias lh='ls -d .??*'
 
 # cd
-alias cd..='cd ..'
 alias ..='cd ..'
+alias ...='cd ../..'
 
 alias su='su -'
 alias ping='ping -c 3'
@@ -55,11 +56,20 @@ alias cls=' echo -ne "\033c"'
 # path
 PATH="$HOME/bin:$PATH"
 
+# python virtualenvwrapper
+if [ -x $(which virtualenvwrapper.sh) ]; then
+    export WORKON_HOME=$HOME/.virtualenvs
+    source /usr/bin/virtualenvwrapper.sh
+    alias mkvirtualenv2='mkvirtualenv --python=/usr/bin/python2'
+    alias mkvirtualenv3='mkvirtualenv --python=/usr/bin/python3'
+fi
+
 # -- Export thingy
-# export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd'
+# better font rendering in java apps
+# export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb'
+# fix java apps in xmonad
 # export _JAVA_AWT_WM_NONREPARENTING=1
 # export JAVA_FONTS=/usr/share/fonts/TTF
-# export R600_ENABLE_S3TC=1
 # export AWT_TOOLKIT=MToolkit
 export EDITOR="vi"
 export VISUAL="/usr/bin/vim -X"
@@ -75,14 +85,12 @@ export GREP_COLOR="1;31"
 #     # https://github.com/trapd00r/LS_COLORS
 #     eval $( dircolors -b $HOME/.dotfiles/dircolors )
 # fi
-# -- disable ^S/^Q flow control -------------------------------------------
+
+# disable ^S/^Q flow control
 if tty -s ; then
     stty -ixon
     stty -ixoff
 fi
-
-# stty werase undef
-# bind '"\C-w": backward-kill-word'
 
 # enable recursive globbing
 shopt -s extglob
@@ -107,34 +115,32 @@ HISTIGNORE=${HISTIGNORE}':exit:reset:clear:startx:shutdown'
 # ingore duplicates and commands starting with spacebar
 HISTCONTROL="ignoreboth:erasedups"
 
-# Show abbreviated path in prompt
-# PROMPT_COMMAND='PS1X=$(p="${PWD#${HOME}}"; [ "${PWD}" != "${p}" ] && printf "~";IFS=/; for q in ${p:1}; do printf /${q:0:1}; done; printf "${q:1}")'
-# Save each history entry immediately (protects against terminal crashes/
-# disconnections, and interleaves commands from multiple terminals in correct
-# chronological order).
-# PROMPT_COMMAND="history -a; history -n; $PROMPT_COMMAND"
+# Save each history entry immediately
 PROMPT_COMMAND="history -a; history -n"
-# bash prompt style
-# PS1='\[\033[0m\]\[\033[1m\]\A\[\033[0m\] \u@\h \[\033[0;32m\]${PS1X}\[\033[0m\] $ '
+# display up to 2 directories on prompt
 PROMPT_DIRTRIM=2
 PS1='\[\033[0;32m\]\w\[\033[0m\]❯ '
 
-# bash sudo completion
-# complete -cf sudo
 [ -f /etc/bash_completion ] && source /etc/bash_completion
+# bash sudo completion
+complete -cf sudo
 
 # Initialize fasd
 # eval "$(fasd --init auto)"
 
 # z init
-export _Z_DATA="$HOME/.cache/z"
-. /usr/lib/z.sh
+if [ -x /usr/lib/z.sh ]; then
+    export _Z_DATA="$HOME/.cache/z"
+    source /usr/lib/z.sh
+fi
 
 # cycle through possible completions
 # [[ $- = *i* ]] && bind TAB:menu-complete
 
 # less source highlighting (requires source-highlight)
-export LESSOPEN="| /usr/bin/source-highlight-esc.sh %s"
+if [ -x /usr/bin/source-highlight-esc.sh ]; then
+    export LESSOPEN="| /usr/bin/source-highlight-esc.sh %s"
+fi
 export LESS='-R '
 # less man page colors
 export LESS_TERMCAP_mb=$'\033[0m'
@@ -177,23 +183,3 @@ pacman() {
 
 # mkcd
 mkcd () { mkdir -p "$@" && cd "$@"; }
-
-# # marks
-# export MARKPATH=$HOME/.marks
-# function jump {
-#     cd -P $MARKPATH/$1 2>/dev/null || echo "No such mark: $1"
-# }
-# function mark {
-#     mkdir -p $MARKPATH; ln -s $(pwd) $MARKPATH/$1
-# }
-# function unmark {
-#     rm -i $MARKPATH/$1
-# }
-# function marks {
-#     ls -l $MARKPATH | sed 's/  / /g' | cut -d' ' -f9- | sed 's/ -/\t-/g' && echo
-# }
-# _jump() {
-#     local cur=${COMP_WORDS[COMP_CWORD]}
-#     COMPREPLY=( $(compgen -W "$( ls $MARKPATH )" -- $cur) )
-# }
-# complete -F _jump jump
