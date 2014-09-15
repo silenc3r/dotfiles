@@ -8,9 +8,9 @@
 
 [ -x /usr/bin/pkgfile ] && . /usr/share/doc/pkgfile/command-not-found.bash
 
-# BASE16_SCHEME="solarized"
-# BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
-# [[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
+BASE16_SCHEME="tomorrow"
+BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
+[[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
 
 # aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -32,7 +32,7 @@ alias lA='ls -A --group-directories-first'
 alias lh='ls -d .??*'
 
 # cd
-alias ..='cd ..'
+alias ..='cd ..'  # redundant with autocd
 alias ...='cd ../..'
 
 alias su='su -'
@@ -40,6 +40,7 @@ alias ping='ping -c 3'
 alias mkdir='mkdir -p -v'
 alias df='df -h'
 alias du='du -c -h'
+alias tmux='TERMINFO=/usr/share/terminfo/x/xterm-16color TERM=xterm-16color tmux -2'
 
 # safety features
 alias rm='rm -I'
@@ -54,7 +55,7 @@ alias cls=' echo -ne "\033c"'
 # set -o vi
 
 # path
-PATH="$HOME/bin:$PATH"
+PATH="$HOME/bin:$HOME/introcs/bin:$PATH"
 
 # python virtualenvwrapper
 if [ -x $(which virtualenvwrapper.sh) ]; then
@@ -71,6 +72,9 @@ fi
 # export _JAVA_AWT_WM_NONREPARENTING=1
 # export JAVA_FONTS=/usr/share/fonts/TTF
 # export AWT_TOOLKIT=MToolkit
+# if [ $TERM == "xterm-termite" ]; then
+    # export TERM="xterm"
+# fi
 export EDITOR="vi"
 export VISUAL="/usr/bin/vim -X"
 
@@ -119,20 +123,25 @@ HISTCONTROL="ignoreboth:erasedups"
 PROMPT_COMMAND="history -a; history -n"
 # display up to 2 directories on prompt
 PROMPT_DIRTRIM=2
-PS1='\[\033[0;32m\]\w\[\033[0m\]❯ '
+if [ $TERM == "linux" ]; then
+    PS1='\[\033[0;97m\]\w\[\033[0;34m\]> \[\033[0m\]'
+else
+    PS1='\[\033[0;97m\]\w\[\033[0;34m\]❯ \[\033[0m\]'
+fi
 
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 # bash sudo completion
 complete -cf sudo
 
 # Initialize fasd
-# eval "$(fasd --init auto)"
+eval "$(fasd --init auto)"
+alias v='f -t -e vim -b viminfo'
 
 # z init
-if [ -x /usr/lib/z.sh ]; then
-    export _Z_DATA="$HOME/.cache/z"
-    source /usr/lib/z.sh
-fi
+# if [ -x /usr/lib/z.sh ]; then
+#     export _Z_DATA="$HOME/.cache/z"
+#     source /usr/lib/z.sh
+# fi
 
 # cycle through possible completions
 # [[ $- = *i* ]] && bind TAB:menu-complete
@@ -143,13 +152,13 @@ if [ -x /usr/bin/source-highlight-esc.sh ]; then
 fi
 export LESS='-R '
 # less man page colors
-export LESS_TERMCAP_mb=$'\033[0m'
-export LESS_TERMCAP_md=$'\033[1;34m'
-export LESS_TERMCAP_me=$'\033[0m'
-export LESS_TERMCAP_se=$'\033[0m'
-export LESS_TERMCAP_so=$'\033[1;7m'
-export LESS_TERMCAP_ue=$'\033[0m'
-export LESS_TERMCAP_us=$'\033[0;35m'
+export LESS_TERMCAP_mb=$'\033[1;34m'   # begin blinking
+export LESS_TERMCAP_md=$'\033[1;34m'   # begin bold
+export LESS_TERMCAP_me=$'\033[0m'           # end mode
+export LESS_TERMCAP_se=$'\033[0m'           # end standout-mode
+export LESS_TERMCAP_so=$'\033[1;7m'         # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\033[0m'           # end underline
+export LESS_TERMCAP_us=$'\033[1;36m'   # begin underline
 
 # -- linux console colors (jwr dark)
 # if [ "$TERM" = "linux" ]; then
@@ -172,6 +181,27 @@ export LESS_TERMCAP_us=$'\033[0;35m'
 #     clear # bring us back to default input colours
 # fi
 
+# -- linux console colors (solarized)
+if [ "$TERM" = "linux" ]; then
+    echo -en "\e]P0073642" #black
+    echo -en "\e]P8002b36" #darkgrey
+    echo -en "\e]P1dc322f" #darkred
+    echo -en "\e]P9cb4b16" #red
+    echo -en "\e]P2859900" #darkgreen
+    echo -en "\e]PA586e75" #green
+    echo -en "\e]P3b58900" #brown
+    echo -en "\e]PB657b83" #yellow
+    echo -en "\e]P4268bd2" #darkblue
+    echo -en "\e]PC839496" #blue
+    echo -en "\e]P5d33682" #darkmagenta
+    echo -en "\e]PD6c71c4" #magenta
+    echo -en "\e]P62aa198" #darkcyan
+    echo -en "\e]PE93a1a1" #cyan
+    echo -en "\e]P7eee8d5" #lightgrey
+    echo -en "\e]PFfdf6e3" #white
+    clear # bring us back to default input colours
+fi
+
 # pacman with sudo
 pacman() {
     case $1 in
@@ -182,4 +212,4 @@ pacman() {
 }
 
 # mkcd
-mkcd () { mkdir -p "$@" && cd "$@"; }
+md () { mkdir -p "$@" && cd "$@"; }
