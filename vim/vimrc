@@ -39,12 +39,14 @@
 
         Plugin 'lord-garbage/tslime.vim'
         " Plugin 'kien/ctrlp.vim'
-        " Plugin 'Shougo/unite.vim'
+        Plugin 'Shougo/unite.vim'
         Plugin 'tpope/vim-vinegar'
         Plugin 'mbbill/undotree'
         Plugin 'matchit.zip'
         " Plugin 'chrisbra/NrrwRgn'
         " Plugin 'Lokaltog/vim-easymotion'
+        Plugin 'kshenoy/vim-signature'
+        Plugin 'mhinz/vim-startify'
 
         " Plugin 'tpope/vim-markdown'
 
@@ -81,7 +83,7 @@
         Plugin 'altercation/vim-colors-solarized'
 
         " Python
-        " Plugin 'klen/python-mode'
+        Plugin 'klen/python-mode'
         " Plugin 'python.vim'
         " Plugin 'python_match.vim'
         " Plugin 'pythoncomplete'
@@ -127,8 +129,9 @@
     " Colors {
         set background=dark         " Assume a dark background
 
-        if ($TERM =~ "-256color") || ($TERM =~ "-termite") || has('gui')
-            " set t_Co=256
+        " if ($TERM =~ "xterm") || ($TERM =~ "-256color")
+            set t_Co=256
+            " set t_Co=16
             " Zenburn <<<
                 " let g:zenburn_alternate_Visual = 1
                 " let g:zenburn_high_Contrast = 1
@@ -136,19 +139,21 @@
                 " hi ColorColumn ctermbg=233
             " <<<
             " colorscheme Tomorrow-Night-Eighties
-            colorscheme Tomorrow-Night
+            " colorscheme Tomorrow-Night
             " colorscheme kolor
             " colorscheme Monokai
-            " let base16colorspace=256
-            " colorscheme base16-solarized
+            let base16colorspace=256
+            colorscheme base16-default
+            let g:airline_theme='bubblegum'
             " colorscheme jellybeans
             " set background=dark
             " let g:solarized_termcolors=256
+            " let g:solarized_termtrans=1
             " colorscheme solarized
         " else
             " colorscheme molokai
             " hi Comment cterm=italic
-        endif
+        " endif
     " }
 
     set showcmd                 " Show partial commands in status line and
@@ -210,7 +215,7 @@
     set nowrap                 " Don't wrap long lines
     set autoindent             " Indent at the same level of the previous line
     set shiftwidth=4           " Use indents of 4 spaces
-    " set shiftround           " Round indent to multiple of shiftwidth
+    set shiftround             " Round indent to multiple of shiftwidth
     set expandtab              " Tabs are spaces, not tabs
     set smarttab
     set tabstop=4              " An indentation every four columns
@@ -277,10 +282,14 @@
     noremap <leader>v <C-w>v
 
     " Easier window navigation, <C-W>_ maximizes window after switch"
-    nnoremap <C-J> <C-W>j<C-W>_
-    nnoremap <C-K> <C-W>k<C-W>_
-    nnoremap <C-L> <C-W>l<C-W>_
-    nnoremap <C-H> <C-W>h<C-W>_
+    " nnoremap <C-J> <C-W>j<C-W>_
+    " nnoremap <C-K> <C-W>k<C-W>_
+    " nnoremap <C-L> <C-W>l<C-W>_
+    " nnoremap <C-H> <C-W>h<C-W>_
+    nnoremap <C-J> <C-W>j
+    nnoremap <C-K> <C-W>k
+    nnoremap <C-L> <C-W>l
+    nnoremap <C-H> <C-W>h
 
     " save the current file as root
     cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
@@ -328,12 +337,14 @@
     " }
 
     " Syntastic {
+        " check file on open
+        let g:syntastic_check_on_open = 1
         " Better :sign interface symbols
-        let g:syntastic_error_symbol = '✗'
-        let g:syntastic_warning_symbol = '!'
+        " let g:syntastic_error_symbol = '✗'
+        " let g:syntastic_warning_symbol = '!'
         " Use flake8
         let g:syntastic_python_checkers = ['flake8']
-        let g:syntastic_python_flake8_args = '--ignore="E501,E302,E261,E701,E241,E126,E127,E128,W801"'
+        " let g:syntastic_python_flake8_args = '--ignore="E501,E302,E261,E701,E241,E126,E127,E128,W801,E226"'
     " }
 
     " Tabularize {
@@ -358,27 +369,23 @@
     " }
 
     " PyMode {
+        " let Syntastic take care of syntax checking
+        let g:pymode_lint = 0
+        " use YouCompleteMe for code-completion
+        let g:pymode_rope_completion = 0
         " let g:pymode_lint_checker = "pyflakes"
-        " let g:pymode_utils_whitespaces = 0
-        " let g:pymode_options = 0
     " }
 
-    " " ctrlp {
-    "     let g:ctrlp_working_path_mode = 2
-    "     nnoremap <silent> <D-t> :CtrlP<CR>
-    "     nnoremap <silent> <D-r> :CtrlPMRU<CR>
-    "     let g:ctrlp_custom_ignore = {
-    "         \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-    "         \ 'file': '\.exe$\|\.so$\|\.dll$' }
-
-    "     let g:ctrlp_user_command = {
-    "         \ 'types': {
-    "             \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-    "             \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-    "         \ },
-    "         \ 'fallback': 'find %s -type f'
-    "     \ }
-    " "}
+    " Unite {
+        let g:unite_source_history_yank_enable = 1
+        call unite#filters#matcher_default#use(['matcher_fuzzy'])
+        nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
+        nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
+        nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru -start-insert file_mru<cr>
+        nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
+        nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank history/yank<cr>
+        nnoremap <leader>e :<C-u>Unite -no-split -buffer-name=buffer buffer<cr>
+    " }
 
     " TagBar {
         nnoremap <silent> <leader>tt :TagbarToggle<CR>
@@ -397,6 +404,11 @@
         nnoremap <Leader>u :UndotreeToggle<CR>
         " If undotree is opened, it is likely one wants to interact with it.
         let g:undotree_SetFocusWhenToggle=1
+    " }
+
+    " Netrw {
+        " prevent leaking of directory history
+        let g:netrw_dirhistmax=-1
     " }
 " }
 
