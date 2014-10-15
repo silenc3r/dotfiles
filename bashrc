@@ -91,6 +91,7 @@ export GREP_COLOR="1;31"
 # fi
 
 # disable ^S/^Q flow control
+# in other words, prevent terminal from overwriting Ctrl-s shortcut
 if tty -s ; then
     stty -ixon
     stty -ixoff
