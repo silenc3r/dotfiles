@@ -3,23 +3,16 @@ set show-all-if-unmodified on
 set completion-ignore-case on
 set completion-map-case on
 set match-hidden-files off
-# set completion-prefix-display-length 2
 set blink-matching-paren on
 set visible-stats on
 set completion-query-items 9000
+# use up/down arrow to search through history
 #"\e[A":history-search-backward
 #"\e[B":history-search-forward
 "\C-p":history-search-backward
 "\C-n":history-search-forward
 
-# mappings for Ctrl-left-arrow and Ctrl-right-arrow for word moving
-"\e[1;5C": forward-word
-"\e[1;5D": backward-word
-"\e[5C": forward-word
-"\e[5D": backward-word
-"\e\e[C": forward-word
-"\e\e[D": backward-word
-
 # Sane Ctrl-W behavior
 #set bind-tty-special-chars off
 #"\C-w":backward-kill-word
+"\M-\b":backward-kill-word
