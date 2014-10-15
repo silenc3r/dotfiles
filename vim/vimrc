@@ -1,11 +1,9 @@
 "-----------------------------------------------------------------------------
 " author:   Dawid Zych
-" based on spf13-vim
 " vim: set foldmarker={,} foldlevel=0 foldmethod=marker:
 "-----------------------------------------------------------------------------
 
 " Environment {
-
     set nocompatible    " This must be in the first line
 
     " Windows Compatible {
@@ -16,79 +14,66 @@
         endif
     " }
 
-    " Setup Bundle Support {
-        " The next three lines ensure that the ~/.vim/bundle/ system works
-        filetype off
-        set rtp+=~/.vim/bundle/Vundle.vim
-        call vundle#begin()
-        Plugin 'gmarik/Vundle.vim'
+    " Setup Plugin Support {
+        call plug#begin('~/.vim/plugged')
 
         " Utils
         if executable('ag')
-            Plugin 'rking/ag.vim'
-        elseif executable('ack-grep')
-            let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-            Plugin 'mileszs/ack.vim'
-        elseif executable('ack')
-            Plugin 'mileszs/ack.vim'
+            Plug 'rking/ag.vim'
         endif
 
         if executable('ctags')
-            Plugin 'majutsushi/tagbar'
+            Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
         endif
 
-        Plugin 'lord-garbage/tslime.vim'
-        " Plugin 'kien/ctrlp.vim'
-        Plugin 'Shougo/unite.vim'
-        Plugin 'tpope/vim-vinegar'
-        Plugin 'mbbill/undotree'
-        Plugin 'matchit.zip'
-        " Plugin 'chrisbra/NrrwRgn'
-        " Plugin 'Lokaltog/vim-easymotion'
-        Plugin 'kshenoy/vim-signature'
-        Plugin 'mhinz/vim-startify'
+        " Send commands to tmux, useful in TDD
+        Plug 'lord-garbage/vimtux'
+        Plug 'Shougo/unite.vim', { 'on': 'Unite' }
+        Plug 'tpope/vim-vinegar'
+        Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+        Plug 'matchit.zip'
+        " Plug 'chrisbra/NrrwRgn'
+        Plug 'justinmk/vim-sneak'
+        " Display marks
+        Plug 'kshenoy/vim-signature'
+        " Fancy start screen
+        Plug 'mhinz/vim-startify'
 
-        " Plugin 'tpope/vim-markdown'
+        Plug 'tpope/vim-markdown'
 
         " Git
-        Plugin 'tpope/vim-fugitive'
-        Plugin 'mhinz/vim-signify'
-        " Plugin 'mattn/gist-vim'
+        Plug 'tpope/vim-fugitive'
+        Plug 'mhinz/vim-signify'
+        Plug 'mattn/gist-vim'
 
         " Text sculpting
-        Plugin 'godlygeek/tabular'
-        Plugin 'tomtom/tcomment_vim'
-        Plugin 'tpope/vim-surround'
-        Plugin 'tpope/vim-repeat'
+        Plug 'junegunn/vim-easy-align'
+        Plug 'tpope/vim-commentary'
+        Plug 'tpope/vim-surround'
+        Plug 'tpope/vim-repeat'
 
         " Autocompletion & Syntax check
-        Plugin 'Valloric/YouCompleteMe'
-        Plugin 'scrooloose/syntastic'
-        " Plugin 'SirVer/ultisnips'
+        Plug 'Valloric/YouCompleteMe'
+        Plug 'scrooloose/syntastic'
+        " Plug 'SirVer/ultisnips'
         " Automatic closing of quotes, parenthesis, brackets, etc.
-        Plugin 'Raimondi/delimitMate'
+        Plug 'Raimondi/delimitMate'
 
         " UI
-        " Plugin 'Yggdroot/indentLine'
-        Plugin 'bling/vim-airline'
+        Plug 'itchyny/lightline.vim'
 
         " Colorschemes
-        Plugin 'jnurmine/Zenburn'
-        Plugin 'chriskempson/vim-tomorrow-theme'
-        Plugin 'chriskempson/base16-vim'
-        Plugin 'twilight'
-        Plugin 'zeis/vim-kolor'
-        " Plugin 'sickill/vim-monokai'
-        Plugin 'nanotech/jellybeans.vim'
-        Plugin 'altercation/vim-colors-solarized'
+        Plug 'chriskempson/vim-tomorrow-theme'
+        Plug 'chriskempson/base16-vim'
+        Plug 'twilight'
+        " Plug 'sickill/vim-monokai'
+        Plug 'nanotech/jellybeans.vim'
+        Plug 'altercation/vim-colors-solarized'
 
         " Python
-        Plugin 'klen/python-mode'
-        " Plugin 'python.vim'
-        " Plugin 'python_match.vim'
-        " Plugin 'pythoncomplete'
+        Plug 'klen/python-mode', { 'for': 'python'}
 
-        call vundle#end()
+        call plug#end()
     " }
 " }
 
@@ -125,34 +110,21 @@
 " }
 
 " User Interface {
-
     " Colors {
         set background=dark         " Assume a dark background
-
         " if ($TERM =~ "xterm") || ($TERM =~ "-256color")
             set t_Co=256
             " set t_Co=16
-            " Zenburn <<<
-                " let g:zenburn_alternate_Visual = 1
-                " let g:zenburn_high_Contrast = 1
-                " colorscheme zenburn
-                " hi ColorColumn ctermbg=233
-            " <<<
             " colorscheme Tomorrow-Night-Eighties
             " colorscheme Tomorrow-Night
-            " colorscheme kolor
             " colorscheme Monokai
             let base16colorspace=256
             colorscheme base16-default
             let g:airline_theme='bubblegum'
             " colorscheme jellybeans
-            " set background=dark
             " let g:solarized_termcolors=256
             " let g:solarized_termtrans=1
             " colorscheme solarized
-        " else
-            " colorscheme molokai
-            " hi Comment cterm=italic
         " endif
     " }
 
@@ -171,7 +143,6 @@
     set sidescrolloff=8
     set list
     set listchars=nbsp:␣,extends:❯,precedes:❮,tab:»\ ,trail:·
-    " set listchars=nbsp:·,extends:❯,precedes:❮,tab:»\ ,trail:·
     " set listchars=nbsp:·,extends:❯,precedes:❮,tab:▸\
     set virtualedit=onemore,block " Allow for cursor beyond last character
 
@@ -180,7 +151,7 @@
 
     set number          " Display current line number
     set relativenumber  " Use relative line numbering
-    " ...but change it to absolute numbering in insert mode:
+    " ...but change it to absolute numbering in insert mode
     autocmd InsertEnter * :set relativenumber!
     autocmd InsertLeave * :set relativenumber
     autocmd CursorMoved * :set relativenumber
@@ -196,19 +167,17 @@
     " Completion {
         " Show scrollable menu instead of just completing
         set wildmenu
+        " Command <Tab> completion: list matches, then longest common part,
+        " then all.
+        set wildmode=list:longest,full
         set wildignorecase
         " Files to ignore while tab completing
         set wildignore+=*.o,*~,.lo,*.obj,*.pyc
         " Files with lower priority while completing
         set suffixes+=.in,.a
         " Complete options for insert mode
-        set completeopt=menuone,longest
-        " Command <Tab> completion: list matches, then longest common part,
-        " then all.
-        set wildmode=list:longest,full
-        set complete-=i
+        set completeopt=menuone
     " }
-
 " }
 
 " Formatting & Editting {
@@ -220,10 +189,9 @@
     set smarttab
     set tabstop=4              " An indentation every four columns
     set softtabstop=4          " Let backspace delete indent
-    set pastetoggle=<F12>      " pastetoggle (sane indentation on pastes)
-    set gdefault               " Set g flag on :s substitutions by def.
+    set gdefault               " Set g flag on :s substitutions by default
     set tildeop                " Let tilde work with movement keys
-    set backspace=indent,start " Allow backspace in insert mode
+    set backspace=indent,eol,start " Allow backspace in insert mode
 
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
@@ -232,7 +200,6 @@
 " }
 
 " Keymaps {
-
     " Remap <Leader> to SPACEBAR
     let mapleader = ' '
     " Fuck you, manual key.
@@ -269,10 +236,6 @@
     vnoremap < <gv
     vnoremap > >gv
 
-    " Code folding options
-    nmap <leader>f1 :set foldlevel=1<CR>
-    nmap <leader>f2 :set foldlevel=2<CR>
-
     " Quickly change tab length
     nnoremap <leader>2 :set ts=2 sw=2 sts=2<CR>
     nnoremap <leader>4 :set ts=4 sw=4 sts=4<CR>
@@ -282,10 +245,6 @@
     noremap <leader>v <C-w>v
 
     " Easier window navigation, <C-W>_ maximizes window after switch"
-    " nnoremap <C-J> <C-W>j<C-W>_
-    " nnoremap <C-K> <C-W>k<C-W>_
-    " nnoremap <C-L> <C-W>l<C-W>_
-    " nnoremap <C-H> <C-W>h<C-W>_
     nnoremap <C-J> <C-W>j
     nnoremap <C-K> <C-W>k
     nnoremap <C-L> <C-W>l
@@ -309,15 +268,6 @@
 " }
 
 " Plugins {
-
-    " Indent line {
-    " possible characters: | ¦ ┆ │
-    let g:indentLine_char="│"
-    let g:indentLine_first_char="│"
-    " let g:indentLine_color_term = 0
-    " let g:indentLine_noConcealCursor=1
-    " }
-
     " PowerLine / airline {
     " Don't lag on changing modes - fixes problems with YCM autocompletion
     if ! has('gui_running')
@@ -328,8 +278,13 @@
             au InsertLeave * set timeoutlen=1000
         augroup END
     endif
-    let g:airline#extensions#whitespace#enabled = 0
-    let g:airline#extensions#whitespace#show_message = 0
+    " }
+
+    " Lightline {
+    " TODO: configure fugitive & syntastic support
+    let g:lightline = {
+        \ 'colorscheme': 'powerline',
+        \ }
     " }
 
     " Ctags {
@@ -337,35 +292,18 @@
     " }
 
     " Syntastic {
-        " check file on open
         let g:syntastic_check_on_open = 1
-        " Better :sign interface symbols
         " let g:syntastic_error_symbol = '✗'
         " let g:syntastic_warning_symbol = '!'
-        " Use flake8
         let g:syntastic_python_checkers = ['flake8']
         " let g:syntastic_python_flake8_args = '--ignore="E501,E302,E261,E701,E241,E126,E127,E128,W801,E226"'
     " }
 
-    " Tabularize {
-        nmap <Leader>a& :Tabularize /&<CR>
-        vmap <Leader>a& :Tabularize /&<CR>
-        nmap <Leader>a= :Tabularize /=<CR>
-        vmap <Leader>a= :Tabularize /=<CR>
-        nmap <Leader>a: :Tabularize /:<CR>
-        vmap <Leader>a: :Tabularize /:<CR>
-        nmap <Leader>a:: :Tabularize /:\zs<CR>
-        vmap <Leader>a:: :Tabularize /:\zs<CR>
-        nmap <Leader>a, :Tabularize /,<CR>
-        vmap <Leader>a, :Tabularize /,<CR>
-        nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-        vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
-        nmap <Leader>a" :Tabularize /"<CR>
-        vmap <Leader>a" :Tabularize /"<CR>
-        nmap <Leader>a// :Tabularize /\/\/<CR>
-        vmap <Leader>a// :Tabularize /\/\/<CR>
-        nmap <Leader>a/ :Tabularize /\/<CR>
-        vmap <Leader>a/ :Tabularize /\/<CR>
+    " vim-easy-align {
+        " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+        vmap <Enter> <Plug>(EasyAlign)
+        " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
+        nmap <Leader>a <Plug>(EasyAlign)
     " }
 
     " PyMode {
@@ -373,12 +311,12 @@
         let g:pymode_lint = 0
         " use YouCompleteMe for code-completion
         let g:pymode_rope_completion = 0
-        " let g:pymode_lint_checker = "pyflakes"
     " }
 
     " Unite {
         let g:unite_source_history_yank_enable = 1
-        call unite#filters#matcher_default#use(['matcher_fuzzy'])
+        " call unite#filters#matcher_default#use(['matcher_fuzzy'])
+        autocmd FileType unite call unite#filters#matcher_default#use(['matcher_fuzzy'])
         nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
         nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
         nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru -start-insert file_mru<cr>
@@ -410,10 +348,16 @@
         " prevent leaking of directory history
         let g:netrw_dirhistmax=-1
     " }
+
+    " Sneak {
+        " let it behave similar to easymotion
+        let g:sneak#streak = 1
+        " use global vim settings for case sensitivity
+        let g:sneak#use_ic_scs = 1
+    " }
 " }
 
 " Functions {
-
     " Strip whitespace {
         function! StripTrailingWhitespace()
     " Preparation: save last search, and cursor position.
