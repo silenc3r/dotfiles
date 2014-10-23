@@ -120,7 +120,7 @@
             " colorscheme Monokai
             let base16colorspace=256
             colorscheme base16-default
-            let g:airline_theme='bubblegum'
+            " let g:airline_theme='bubblegum'
             " colorscheme jellybeans
             " let g:solarized_termcolors=256
             " let g:solarized_termtrans=1
@@ -281,7 +281,8 @@
     " }
 
     " Lightline {
-    " TODO: configure fugitive & syntastic support
+    " TODO: configure fugitive & syntastic support + virtualenv + whatnot
+    " better revert to airline...
     let g:lightline = {
         \ 'colorscheme': 'powerline',
         \ }
