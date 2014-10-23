@@ -49,7 +49,7 @@ alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
 
-# clear screen for real (it does not work in Terminology)
+# clear screen for real (it does not work in tmux)
 alias cls=' echo -ne "\033c"'
 
 # set -o vi
@@ -114,9 +114,9 @@ HISTSIZE=10000
 unset HISTFILESIZE
 # Add a timestamp to each history entry.
 # HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S  "
-# Don't remember trivial 1-, 2- and 3-letter commands.
-HISTIGNORE=?:??:???
-HISTIGNORE=${HISTIGNORE}':exit:reset:clear:startx:shutdown'
+# Don't remember trivial {1,2,3,4}-letter commands.
+HISTIGNORE=?:??:???:????
+HISTIGNORE=${HISTIGNORE}':clear:less*:z *:v *'
 # ingore duplicates and commands starting with spacebar
 HISTCONTROL="ignoreboth:erasedups"
 
