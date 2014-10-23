@@ -48,7 +48,7 @@
 
         " Text sculpting
         Plug 'junegunn/vim-easy-align'
-        Plug 'tpope/vim-commentary'
+        Plug 'tomtom/tcomment_vim'
         Plug 'tpope/vim-surround'
         Plug 'tpope/vim-repeat'
 
