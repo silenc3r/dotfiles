@@ -8,9 +8,11 @@
 
 [ -x /usr/bin/pkgfile ] && . /usr/share/doc/pkgfile/command-not-found.bash
 
-BASE16_SCHEME="tomorrow"
-BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
-[[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
+# BASE16_SCHEME="railscasts"
+# BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
+# [[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
+GRUVBOX_SHELL="/home/dawid/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+[[ -s $GRUVBOX_SHELL ]] && . $GRUVBOX_SHELL
 
 # aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -40,7 +42,8 @@ alias ping='ping -c 3'
 alias mkdir='mkdir -p -v'
 alias df='df -h'
 alias du='du -c -h'
-alias tmux='TERMINFO=/usr/share/terminfo/x/xterm-16color TERM=xterm-16color tmux -2'
+alias tmux='TERM=screen-it tmux -2'
+# alias tmux='tmux -2'
 
 # safety features
 alias rm='rm -I'
@@ -49,10 +52,8 @@ alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
 
-# clear screen for real (it does not work in tmux)
+# clear screen for real (does not work in tmux)
 alias cls=' echo -ne "\033c"'
-
-# set -o vi
 
 # path
 PATH="$HOME/bin:$HOME/introcs/bin:$PATH"
@@ -72,9 +73,8 @@ fi
 # export _JAVA_AWT_WM_NONREPARENTING=1
 # export JAVA_FONTS=/usr/share/fonts/TTF
 # export AWT_TOOLKIT=MToolkit
-# if [ $TERM == "xterm-termite" ]; then
-    # export TERM="xterm"
-# fi
+# https://github.com/ThomasAdam/tmux/blob/master/FAQ#L355
+# export TERM=screen-it
 export EDITOR="vi"
 export VISUAL="/usr/bin/vim -X"
 
@@ -83,7 +83,6 @@ if [ -n "$DISPLAY" ]; then
 fi
 export GREP_COLOR="1;31"
 # export MPD_HOST=/mnt/md0/Audio/.mpd/socket
-# export TERM_PROGRAM="rxvt-unicode-256color"
 
 # if [[ -f "$HOME/.dotfiles/dircolors" ]] && [[ $(tput colors) == "256" ]]; then
 #     # https://github.com/trapd00r/LS_COLORS
@@ -101,6 +100,10 @@ fi
 shopt -s extglob
 # cd when entering just a path
 shopt -s autocd
+# correnct minor errors in the spelling of directories
+shopt -s cdspell
+# check windows size after each command and update LINES & COLUMNS
+# if necessary
 shopt -s checkwinsize
 
 # Append to ~/.bash_history instead of overwriting it -- this stops terminals
@@ -116,7 +119,7 @@ unset HISTFILESIZE
 # HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S  "
 # Don't remember trivial {1,2,3,4}-letter commands.
 HISTIGNORE=?:??:???:????
-HISTIGNORE=${HISTIGNORE}':clear:less*:z *:v *'
+HISTIGNORE=${HISTIGNORE}':z *:v *'
 # ingore duplicates and commands starting with spacebar
 HISTCONTROL="ignoreboth:erasedups"
 
@@ -137,15 +140,6 @@ complete -cf sudo
 # Initialize fasd
 eval "$(fasd --init auto)"
 alias v='f -t -e vim -b viminfo'
-
-# z init
-# if [ -x /usr/lib/z.sh ]; then
-#     export _Z_DATA="$HOME/.cache/z"
-#     source /usr/lib/z.sh
-# fi
-
-# cycle through possible completions
-# [[ $- = *i* ]] && bind TAB:menu-complete
 
 # less source highlighting (requires source-highlight)
 if [ -x /usr/bin/source-highlight-esc.sh ]; then
