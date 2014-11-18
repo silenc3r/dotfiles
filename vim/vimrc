@@ -23,23 +23,22 @@
         endif
 
         if executable('ctags')
-            Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+            Plug 'majutsushi/tagbar' ", { 'on': 'TagbarToggle' }
         endif
 
         " Send commands to tmux, useful in TDD
-        Plug 'lord-garbage/vimtux'
+        " Plug 'lord-garbage/vimtux'
+        Plug 'jpalardy/vim-slime'
         Plug 'Shougo/unite.vim', { 'on': 'Unite' }
         Plug 'tpope/vim-vinegar'
         Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-        Plug 'matchit.zip'
         " Plug 'chrisbra/NrrwRgn'
         Plug 'justinmk/vim-sneak'
         " Display marks
         Plug 'kshenoy/vim-signature'
-        " Fancy start screen
+        " Fancy start screen & session management
         Plug 'mhinz/vim-startify'
-
-        Plug 'tpope/vim-markdown'
+        Plug 'luochen1990/rainbow'
 
         " Git
         Plug 'tpope/vim-fugitive'
@@ -48,6 +47,7 @@
 
         " Text sculpting
         Plug 'junegunn/vim-easy-align'
+        " I find it supperior to NerdCommenter & vim-commentary
         Plug 'tomtom/tcomment_vim'
         Plug 'tpope/vim-surround'
         Plug 'tpope/vim-repeat'
@@ -60,18 +60,21 @@
         Plug 'Raimondi/delimitMate'
 
         " UI
-        Plug 'itchyny/lightline.vim'
+        Plug 'bling/vim-airline'
 
         " Colorschemes
         Plug 'chriskempson/vim-tomorrow-theme'
-        Plug 'chriskempson/base16-vim'
+        Plug 'jnurmine/Zenburn'
+        " Plug 'chriskempson/base16-vim'
         Plug 'twilight'
-        " Plug 'sickill/vim-monokai'
+        Plug 'sickill/vim-monokai'
         Plug 'nanotech/jellybeans.vim'
-        Plug 'altercation/vim-colors-solarized'
+        " Plug 'altercation/vim-colors-solarized'
+        Plug 'morhetz/gruvbox'
 
-        " Python
-        Plug 'klen/python-mode', { 'for': 'python'}
+        " Language support
+        Plug 'klen/python-mode', { 'for': 'python' }
+        Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 
         call plug#end()
     " }
@@ -81,6 +84,8 @@
 
     filetype plugin indent on     " Automatically detect file types.
     syntax on                     " Syntax highlighting
+    set synmaxcol=200             " highlight only first 200 columns
+    syntax sync minlines=250      " Possibly faster highlighting for big files
     set mouse=a                   " Use mouse everywhere
     set encoding=utf-8
     scriptencoding utf-8
@@ -93,7 +98,7 @@
         set clipboard=unnamed
     endif
 
-    set hidden                    " Don't write to disk upon buffer change
+    set hidden                    " Don't write to disk upon buffer switch
     set autoread                  " Auto reload files changed outside vim
     set shortmess+=mr             " Abbrev. of messages (avoids 'hit enter')
     set viewoptions+=unix,slash   " Unix-windows compatibility
@@ -118,14 +123,26 @@
             " colorscheme Tomorrow-Night-Eighties
             " colorscheme Tomorrow-Night
             " colorscheme Monokai
-            let base16colorspace=256
-            colorscheme base16-default
-            " let g:airline_theme='bubblegum'
+            " let base16colorspace=256
+            " colorscheme base16-default
+            " colorscheme kalisi
+            let g:airline_theme='gruvbox'
             " colorscheme jellybeans
-            " let g:solarized_termcolors=256
-            " let g:solarized_termtrans=1
-            " colorscheme solarized
+            colorscheme gruvbox
+            set background=dark
         " endif
+        " paren highlighting can be annoying
+        " hi MatchParen cterm=bold ctermbg=none ctermfg=none
+        hi MatchParen cterm=underline ctermbg=none ctermfg=none
+        " hi MatchParen cterm=none ctermbg=none ctermfg=white
+    " }
+
+    " Italics {
+    " http://www.reddit.com/r/vim/comments/24g8r8/italics_in_terminal_vim_and_tmux/
+        " set t_ZH=^[[3m
+        " set t_ZR=^[[23m
+        let &t_ZH="\e[3m"
+        let &t_ZR="\e[23m"
     " }
 
     set showcmd                 " Show partial commands in status line and
@@ -152,16 +169,16 @@
     set number          " Display current line number
     set relativenumber  " Use relative line numbering
     " ...but change it to absolute numbering in insert mode
-    autocmd InsertEnter * :set relativenumber!
-    autocmd InsertLeave * :set relativenumber
-    autocmd CursorMoved * :set relativenumber
+    " autocmd InsertEnter * :set relativenumber!
+    " autocmd InsertLeave * :set relativenumber
+    " autocmd CursorMoved * :set relativenumber
 
     " Search {
         set incsearch               " Show next match while entering search
         set hlsearch                " Highlight searches by default
         set ignorecase              " Case insensitive search...
         set smartcase               " ...until upper-case letter is typed
-        set showmatch               " Show matching braces
+        " set showmatch               " Show matching braces - can't see the difference
     " }
 
     " Completion {
@@ -185,7 +202,7 @@
     set autoindent             " Indent at the same level of the previous line
     set shiftwidth=4           " Use indents of 4 spaces
     set shiftround             " Round indent to multiple of shiftwidth
-    set expandtab              " Tabs are spaces, not tabs
+    set expandtab              " Convert tabs to spaces
     set smarttab
     set tabstop=4              " An indentation every four columns
     set softtabstop=4          " Let backspace delete indent
@@ -203,7 +220,7 @@
     " Remap <Leader> to SPACEBAR
     let mapleader = ' '
     " Fuck you, manual key.
-    nnoremap K <Nop>
+    " nnoremap K <Nop>
 
     " Toggle search highlighting
     nmap <silent> <leader>h :set invhlsearch<CR>
@@ -233,8 +250,8 @@
     vnoremap / /\v
 
     " reselect visual block after indent/outdent
-    vnoremap < <gv
-    vnoremap > >gv
+    " vnoremap < <gv
+    " vnoremap > >gv
 
     " Quickly change tab length
     nnoremap <leader>2 :set ts=2 sw=2 sts=2<CR>
@@ -242,7 +259,7 @@
     nnoremap <leader>8 :set ts=8 sw=8 sts=8<CR>
 
     " Split window vertically
-    noremap <leader>v <C-w>v
+    " noremap <leader>v <C-w>v
 
     " Easier window navigation, <C-W>_ maximizes window after switch"
     nnoremap <C-J> <C-W>j
@@ -253,7 +270,7 @@
     " save the current file as root
     cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
 
-    " Some annoying keyfixes"
+    " Some annoying keyfixes
     if has("user_commands")
         command! -bang -nargs=* -complete=file E e<bang> <args>
         command! -bang -nargs=* -complete=file W w<bang> <args>
@@ -268,6 +285,11 @@
 " }
 
 " Plugins {
+
+    " Startify session {
+        let g:startify_session_dir = "$HOME/.vim/sessions"
+    " }
+
     " PowerLine / airline {
     " Don't lag on changing modes - fixes problems with YCM autocompletion
     if ! has('gui_running')
@@ -280,12 +302,11 @@
     endif
     " }
 
-    " Lightline {
-    " TODO: configure fugitive & syntastic support + virtualenv + whatnot
-    " better revert to airline...
-    let g:lightline = {
-        \ 'colorscheme': 'powerline',
-        \ }
+    " Airline {
+        let g:airline#extensions#whitespace#enabled = 0
+        let g:airline#extensions#whitespace#show_message = 0
+        let g:airline_left_sep=''
+        let g:airline_right_sep=''
     " }
 
     " Ctags {
@@ -307,11 +328,16 @@
         nmap <Leader>a <Plug>(EasyAlign)
     " }
 
-    " PyMode {
+    " Python-Mode {
         " let Syntastic take care of syntax checking
         let g:pymode_lint = 0
         " use YouCompleteMe for code-completion
         let g:pymode_rope_completion = 0
+        " don't fold my code for fucking sake!
+        let g:pymode_folding = 0
+        " improve syntax highlighting
+        let g:pymode_syntax_highlight_self = 0
+        let g:pymode_syntax_print_as_function = 1
     " }
 
     " Unite {
@@ -355,6 +381,36 @@
         let g:sneak#streak = 1
         " use global vim settings for case sensitivity
         let g:sneak#use_ic_scs = 1
+    " }
+
+    " rainbow {
+        let g:rainbow_active=1
+            let g:rainbow_conf = {
+            \   'ctermfgs': ['darkblue', 'darkred', 'darkmagenta', 'darkgreen', 'brown', 'darkcyan'],
+            \   'operators': '_,_',
+            \   'parentheses': [['(',')'], ['\[','\]'], ['{','}']],
+            \   'separately': {
+            \       '*': {},
+            \       'lisp': {
+            \           'ctermfgs': ['darkgray', 'darkblue', 'darkmagenta', 'darkcyan', 'darkred', 'darkgreen'],
+            \       },
+            \       'vim': {
+            \           'parentheses': [['fu\w* \s*.*)','endfu\w*'], ['for','endfor'], ['while', 'endwhile'], ['if','_elseif\|else_','endif'], ['(',')'], ['\[','\]'], ['{','}']],
+            \       },
+            \       'css': 0,
+            \   }
+            \}
+    " }
+
+    " delimitMate {
+        let delimitMate_expand_space=1
+        let delimitMate_expand_cr=2
+        let delimitMate_jump_expansion=1
+    " }
+
+    " vim-slime {
+        let g:slime_target = "tmux"
+        let g:slime_python_ipython = 1
     " }
 " }
 
