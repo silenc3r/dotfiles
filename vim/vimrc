@@ -19,15 +19,15 @@
 
         " Utils
         if executable('ag')
+            " TODO: use it, possibly with unite
             Plug 'rking/ag.vim'
         endif
 
         if executable('ctags')
+            " loading it on-demand breaks Airline
             Plug 'majutsushi/tagbar' ", { 'on': 'TagbarToggle' }
         endif
 
-        " Send commands to tmux, useful in TDD
-        " Plug 'lord-garbage/vimtux'
         Plug 'jpalardy/vim-slime'
         Plug 'Shougo/unite.vim', { 'on': 'Unite' }
         Plug 'tpope/vim-vinegar'
@@ -38,6 +38,7 @@
         Plug 'kshenoy/vim-signature'
         " Fancy start screen & session management
         Plug 'mhinz/vim-startify'
+        " color matching parentheses
         Plug 'luochen1990/rainbow'
 
         " Git
@@ -57,6 +58,7 @@
         Plug 'scrooloose/syntastic'
         " Plug 'SirVer/ultisnips'
         " Automatic closing of quotes, parenthesis, brackets, etc.
+        " TODO: look into HTML tag closing
         Plug 'Raimondi/delimitMate'
 
         " UI
@@ -65,12 +67,11 @@
         " Colorschemes
         Plug 'chriskempson/vim-tomorrow-theme'
         Plug 'jnurmine/Zenburn'
-        " Plug 'chriskempson/base16-vim'
         Plug 'twilight'
         Plug 'sickill/vim-monokai'
         Plug 'nanotech/jellybeans.vim'
-        " Plug 'altercation/vim-colors-solarized'
         Plug 'morhetz/gruvbox'
+        Plug 'junegunn/seoul256.vim'
 
         " Language support
         Plug 'klen/python-mode', { 'for': 'python' }
@@ -81,7 +82,6 @@
 " }
 
 " General {
-
     filetype plugin indent on     " Automatically detect file types.
     syntax on                     " Syntax highlighting
     set synmaxcol=200             " highlight only first 200 columns
@@ -111,7 +111,6 @@
         set undolevels=1000       " Maximum number of undo
         set undodir=$HOME/.vim/undo
     endif
-
 " }
 
 " User Interface {
@@ -123,18 +122,16 @@
             " colorscheme Tomorrow-Night-Eighties
             " colorscheme Tomorrow-Night
             " colorscheme Monokai
-            " let base16colorspace=256
-            " colorscheme base16-default
-            " colorscheme kalisi
             let g:airline_theme='gruvbox'
             " colorscheme jellybeans
             colorscheme gruvbox
+            " colorscheme seoul256
             set background=dark
         " endif
         " paren highlighting can be annoying
-        " hi MatchParen cterm=bold ctermbg=none ctermfg=none
         hi MatchParen cterm=underline ctermbg=none ctermfg=none
-        " hi MatchParen cterm=none ctermbg=none ctermfg=white
+        " comments are always italic
+        hi Comment cterm=italic
     " }
 
     " Italics {
@@ -168,17 +165,12 @@
 
     set number          " Display current line number
     set relativenumber  " Use relative line numbering
-    " ...but change it to absolute numbering in insert mode
-    " autocmd InsertEnter * :set relativenumber!
-    " autocmd InsertLeave * :set relativenumber
-    " autocmd CursorMoved * :set relativenumber
 
     " Search {
         set incsearch               " Show next match while entering search
         set hlsearch                " Highlight searches by default
         set ignorecase              " Case insensitive search...
         set smartcase               " ...until upper-case letter is typed
-        " set showmatch               " Show matching braces - can't see the difference
     " }
 
     " Completion {
@@ -198,17 +190,17 @@
 " }
 
 " Formatting & Editting {
-    set nowrap                 " Don't wrap long lines
-    set autoindent             " Indent at the same level of the previous line
-    set shiftwidth=4           " Use indents of 4 spaces
-    set shiftround             " Round indent to multiple of shiftwidth
-    set expandtab              " Convert tabs to spaces
+    set nowrap              " Don't wrap long lines
+    set autoindent          " Indent at the same level of the previous line
+    set shiftwidth=4        " Use indents of 4 spaces
+    set shiftround          " Round indent to multiple of shiftwidth
+    set expandtab           " Convert tabs to spaces
     set smarttab
-    set tabstop=4              " An indentation every four columns
-    set softtabstop=4          " Let backspace delete indent
-    set gdefault               " Set g flag on :s substitutions by default
-    set tildeop                " Let tilde work with movement keys
-    set backspace=indent,eol,start " Allow backspace in insert mode
+    set tabstop=4           " An indentation every four columns
+    set softtabstop=4       " Let backspace delete indent
+    set gdefault            " Set g flag on :s substitutions by default
+    set tildeop             " Let tilde work with movement keys
+    set backspace=2         " Allow backspace in insert mode
 
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
@@ -219,8 +211,6 @@
 " Keymaps {
     " Remap <Leader> to SPACEBAR
     let mapleader = ' '
-    " Fuck you, manual key.
-    " nnoremap K <Nop>
 
     " Toggle search highlighting
     nmap <silent> <leader>h :set invhlsearch<CR>
@@ -232,34 +222,32 @@
     nnoremap g. g.zzzv
 
     " Scroll faster
+    " TODO: not using that - possible removal 2014-11-19
     nnoremap <C-e> 5<C-e>
     nnoremap <C-y> 5<C-y>
 
     " Easier horizontal scrolling
+    " TODO: not using that - possible removal 2014-11-19
     nnoremap zl 15zl
     nnoremap zh 15zh
 
     " fly between buffers
     nnoremap <leader>l :ls<CR>:b<space>
 
-    " Make Y copy from current position to eol
-    nnoremap Y y$
-
     " use sane regexes
     nnoremap / /\v
     vnoremap / /\v
 
     " reselect visual block after indent/outdent
+    " TODO: not missing that - possible removal 2014-11-19
     " vnoremap < <gv
     " vnoremap > >gv
 
     " Quickly change tab length
+    " TODO: find a way to improve it somehow
     nnoremap <leader>2 :set ts=2 sw=2 sts=2<CR>
     nnoremap <leader>4 :set ts=4 sw=4 sts=4<CR>
     nnoremap <leader>8 :set ts=8 sw=8 sts=8<CR>
-
-    " Split window vertically
-    " noremap <leader>v <C-w>v
 
     " Easier window navigation, <C-W>_ maximizes window after switch"
     nnoremap <C-J> <C-W>j
@@ -285,7 +273,6 @@
 " }
 
 " Plugins {
-
     " Startify session {
         let g:startify_session_dir = "$HOME/.vim/sessions"
     " }
@@ -341,6 +328,7 @@
     " }
 
     " Unite {
+        " TODO: I need to look at this some day
         let g:unite_source_history_yank_enable = 1
         " call unite#filters#matcher_default#use(['matcher_fuzzy'])
         autocmd FileType unite call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -405,6 +393,7 @@
     " delimitMate {
         let delimitMate_expand_space=1
         let delimitMate_expand_cr=2
+        " TODO: don't really know what that doesc
         let delimitMate_jump_expansion=1
     " }
 
