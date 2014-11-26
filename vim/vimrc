@@ -341,7 +341,10 @@
     " }
 
     " TagBar {
+        " Jump to tagbar window upon opening it
+        let g:tagbar_autofocus = 1
         nnoremap <silent> <leader>tt :TagbarToggle<CR>
+        nnoremap <silent> <leader>ta :TagbarOpenAutoClose<CR>
     "}
 
     " Fugitive {
