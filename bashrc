@@ -8,9 +8,6 @@
 
 [ -x /usr/bin/pkgfile ] && . /usr/share/doc/pkgfile/command-not-found.bash
 
-# BASE16_SCHEME="railscasts"
-# BASE16_SHELL="$HOME/.config/base16-shell/base16-$BASE16_SCHEME.dark.sh"
-# [[ -s $BASE16_SHELL ]] && . $BASE16_SHELL
 GRUVBOX_SHELL="/home/dawid/.vim/plugged/gruvbox/gruvbox_256palette.sh"
 [[ -s $GRUVBOX_SHELL ]] && . $GRUVBOX_SHELL
 
@@ -56,7 +53,7 @@ alias chgrp='chgrp --preserve-root'
 alias cls=' echo -ne "\033c"'
 
 # path
-PATH="$HOME/bin:$HOME/introcs/bin:$PATH"
+PATH="$HOME/bin:$PATH"
 
 # python virtualenvwrapper
 if [ -x $(which virtualenvwrapper.sh) ]; then
@@ -204,6 +201,10 @@ pacman() {
             LC_ALL=C /usr/bin/sudo /usr/bin/pacman "$@" ;;
     *)      LC_ALL=C /usr/bin/pacman "$@" ;;
     esac
+}
+
+tnew() {
+    tmux new-session -As $1
 }
 
 # mkcd
