@@ -1,7 +1,7 @@
-#----------------------------------------------------
-# file:     ~/.bashrc
-# author:   Dawid Zych  dawidzych@fastmail.fm
-#----------------------------------------------------
+#------------------------------------------#
+# file:   ~/.bashrc                        #
+# author: Dawid Zych dawidzych@fastmail.fm #
+#------------------------------------------#
 
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
@@ -40,7 +40,6 @@ alias mkdir='mkdir -p -v'
 alias df='df -h'
 alias du='du -c -h'
 alias tmux='TERM=screen-it tmux -2'
-# alias tmux='tmux -2'
 
 # safety features
 alias rm='rm -I'
