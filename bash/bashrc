@@ -4,16 +4,16 @@
 #------------------------------------------#
 
 # If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+[[ $- != *i* ]] && return 
 
-[ -x /usr/bin/pkgfile ] && . /usr/share/doc/pkgfile/command-not-found.bash
-
-GRUVBOX_SHELL="/home/dawid/.vim/plugged/gruvbox/gruvbox_256palette.sh"
-[[ -s $GRUVBOX_SHELL ]] && . $GRUVBOX_SHELL
+if [ "$TERM" != "linux" ]; then
+    GRUVBOX_SHELL="/home/dawid/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+    [[ -s $GRUVBOX_SHELL ]] && . $GRUVBOX_SHELL
+fi
 
 # aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.config/dircolors && eval "$(dircolors -b ~/.config/dircolors)" || eval "$(dircolors -b)"
+    test -r ~/.config/dircolors && eval "$(dircolors -b ~/.config/dircolors)"
     alias ls='ls -hF --color=auto'
 
     alias dmesg='dmesg --color'
@@ -54,14 +54,6 @@ alias cls=' echo -ne "\033c"'
 # path
 PATH="$HOME/bin:$PATH"
 
-# python virtualenvwrapper
-if [ -x $(which virtualenvwrapper.sh) ]; then
-    export WORKON_HOME=$HOME/.virtualenvs
-    source /usr/bin/virtualenvwrapper.sh
-    alias mkvirtualenv2='mkvirtualenv --python=/usr/bin/python2'
-    alias mkvirtualenv3='mkvirtualenv --python=/usr/bin/python3'
-fi
-
 # -- Export thingy
 # better font rendering in java apps
 # export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb'
@@ -79,11 +71,6 @@ if [ -n "$DISPLAY" ]; then
 fi
 export GREP_COLOR="1;31"
 # export MPD_HOST=/mnt/md0/Audio/.mpd/socket
-
-# if [[ -f "$HOME/.dotfiles/dircolors" ]] && [[ $(tput colors) == "256" ]]; then
-#     # https://github.com/trapd00r/LS_COLORS
-#     eval $( dircolors -b $HOME/.dotfiles/dircolors )
-# fi
 
 # disable ^S/^Q flow control
 # in other words, prevent terminal from overwriting Ctrl-s shortcut
@@ -134,22 +121,20 @@ fi
 complete -cf sudo
 
 # Initialize fasd
-eval "$(fasd --init auto)"
-alias v='f -t -e vim -b viminfo'
-
-# less source highlighting (requires source-highlight)
-if [ -x /usr/bin/source-highlight-esc.sh ]; then
-    export LESSOPEN="| /usr/bin/source-highlight-esc.sh %s"
+if hash fasd 2>/dev/null; then
+    eval "$(fasd --init auto)"
+    alias v='f -t -e vim -b viminfo'
 fi
+
 export LESS='-R '
 # less man page colors
-export LESS_TERMCAP_mb=$'\033[1;34m'   # begin blinking
-export LESS_TERMCAP_md=$'\033[1;34m'   # begin bold
-export LESS_TERMCAP_me=$'\033[0m'           # end mode
-export LESS_TERMCAP_se=$'\033[0m'           # end standout-mode
-export LESS_TERMCAP_so=$'\033[1;7m'         # begin standout-mode - info box
-export LESS_TERMCAP_ue=$'\033[0m'           # end underline
-export LESS_TERMCAP_us=$'\033[1;36m'   # begin underline
+export LESS_TERMCAP_mb=$'\033[1;34m' # begin blinking
+export LESS_TERMCAP_md=$'\033[1;34m' # begin bold
+export LESS_TERMCAP_me=$'\033[0m'    # end mode
+export LESS_TERMCAP_se=$'\033[0m'    # end standout-mode
+export LESS_TERMCAP_so=$'\033[1;7m'  # begin standout-mode - info box
+export LESS_TERMCAP_ue=$'\033[0m'    # end underline
+export LESS_TERMCAP_us=$'\033[1;36m' # begin underline
 
 # -- linux console colors (jwr dark)
 # if [ "$TERM" = "linux" ]; then
@@ -201,10 +186,3 @@ pacman() {
     *)      LC_ALL=C /usr/bin/pacman "$@" ;;
     esac
 }
-
-tnew() {
-    tmux new-session -As $1
-}
-
-# mkcd
-md () { mkdir -p "$@" && cd "$@"; }

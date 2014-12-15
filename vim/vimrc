@@ -75,6 +75,7 @@
 
         " Language support
         Plug 'klen/python-mode', { 'for': 'python' }
+        Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
         Plug 'tpope/vim-markdown', { 'for': 'markdown' }
 
         call plug#end()
@@ -86,7 +87,7 @@
     syntax on                     " Syntax highlighting
     set synmaxcol=200             " highlight only first 200 columns
     syntax sync minlines=250      " Possibly faster highlighting for big files
-    set mouse=a                   " Use mouse everywhere
+    set mouse=civ                 " Use mouse everywhere
     set encoding=utf-8
     scriptencoding utf-8
 
