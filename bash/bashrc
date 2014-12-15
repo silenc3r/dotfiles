@@ -4,7 +4,7 @@
 #------------------------------------------#
 
 # If not running interactively, don't do anything
-[[ $- != *i* ]] && return 
+[[ $- != *i* ]] && return
 
 if [ "$TERM" != "linux" ]; then
     GRUVBOX_SHELL="/home/dawid/.vim/plugged/gruvbox/gruvbox_256palette.sh"
@@ -12,8 +12,8 @@ if [ "$TERM" != "linux" ]; then
 fi
 
 # aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.config/dircolors && eval "$(dircolors -b ~/.config/dircolors)"
+if hash dircolors 2>/dev/null; then
+    [ -r ~/.config/dircolors ] && eval "$(dircolors -b ~/.config/dircolors)"
     alias ls='ls -hF --color=auto'
 
     alias dmesg='dmesg --color'

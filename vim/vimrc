@@ -87,7 +87,7 @@
     syntax on                     " Syntax highlighting
     set synmaxcol=200             " highlight only first 200 columns
     syntax sync minlines=250      " Possibly faster highlighting for big files
-    set mouse=civ                 " Use mouse everywhere
+    set mouse=civ                 " Don't use mouse in visual mode
     set encoding=utf-8
     scriptencoding utf-8
 
