@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=xcape
+Comment=Make left Control work as Escape when pressed and released on it's own.
+Icon=preferences-desktop-keyboard
+Exec=xcape -e 'Control_L=Escape'
+Terminal=false
