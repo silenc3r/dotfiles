@@ -40,6 +40,8 @@
         Plug 'mhinz/vim-startify'
         " color matching parentheses
         Plug 'luochen1990/rainbow'
+        " alternative
+        " Plug 'amdt/vim-niji'
 
         " Git
         Plug 'tpope/vim-fugitive'
@@ -72,11 +74,15 @@
         Plug 'nanotech/jellybeans.vim'
         Plug 'morhetz/gruvbox'
         Plug 'junegunn/seoul256.vim'
+        Plug 'tomasr/molokai'
+        Plug 'gosukiwi/vim-atom-dark'
+        Plug 'reedes/vim-colors-pencil'
 
         " Language support
         Plug 'klen/python-mode', { 'for': 'python' }
         Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
         Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+        Plug 'guns/vim-clojure-static', { 'for': ['clojure', 'clojurescript'] }
 
         call plug#end()
     " }
@@ -87,7 +93,7 @@
     syntax on                     " Syntax highlighting
     set synmaxcol=200             " highlight only first 200 columns
     syntax sync minlines=250      " Possibly faster highlighting for big files
-    set mouse=civ                 " Don't use mouse in visual mode
+    " set mouse=civ                 " Don't use mouse in visual mode
     set encoding=utf-8
     scriptencoding utf-8
 
@@ -126,7 +132,12 @@
             let g:airline_theme='gruvbox'
             " colorscheme jellybeans
             colorscheme gruvbox
+            " let g:seoul256_background = 235
             " colorscheme seoul256
+            " let g:pencil_terminal_italics = 1
+            " let g:airline_theme = 'pencil'
+            " colorscheme pencil
+            " colorscheme atom-dark-256
             set background=dark
         " endif
         " paren highlighting can be annoying
@@ -211,7 +222,7 @@
 
 " Keymaps {
     " Remap <Leader> to SPACEBAR
-    let mapleader = ' '
+    let g:mapleader = ' '
 
     " Toggle search highlighting
     nmap <silent> <leader>h :set invhlsearch<CR>
@@ -324,7 +335,8 @@
         " don't fold my code for fucking sake!
         let g:pymode_folding = 0
         " improve syntax highlighting
-        let g:pymode_syntax_highlight_self = 0
+        " let g:pymode_syntax = 0
+        " let g:pymode_syntax_highlight_self = 0
         let g:pymode_syntax_print_as_function = 1
     " }
 
@@ -376,22 +388,22 @@
     " }
 
     " rainbow {
-        let g:rainbow_active=1
-            let g:rainbow_conf = {
-            \   'ctermfgs': ['darkblue', 'darkred', 'darkmagenta', 'darkgreen', 'brown', 'darkcyan'],
-            \   'operators': '_,_',
-            \   'parentheses': [['(',')'], ['\[','\]'], ['{','}']],
-            \   'separately': {
-            \       '*': {},
-            \       'lisp': {
-            \           'ctermfgs': ['darkgray', 'darkblue', 'darkmagenta', 'darkcyan', 'darkred', 'darkgreen'],
-            \       },
-            \       'vim': {
-            \           'parentheses': [['fu\w* \s*.*)','endfu\w*'], ['for','endfor'], ['while', 'endwhile'], ['if','_elseif\|else_','endif'], ['(',')'], ['\[','\]'], ['{','}']],
-            \       },
-            \       'css': 0,
-            \   }
-            \}
+        " let g:rainbow_active=1
+            " let g:rainbow_conf = {
+            " \   'ctermfgs': ['darkblue', 'darkred', 'darkmagenta', 'darkgreen', 'brown', 'darkcyan'],
+            " \   'operators': '_,_',
+            " \   'parentheses': [['(',')'], ['\[','\]'], ['{','}']],
+            " \   'separately': {
+            " \       '*': {},
+            " \       'lisp': {
+            " \           'ctermfgs': ['darkgray', 'darkblue', 'darkmagenta', 'darkcyan', 'darkred', 'darkgreen'],
+            " \       },
+            " \       'vim': {
+            " \           'parentheses': [['fu\w* \s*.*)','endfu\w*'], ['for','endfor'], ['while', 'endwhile'], ['if','_elseif\|else_','endif'], ['(',')'], ['\[','\]'], ['{','}']],
+            " \       },
+            " \       'css': 0,
+            " \   }
+            " \}
     " }
 
     " delimitMate {
