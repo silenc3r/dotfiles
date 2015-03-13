@@ -6,10 +6,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# if [ "$TERM" != "linux" ]; then
-#     GRUVBOX_SHELL="/home/dawid/.vim/plugged/gruvbox/gruvbox_256palette.sh"
-#     [[ -s $GRUVBOX_SHELL ]] && . $GRUVBOX_SHELL
-# fi
+if [ "$TERM" != "linux" ]; then
+    GRUVBOX_SHELL="/home/dawid/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+    [[ -s $GRUVBOX_SHELL ]] && . $GRUVBOX_SHELL
+fi
 
 # aliases
 if hash dircolors 2>/dev/null; then
@@ -39,7 +39,6 @@ alias ping='ping -c 3'
 alias mkdir='mkdir -p -v'
 alias df='df -h'
 alias du='du -c -h'
-alias tmux='TERM=screen-it-256color tmux'
 
 # safety features
 alias rm='rm -I'
@@ -50,6 +49,8 @@ alias chgrp='chgrp --preserve-root'
 
 # clear screen for real (does not work in tmux)
 alias cls=' echo -ne "\033c"'
+
+alias vim='nvim'
 
 # path
 PATH="$HOME/bin:$PATH"
