@@ -6,23 +6,29 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# colors
 if [ "$TERM" != "linux" ]; then
     GRUVBOX_SHELL="/home/dawid/.vim/plugged/gruvbox/gruvbox_256palette.sh"
     [[ -s $GRUVBOX_SHELL ]] && . $GRUVBOX_SHELL
 fi
 
-# aliases
 if hash dircolors 2>/dev/null; then
-    [ -r ~/.config/dircolors ] && eval "$(dircolors -b ~/.config/dircolors)"
-    alias ls='ls -hF --color=auto'
+    if [ -r ~/.config/dircolors ]; then
+        eval "$(dircolors -b ~/.config/dircolors)"
+    else
+        eval $(dircolors -b)
 
-    alias dmesg='dmesg --color'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+    fi
 fi
 
-# other ls aliases
+# aliases
+alias dmesg='dmesg --color'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# ls
+alias ls='ls -hF --color=auto'
 alias l1='ls -1'
 alias ll='ls -l --group-directories-first'
 alias la='ll -A'
@@ -51,6 +57,7 @@ alias chgrp='chgrp --preserve-root'
 alias cls=' echo -ne "\033c"'
 
 alias vim='nvim'
+alias tm='tmux attach || tmux new'
 
 # path
 PATH="$HOME/bin:$PATH"
@@ -90,8 +97,8 @@ shopt -s cdspell
 # if necessary
 shopt -s checkwinsize
 
-# Append to ~/.bash_history instead of overwriting it -- this stops terminals
-# from overwriting one another's histories.
+# Append to ~/.bash_history instead of overwriting it -- this prevents
+# terminals from overwriting one another's histories.
 shopt -s histappend
 # store multiline commands as single entries in history file
 shopt -s cmdhist
@@ -124,7 +131,7 @@ complete -cf sudo
 # Initialize fasd
 if hash fasd 2>/dev/null; then
     eval "$(fasd --init auto)"
-    alias v='f -t -e vim -b viminfo'
+    alias v='f -t -e nvim -b viminfo'
 fi
 
 export LESS='-R '
