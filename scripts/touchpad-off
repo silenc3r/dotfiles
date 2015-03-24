@@ -1,6 +1,0 @@
-#!/bin/bash
-
-export `xinput list | grep -i touchpad | awk '{ print $6 }'`
-xinput set-prop $id "Device Enabled" 0
-
-exit 0
