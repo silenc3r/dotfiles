@@ -6,20 +6,9 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-# colors
-if [ "$TERM" != "linux" ]; then
-    GRUVBOX_SHELL="/home/dawid/.vim/plugged/gruvbox/gruvbox_256palette.sh"
-    [[ -s $GRUVBOX_SHELL ]] && . $GRUVBOX_SHELL
-fi
+eval $(dircolors)
 
-if hash dircolors 2>/dev/null; then
-    if [ -r ~/.config/dircolors ]; then
-        eval "$(dircolors -b ~/.config/dircolors)"
-    else
-        eval $(dircolors -b)
-
-    fi
-fi
+hash nvim 2>/dev/null && IS_NVIM=true
 
 # aliases
 alias dmesg='dmesg --color'
@@ -56,7 +45,8 @@ alias chgrp='chgrp --preserve-root'
 # clear screen for real (does not work in tmux)
 alias cls=' echo -ne "\033c"'
 
-alias vim='nvim'
+[ "$IS_NVIM" ] && alias vim='nvim'
+alias tmux='TERM=screen-256color tmux'
 alias tm='tmux attach || tmux new'
 
 # path
@@ -64,21 +54,14 @@ PATH="$HOME/bin:$PATH"
 
 # -- Export thingy
 # better font rendering in java apps
-# export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb'
+export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.aatext=true'
 # fix java apps in xmonad
 # export _JAVA_AWT_WM_NONREPARENTING=1
-# export JAVA_FONTS=/usr/share/fonts/TTF
 # export AWT_TOOLKIT=MToolkit
-# https://github.com/ThomasAdam/tmux/blob/master/FAQ#L355
-# export TERM=screen-it
 export EDITOR="vi"
-export VISUAL="/usr/bin/vim -X"
-
-if [ -n "$DISPLAY" ]; then
-    BROWSER=firefox
-fi
-export GREP_COLOR="1;31"
+[ "$IS_NVIM" ] && export VISUAL="nvim" || export VISUAL="vim"
 # export MPD_HOST=/mnt/md0/Audio/.mpd/socket
+export WINEARCH=win32
 
 # disable ^S/^Q flow control
 # in other words, prevent terminal from overwriting Ctrl-s shortcut
@@ -112,37 +95,47 @@ unset HISTFILESIZE
 HISTIGNORE=?:??:???:????
 HISTIGNORE=${HISTIGNORE}':z *:v *'
 # ingore duplicates and commands starting with spacebar
-HISTCONTROL="ignoreboth:erasedups"
+HISTCONTROL=ignoreboth:erasedups
 
 # Save each history entry immediately
-PROMPT_COMMAND="history -a; history -n"
+# PROMPT_COMMAND="history -a; history -n"
+PROMPT_COMMAND="history -a"
 # display up to 2 directories on prompt
-PROMPT_DIRTRIM=2
-if [ $TERM == "linux" ]; then
-    PS1='\[\033[0;97m\]\w\[\033[0;34m\]> \[\033[0m\]'
-else
-    PS1='\[\033[0;97m\]\w\[\033[0;34m\]❯ \[\033[0m\]'
-fi
+# http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
+# PROMPT_DIRTRIM=2
+# if [ $TERM == "linux" ]; then
+#     PS1='\[\033[0;97m\]\w\[\033[0;34m\]> \[\033[0m\]'
+# else
+#     PS1='\[\033[0;97m\]\w\[\033[0;34m\]❯ \[\033[0m\]'
+# fi
 
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 # bash sudo completion
 complete -cf sudo
 
+PS1_PWD_MAX=15
+__pwd_ps1() { echo -n $PWD | sed -e "s|${HOME}|~|" -e "s|\(/[^/]*/\).*\(/.\{${PS1_PWD_MAX}\}\)|\1...\2|"; }
+source /usr/share/git-core/contrib/completion/git-prompt.sh
+
+GIT_PS1_SHOWDIRTYSTATE=1
+PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
+
 # Initialize fasd
 if hash fasd 2>/dev/null; then
     eval "$(fasd --init auto)"
-    alias v='f -t -e nvim -b viminfo'
+    [ "$IS_NVIM" ] && export _FASD_VIMINFO="$HOME/.nviminfo"
+    alias v='f -t -e $VISUAL -b viminfo'
 fi
 
-export LESS='-R '
-# less man page colors
-export LESS_TERMCAP_mb=$'\033[1;34m' # begin blinking
-export LESS_TERMCAP_md=$'\033[1;34m' # begin bold
-export LESS_TERMCAP_me=$'\033[0m'    # end mode
-export LESS_TERMCAP_se=$'\033[0m'    # end standout-mode
-export LESS_TERMCAP_so=$'\033[1;7m'  # begin standout-mode - info box
-export LESS_TERMCAP_ue=$'\033[0m'    # end underline
-export LESS_TERMCAP_us=$'\033[1;36m' # begin underline
+# # colored less output
+# export LESS='-R '
+# export LESS_TERMCAP_mb=$'\033[1;34m' # begin blinking
+# export LESS_TERMCAP_md=$'\033[1;34m' # begin bold
+# export LESS_TERMCAP_me=$'\033[0m'    # end mode
+# export LESS_TERMCAP_se=$'\033[0m'    # end standout-mode
+# export LESS_TERMCAP_so=$'\033[1;7m'  # begin standout-mode - info box
+# export LESS_TERMCAP_ue=$'\033[0m'    # end underline
+# export LESS_TERMCAP_us=$'\033[1;36m' # begin underline
 
 # -- linux console colors (jwr dark)
 # if [ "$TERM" = "linux" ]; then
@@ -164,27 +157,6 @@ export LESS_TERMCAP_us=$'\033[1;36m' # begin underline
 #     echo -en "\e]PFc0c0c0" #white
 #     clear # bring us back to default input colours
 # fi
-
-# -- linux console colors (solarized)
-if [ "$TERM" = "linux" ]; then
-    echo -en "\e]P0073642" #black
-    echo -en "\e]P8002b36" #darkgrey
-    echo -en "\e]P1dc322f" #darkred
-    echo -en "\e]P9cb4b16" #red
-    echo -en "\e]P2859900" #darkgreen
-    echo -en "\e]PA586e75" #green
-    echo -en "\e]P3b58900" #brown
-    echo -en "\e]PB657b83" #yellow
-    echo -en "\e]P4268bd2" #darkblue
-    echo -en "\e]PC839496" #blue
-    echo -en "\e]P5d33682" #darkmagenta
-    echo -en "\e]PD6c71c4" #magenta
-    echo -en "\e]P62aa198" #darkcyan
-    echo -en "\e]PE93a1a1" #cyan
-    echo -en "\e]P7eee8d5" #lightgrey
-    echo -en "\e]PFfdf6e3" #white
-    clear # bring us back to default input colours
-fi
 
 # pacman with sudo
 pacman() {
