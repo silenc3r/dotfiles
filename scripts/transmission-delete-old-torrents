@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# port, username, password
+# SERVER="127.0.0.1:9091 --auth user:password"
+SERVER=""
+
+diff_dates () {
+    local date1=$(date --date="$1" +%s)
+    local date2=$(date --date="$2" +%s)
+    echo $(( $date1 - $date2 ))
+}
+
+DATE_NOW=$(date +"%a %b %d %T %Y")
+
+# get torrent ids
+TORRENTLIST=`transmission-remote $SERVER --list | awk 'NR>2 { print x } { x=$1 }'`
+
+for TORRENTID in $TORRENTLIST; do
+    DATE_ADDED=`transmission-remote $SERVER --torrent $TORRENTID --info | grep "Date added:" | cut -d ':' -f2-`
+    DATE_STARTED=`transmission-remote $SERVER --torrent $TORRENTID --info | grep "Date started:" | cut -d ':' -f2-`
+    LATEST_ACTIVITY=`transmission-remote $SERVER --torrent $TORRENTID --info | grep "Latest activity:" | cut -d ':' -f2-`
+    PERCENT_DONE=`transmission-remote $SERVER --torrent $TORRENTID --info | grep "Percent Done" | cut -d ':' -f2- | cut -d '.' -f1`
+    difference=$(diff_dates "$DATE_NOW" "$DATE_ADDED")
+    echo $difference
+
+
+
+done
