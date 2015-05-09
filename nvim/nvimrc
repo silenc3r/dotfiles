@@ -245,6 +245,7 @@
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd FileType text setlocal textwidth=80 colorcolumn=+1
+    autocmd FileType yaml setlocal sw=2 ts=2 sts=2
 
     " Save when losing focus
     autocmd FocusLost * :w
