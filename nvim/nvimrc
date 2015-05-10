@@ -261,11 +261,6 @@
     nnoremap / /\v
     vnoremap / /\v
 
-    " reselect visual block after indent/outdent
-    " TODO: not missing that - possible removal 2014-11-19
-    " vnoremap < <gv
-    " vnoremap > >gv
-
     " Quickly change tab length
     " TODO: find a way to improve it somehow
     nnoremap <leader>2 :set ts=2 sw=2 sts=2<CR>
