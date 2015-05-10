@@ -4,15 +4,6 @@
 "-----------------------------------------------------------------------------
 
 " Environment {
-    set nocompatible    " This must be in the first line
-
-    " Windows Compatible {
-        " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization across (heterogeneous) systems easier.
-        if has('win32') || has('win64')
-          set runtimepath=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-        endif
-    " }
-
     " Setup Plugin Support {
         call plug#begin('~/.nvim/plugged')
 
@@ -178,7 +169,6 @@
                                 " selected characters/lines in visual mode
     set laststatus=2            " Always display the statusline in all windows
     set winminheight=0          " Windows can be 0 line high (only statusbar)
-    " set ttyfast                 " Always assume fast terminal connection
     set lazyredraw              " Avoid scrolling problems
     set vb t_vb=                " Prevent screen flashing
     set title
@@ -239,9 +229,6 @@
     autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd FileType text setlocal textwidth=80 colorcolumn=+1
     autocmd FileType yaml setlocal sw=2 ts=2 sts=2
-
-    " Save when losing focus
-    autocmd FocusLost * :w
 " }
 
 " Keymaps {
@@ -292,6 +279,7 @@
     nnoremap <C-H> <C-W>h
 
     " save the current file as root
+    " TODO: it's crashing neovim for some reason
     cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
 
     " Some annoying keyfixes
