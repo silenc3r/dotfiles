@@ -20,9 +20,7 @@
         endif
 
         Plug 'Shougo/unite.vim', { 'on': 'Unite' }
-        Plug 'tpope/vim-vinegar'
         Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-        " Plug 'chrisbra/NrrwRgn'
         Plug 'justinmk/vim-sneak'
         " Display marks
         Plug 'kshenoy/vim-signature'
@@ -76,8 +74,6 @@
         Plug 'cocopon/iceberg.vim'
         Plug 'w0ng/vim-hybrid'
         Plug 'jpo/vim-railscasts-theme'
-        Plug 'sjl/badwolf'
-        Plug 'whatyouhide/vim-gotham'
         Plug 'romainl/Apprentice'
 
         " Language support
@@ -85,6 +81,7 @@
         Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
         Plug 'tpope/vim-markdown', { 'for': 'markdown' }
         Plug 'guns/vim-clojure-static', { 'for': ['clojure', 'clojurescript'] }
+        Plug 'chase/vim-ansible-yaml', { 'for': 'yaml' }
 
         call plug#end()
     " }
@@ -92,12 +89,12 @@
 
 " General {
     filetype plugin indent on     " Automatically detect file types.
-    syntax on                     " Syntax highlighting
+    syntax enable                 " Syntax highlighting
     set synmaxcol=200             " highlight only first 200 columns
     syntax sync minlines=250      " Possibly faster highlighting for big files
     " set mouse=civ                 " Don't use mouse in visual mode
     set encoding=utf-8
-    scriptencoding utf-8
+    " scriptencoding utf-8
 
     set clipboard+=unnamedplus
     set hidden                    " Don't write to disk upon buffer switch
@@ -108,12 +105,10 @@
 
     set nowritebackup
     set noswapfile
-    if has('persistent_undo')
-        set undofile              " Persistent undo is sexy
-        set undolevels=1000       " Maximum number of undo
-        set undoreload=100000     " Save complete files for undo on reload if it has less lines than this
-        set undodir=$HOME/.nvim/undo//
-    endif
+    set undofile              " Persistent undo is sexy
+    set undolevels=1000       " Maximum number of undo
+    set undoreload=100000     " Save complete files for undo on reload if it has less lines than this
+    set undodir=$HOME/.nvim/undo//
 " }
 
 " User Interface {
@@ -226,9 +221,9 @@
 
     " Remove trailing whitespaces and ^M chars
     autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
-    autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd FileType text setlocal textwidth=80 colorcolumn=+1
-    autocmd FileType yaml setlocal sw=2 ts=2 sts=2
+    " autocmd FileType yaml setlocal sw=2 ts=2 sts=2 indentkeys=0{,0},0#,!^F,o,O,e
+    autocmd FileType yaml setlocal ft=ansible
 " }
 
 " Keymaps {
