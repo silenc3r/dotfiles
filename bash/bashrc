@@ -18,7 +18,6 @@ alias egrep='egrep --color=auto'
 
 # ls
 alias ls='ls -hF --color=auto'
-alias l1='ls -1'
 alias ll='ls -l --group-directories-first'
 alias la='ll -A'
 alias lA='ls -A --group-directories-first'
@@ -60,11 +59,9 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.aatext=true
 # export AWT_TOOLKIT=MToolkit
 export EDITOR="vi"
 [ "$IS_NVIM" ] && export VISUAL="nvim" || export VISUAL="vim"
-# export MPD_HOST=/mnt/md0/Audio/.mpd/socket
 export WINEARCH=win32
 
-# disable ^S/^Q flow control
-# in other words, prevent terminal from overwriting Ctrl-s shortcut
+# prevent terminal from overwriting Ctrl-s shortcut
 if tty -s ; then
     stty -ixon
     stty -ixoff
@@ -100,8 +97,6 @@ HISTCONTROL=ignoreboth:erasedups
 # Save each history entry immediately
 # PROMPT_COMMAND="history -a; history -n"
 PROMPT_COMMAND="history -a"
-# display up to 2 directories on prompt
-# http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
 # PROMPT_DIRTRIM=2
 # if [ $TERM == "linux" ]; then
 #     PS1='\[\033[0;97m\]\w\[\033[0;34m\]> \[\033[0m\]'
@@ -110,9 +105,10 @@ PROMPT_COMMAND="history -a"
 # fi
 
 [ -f /etc/bash_completion ] && source /etc/bash_completion
-# bash sudo completion
-complete -cf sudo
+[ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 
+# display up to 2 directories on prompt
+# http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
 PS1_PWD_MAX=15
 __pwd_ps1() { echo -n $PWD | sed -e "s|${HOME}|~|" -e "s|\(/[^/]*/\).*\(/.\{${PS1_PWD_MAX}\}\)|\1...\2|"; }
 source /usr/share/git-core/contrib/completion/git-prompt.sh
