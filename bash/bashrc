@@ -117,10 +117,41 @@ GIT_PS1_SHOWDIRTYSTATE=1
 PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
 
 # Initialize fasd
-if hash fasd 2>/dev/null; then
-    eval "$(fasd --init auto)"
-    [ "$IS_NVIM" ] && export _FASD_VIMINFO="$HOME/.nviminfo"
-    alias v='f -t -e $VISUAL -b viminfo'
+# if hash fasd 2>/dev/null; then
+#     eval "$(fasd --init auto)"
+#     [ "$IS_NVIM" ] && export _FASD_VIMINFO="$HOME/.nviminfo"
+#     alias v='f -t -e $VISUAL -b viminfo'
+# fi
+
+export _Z_DATA=$HOME/.z_data
+[ -f ~/.z/z.sh ] && source ~/.z/z.sh
+
+if [ -f ~/.fzf.bash ]; then
+    source ~/.fzf.bash
+    fd() {
+        local dir
+        dir=$(find ${1:-*} -path '*/\.*' -prune \
+            -o -type d -print 2> /dev/null | fzf +m) && cd "$dir"
+    }
+    fda() {
+        local dir
+        dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
+    }
+    v() {
+        local files
+        files=$(grep '^>' ~/.nviminfo | cut -c3- |
+                while read line; do
+                    [ -f "${line/\~/$HOME}" ] && echo "$line"
+                done | fzf-tmux -d -m -q "$*" -1) && vim ${files//\~/$HOME}
+    }
+    unalias z 2> /dev/null
+    j() {
+        if [[ -z "$*" ]]; then
+            cd "$(_z -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
+        else
+            _z "$@"
+        fi
+    }
 fi
 
 # # colored less output
