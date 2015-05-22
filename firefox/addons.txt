@@ -1,0 +1,9 @@
+https://addons.mozilla.org/en-US/firefox/addon/betterprivacy
+https://addons.mozilla.org/en-US/firefox/addon/duckduckgo-for-firefox
+https://addons.mozilla.org/en-US/firefox/addon/evernote-web-clipper
+https://www.eff.org/https-everywhere
+https://addons.mozilla.org/en-US/firefox/addon/policeman
+https://github.com/dillbyrne/random-agent-spoofer/releases
+https://www.readability.com/apps
+https://addons.mozilla.org/en-US/firefox/addon/self-destructing-cookies
+https://addons.mozilla.org/en-US/firefox/addon/ublock

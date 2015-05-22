@@ -7,7 +7,8 @@
 // Display an error message indicating the entered information is not a valid
 // URL instead of asking from google.
 // http://kb.mozillazine.org/Keyword.enabled#Caveats
-user_pref("keyword.enabled",			false);
+// this breaks search in address bar
+// user_pref("keyword.enabled",			false);
 
 // disable link prefetching
 // http://kb.mozillazine.org/Network.prefetch-next
