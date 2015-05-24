@@ -18,14 +18,14 @@
         Plug 'ludovicchabant/vim-gutentags'
     endif
 
-    Plug 'Shougo/unite.vim', { 'on': 'Unite' }
+    " Plug 'Shougo/unite.vim', { 'on': 'Unite' }
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install'  }
     Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
     Plug 'justinmk/vim-sneak'
     " Display marks
     Plug 'kshenoy/vim-signature'
     " Fancy start screen & session management
     Plug 'mhinz/vim-startify'
-    Plug '907th/vim-auto-save'
     " color matching parentheses
     Plug 'luochen1990/rainbow'
     " alternative
@@ -91,7 +91,6 @@
     set synmaxcol=200           " highlight only first 200 columns
     syntax sync minlines=250    " Possibly faster highlighting for big files
     " set mouse=civ               " Mouse support
-    set encoding=utf-8
     " scriptencoding utf-8        " TODO: examine what that does
     set clipboard+=unnamedplus  " Use proper buffer for clipboard on linux"
     set hidden                  " Don't write to disk upon buffer switch
@@ -160,6 +159,7 @@
     autocmd FileType text setlocal textwidth=80 colorcolumn=+1
     " autocmd FileType yaml setlocal sw=2 ts=2 sts=2 indentkeys=0{,0},0#,!^F,o,O,e
     autocmd FileType yaml setlocal ft=ansible
+    autocmd FileType spec setlocal sw=2 ts=2 sts=2 noet
 " }
 
 " Colors {
@@ -193,7 +193,8 @@
         " set background=dark
     " endif
     " paren highlighting can be annoying
-    hi MatchParen cterm=underline ctermbg=none ctermfg=none
+    " hi MatchParen cterm=underline ctermbg=none ctermfg=none
+    hi MatchParen cterm=underline
     " comments are always italic
     hi Comment cterm=italic
     hi ColorColumn ctermbg=236
@@ -252,10 +253,6 @@
 " }
 
 " Plugins {
-    " Autosave {
-        let g:auto_save = 1
-    " }
-
     " Startify session {
         let g:startify_session_dir = "$HOME/.nvim/sessions"
     " }
