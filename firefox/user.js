@@ -7,7 +7,7 @@
 // Display an error message indicating the entered information is not a valid
 // URL instead of asking from google.
 // http://kb.mozillazine.org/Keyword.enabled#Caveats
-// this breaks search in address bar
+// BREAKS: search in address bar
 // user_pref("keyword.enabled",			false);
 
 // disable link prefetching
@@ -55,7 +55,8 @@ user_pref("plugin.state.java",				0);
 // http://kb.mozillazine.org/Dom.storage.enabled
 // http://dev.w3.org/html5/webstorage/#dom-localstorage
 // you can also see this with Panopticlick's "DOM localStorage"
-user_pref("dom.storage.enabled",				false);
+// BREAKS: webfonts
+//user_pref("dom.storage.enabled",				false);
 
 // don't reveal internal IPs
 // http://net.ipcalf.com/
@@ -287,7 +288,7 @@ user_pref("network.IDN_show_punycode",			true);
 
 // https://blog.mozilla.org/security/2010/03/31/plugging-the-css-history-leak/
 // http://dbaron.org/mozilla/visited-privacy
-user_pref("layout.css.visited_links_enabled",		false);
+// user_pref("layout.css.visited_links_enabled",		false);
 
 // http://kb.mozillazine.org/Places.frecency.unvisited%28place_type%29Bonus
 
@@ -546,4 +547,19 @@ user_pref("content.notify.backoffcount", 5); // limits page reloads while recivi
 
 
 // Some convinient options
+//
+// don't wait when installing addons
 user_pref("security.dialog_enable_delay", 0);
+
+// Make backspace go back a page in session history
+user_pref("browser.backspace_action", 0);
+
+// Fix middleclick behavior
+user_pref("middlemouse.contentLoadURL", false);
+
+// Enable MSE
+user_pref("media.mediasource.enabled", true);
+user_pref("media.mediasource.mp4.enabled", true);
+user_pref("media.mediasource.webm.enabled", true);
+user_pref("media.fragmented-mp4.ffmpeg.enabled", true);
+user_pref("media.fragmented-mp4.gmp.enabled", true);
