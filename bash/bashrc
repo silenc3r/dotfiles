@@ -45,7 +45,7 @@ alias chgrp='chgrp --preserve-root'
 alias cls=' echo -ne "\033c"'
 
 [ "$IS_NVIM" ] && alias vim='nvim'
-alias tmux='TERM=screen-256color tmux'
+# alias tmux='TERM=screen-256color tmux'
 alias tm='tmux attach || tmux new'
 
 # path
