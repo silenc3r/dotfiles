@@ -91,9 +91,8 @@
     set synmaxcol=200           " highlight only first 200 columns
     syntax sync minlines=250    " Possibly faster highlighting for big files
     " set mouse=civ               " Mouse support
-    " scriptencoding utf-8        " TODO: examine what that does
     set clipboard+=unnamedplus  " Use proper buffer for clipboard on linux"
-    set hidden                  " Don't write to disk upon buffer switch
+    " set hidden                  " Don't write to disk upon buffer switch
     set autoread                " Auto reload files changed outside vim
     set viewoptions+=unix,slash " Unix-windows compatibility
     set history=1000            " Store a ton of history (default is 20)
@@ -138,7 +137,15 @@
     set wildmode=list:longest,full
     set wildignorecase
     set wildignore+=*.o,*~,.lo,*.obj,*.pyc,*.jar
+    set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
     set suffixes+=.in,.a        " Files with lower priority while completing
+
+    " Hide cursor line in insert mode
+    augroup cline
+        au!
+        au WinLeave,InsertEnter * set nocursorline
+        au WinEnter,InsertLeave * set cursorline
+    augroup END
 " }
 
 " Formatting & Editting {
@@ -152,12 +159,12 @@
     set backspace=2             " Allow backspace in insert mode
     set virtualedit=onemore,block " Allow for cursor beyond last character
     set complete-=i
+    set completeopt=menuone
 
     " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,go,php,javascript,python,twig,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
-    autocmd FileType python setlocal colorcolumn=79
+    autocmd FileType c,cpp,java,go,javascript,python,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+    autocmd FileType python setlocal colorcolumn=80
     autocmd FileType text setlocal textwidth=80 colorcolumn=+1
-    " autocmd FileType yaml setlocal sw=2 ts=2 sts=2 indentkeys=0{,0},0#,!^F,o,O,e
     autocmd FileType yaml setlocal ft=ansible
     autocmd FileType spec setlocal sw=2 ts=2 sts=2 noet
 " }
@@ -204,8 +211,33 @@
     " Remap <Leader> to SPACEBAR
     let g:mapleader = ' '
 
-    " Toggle search highlighting
-    nmap <silent> <leader>h :nohlsearch<CR>
+    " Clean search highlighting
+    nnoremap <silent> <BS> :nohlsearch<CR>
+
+    " Simpler saving/quiting
+    nnoremap <silent> <leader>w :w<CR>
+    nnoremap <silent> <leader>q :q<CR>
+    nnoremap <silent> <leader>z :wq<CR>
+    nnoremap <silent> <leader>n :enew<CR>
+
+    " Save the pinky
+    nnoremap <leader>; :
+    vnoremap <leader>; :
+    nnoremap : <Nop>
+
+    " Jump to exact position
+    noremap ` '
+    noremap ' `
+
+    " Use Enter as : and fix problems caused by that
+    nnoremap <CR> :
+    autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+    autocmd BufReadPost quickfix nnoremap <buffer> <Esc> :q<CR>
+    autocmd CmdWinEnter * nnoremap <buffer> <CR> <CR>
+    autocmd CmdWinEnter * nnoremap <buffer> <Esc> :q<CR>
+
+    " Easier access to history
+    nnoremap q; q:
 
     " While searching center on the line with current result
     nnoremap N Nzzzv
@@ -220,6 +252,9 @@
 
     " fly between buffers
     nnoremap <leader>l :ls<CR>:b<space>
+    nnoremap <leader><leader> <C-^>
+    nnoremap <leader>] :bnext<CR>
+    nnoremap <leader>[ :bprev<CR>
 
     " use sane regexes
     nnoremap / /\v
@@ -239,17 +274,6 @@
     " save the current file as root
     " TODO: it's crashing neovim for some reason
     cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
-
-    " Some annoying keyfixes
-      command! -bang -nargs=* -complete=file E e<bang> <args>
-      command! -bang -nargs=* -complete=file W w<bang> <args>
-      command! -bang -nargs=* -complete=file Wq wq<bang> <args>
-      command! -bang -nargs=* -complete=file WQ wq<bang> <args>
-      command! -bang Wa wa<bang>
-      command! -bang WA wa<bang>
-      command! -bang Q q<bang>
-      command! -bang QA qa<bang>
-      command! -bang Qa qa<bang>
 " }
 
 " Plugins {
@@ -279,7 +303,7 @@
     " Syntastic {
         let g:syntastic_check_on_open = 1
         let g:syntastic_python_checkers = ['flake8']
-        " let g:syntastic_python_flake8_args = '--ignore="E501,E302,E261,E701,E241,E126,E127,E128,W801,E226"'
+        let g:syntastic_python_flake8_args = '--ignore="E501,E266,E221,E222,F403"'
     " }
 
     " vim-easy-align {
@@ -287,6 +311,14 @@
         vmap <Enter> <Plug>(EasyAlign)
         " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
         nmap <Leader>a <Plug>(EasyAlign)
+    " }
+
+    " { tcomment
+        let g:tcommentMapLeader1 = 0
+        let g:tcommentMapLeader2 = 0
+        let g:tcommentMapLeaderUncommentAnyway = 0
+        let g:tcommentMapLeaderCommentAnyway = 0
+        let g:tcommentTextObjectInlineComment = 0
     " }
 
     " Python-Mode {
