@@ -111,11 +111,13 @@ PROMPT_COMMAND="history -a"
 # http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
 PS1_PWD_MAX=15
 __pwd_ps1() { echo -n $PWD | sed -e "s|${HOME}|~|" -e "s|\(/[^/]*/\).*\(/.\{${PS1_PWD_MAX}\}\)|\1...\2|"; }
-source /usr/share/git-core/contrib/completion/git-prompt.sh
+source /usr/share/git-core/contrib/completion/git-prompt.sh 2>/dev/null
+source /etc/bash_completion.d/git-prompt.sh 2>/dev/null
 
 GIT_PS1_SHOWDIRTYSTATE=1
-PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
-
+if [ "$TERM" != "linux" ]; then
+    PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
+fi
 # Initialize fasd
 # if hash fasd 2>/dev/null; then
 #     eval "$(fasd --init auto)"
@@ -191,5 +193,31 @@ pacman() {
         -S | -D | -S[^ghilps]* | -R* | -U*)
             LC_ALL=C /usr/bin/sudo /usr/bin/pacman "$@" ;;
     *)      LC_ALL=C /usr/bin/pacman "$@" ;;
+    esac
+}
+
+zypper() {
+    case $1 in
+        addrepo | ar |\
+        removerepo | rr |\
+        renamerepo | nr |\
+        modifyrepo | mr |\
+        refresh | ref |\
+        clean | ref |\
+        addservice | as |\
+        modifyservice | ms |\
+        removeservice | rs |\
+        refresh-services | refs |\
+        install | in |\
+        remove | rm |\
+        source-install | si |\
+        install-new-recommends | inr |\
+        update | up |\
+        patch |\
+        dist-update | dup |\
+        addlock | al |\
+        removelock | rl)
+            LC_ALL=C /usr/bin/sudo /usr/bin/zypper "$@" ;;
+        *)  LC_ALL=C /usr/bin/zypper "$@" ;;
     esac
 }
