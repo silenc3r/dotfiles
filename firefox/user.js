@@ -3,54 +3,14 @@
  * https://github.com/pyllyukko/user.js                                       *
  ******************************************************************************/
 
-
-// Display an error message indicating the entered information is not a valid
-// URL instead of asking from google.
-// http://kb.mozillazine.org/Keyword.enabled#Caveats
-// BREAKS: search in address bar
-// user_pref("keyword.enabled",			false);
-
-// disable link prefetching
-// http://kb.mozillazine.org/Network.prefetch-next
-user_pref("network.prefetch-next",		false);
+/******************************************************************************
+ * HTML5 / APIs / DOM                                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 // disable Location-Aware Browsing
 // http://www.mozilla.org/en-US/firefox/geolocation/
 user_pref("geo.enabled",			false);
-
-// https://wiki.mozilla.org/Platform/Features/Telemetry
-// https://www.mozilla.org/en-US/legal/privacy/firefox.html#telemetry
-// https://wiki.mozilla.org/Security/Reviews/Firefox6/ReviewNotes/telemetry
-user_pref("toolkit.telemetry.enabled",			false);
-
-// always ask the user where to download
-// https://developer.mozilla.org/en/Download_Manager_preferences
-user_pref("browser.download.useDownloadDir",		false);
-
-// https://wiki.mozilla.org/Polaris#Tracking_protection
-// https://support.mozilla.org/en-US/kb/tracking-protection-firefox
-// TODO: are these two the same?
-user_pref("privacy.trackingprotection.enabled",		true);
-user_pref("browser.polaris.enabled",			true);
-
-// don't try to guess where i'm trying to go!!!
-// http://www-archive.mozilla.org/docs/end-user/domain-guessing.html
-user_pref("browser.fixup.alternate.enabled",		false);
-
-// http://kb.mozillazine.org/Network.proxy.type
-// the default in Firefox for Linux is to use system proxy settings.
-// We change it to direct connection
-//user_pref("network.proxy.type", 0);
-
-// disable sending of the health report
-// https://support.mozilla.org/en-US/kb/firefox-health-report-understand-your-browser-perf
-user_pref("datareporting.healthreport.uploadEnabled",	false);
-
-// flash - ask to activate
-user_pref("plugin.state.flash",				1);
-
-// java - never activate
-user_pref("plugin.state.java",				0);
 
 // http://kb.mozillazine.org/Dom.storage.enabled
 // http://dev.w3.org/html5/webstorage/#dom-localstorage
@@ -64,7 +24,7 @@ user_pref("media.peerconnection.enabled",			false);
 // getUserMedia
 // https://wiki.mozilla.org/Media/getUserMedia
 // https://developer.mozilla.org/en-US/docs/Web/API/Navigator
-//user_pref("media.navigator.enabled",				false);
+user_pref("media.navigator.enabled",				true);
 // https://developer.mozilla.org/en-US/docs/Web/API/BatteryManager
 user_pref("dom.battery.enabled",				false);
 // https://wiki.mozilla.org/WebAPI/Security/WebTelephony
@@ -73,11 +33,12 @@ user_pref("dom.telephony.enabled",				false);
 user_pref("beacon.enabled",					false);
 // https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Preference_reference/dom.event.clipboardevents.enabled
 user_pref("dom.event.clipboardevents.enabled",			false);
-// http://kb.mozillazine.org/Clipboard.autocopy
-user_pref("clipboard.autocopy",					false);
-// Webpages will not be able to affect the right-click menu
-user_pref("dom.event.contextmenu.enabled",			false);
+// https://wiki.mozilla.org/Security/Reviews/Firefox/NavigationTimingAPI
+user_pref("dom.enable_performance",				false);
 
+// speech recognition
+// https://dvcs.w3.org/hg/speech-api/raw-file/tip/speechapi.html
+// https://wiki.mozilla.org/HTML5_Speech_API
 user_pref("media.webspeech.recognition.enable",			false);
 
 // Disable getUserMedia screen sharing
@@ -87,18 +48,6 @@ user_pref("media.getusermedia.screensharing.enabled",		false);
 // disable sensor API
 // https://wiki.mozilla.org/Sensor_API
 user_pref("device.sensors.enabled",				false);
-
-// Disable new tab tile ads & preload
-// http://www.thewindowsclub.com/disable-remove-ad-tiles-from-firefox
-// http://forums.mozillazine.org/viewtopic.php?p=13876331#p13876331
-user_pref("browser.newtabpage.enhanced",			false);
-user_pref("browser.newtab.preload",				false);
-// https://wiki.mozilla.org/Tiles/Technical_Documentation#Ping
-user_pref("browser.newtabpage.directory.ping",			"");
-
-// disable heartbeat
-// https://wiki.mozilla.org/Advocacy/heartbeat
-user_pref("browser.selfsupport.url",				"");
 
 // http://kb.mozillazine.org/Browser.send_pings
 user_pref("browser.send_pings",					false);
@@ -111,25 +60,9 @@ user_pref("browser.send_pings.require_same_host",		true);
 // TODO: find out why html5test still reports this as available
 // NOTE: this is enabled for now, as disabling this seems to break some plugins.
 //       see: http://forums.mozillazine.org/viewtopic.php?p=13842047#p13842047
-user_pref("dom.indexedDB.enabled",				true);
-
-// http://kb.mozillazine.org/Network.dns.disablePrefetch
-// https://developer.mozilla.org/en-US/docs/Web/HTTP/Controlling_DNS_prefetching
-user_pref("network.dns.disablePrefetch",			true);
-user_pref("network.dns.disablePrefetchFromHTTPS",		true);
-
-// http://kb.mozillazine.org/Browser.search.suggest.enabled
-user_pref("browser.search.suggest.enabled",			false);
+//user_pref("dom.indexedDB.enabled",				true);
 
 // TODO: "Access Your Location" "Maintain Offline Storage" "Show Notifications"
-
-/* mixed content stuff
- *   - https://developer.mozilla.org/en-US/docs/Site_Compatibility_for_Firefox_23#Non-SSL_contents_on_SSL_pages_are_blocked_by_default
- *   - https://blog.mozilla.org/tanvi/2013/04/10/mixed-content-blocking-enabled-in-firefox-23/
- */
-user_pref("security.mixed_content.block_active_content",	true);
-// Mixed Passive Content (a.k.a. Mixed Display Content).
-user_pref("security.mixed_content.block_display_content",	true);
 
 // disable gamepad input
 // http://www.w3.org/TR/gamepad/
@@ -139,18 +72,94 @@ user_pref("dom.gamepad.enabled",				false);
 // https://developer.mozilla.org/en-US/Firefox/Releases/36#Interfaces.2FAPIs.2FDOM
 user_pref("dom.vr.enabled",					false);
 
-// CIS Mozilla Firefox 24 ESR v1.0.0 - 3.7 Disable JAR from opening Unsafe File Types
-// http://kb.mozillazine.org/Network.jar.open-unsafe-types
-user_pref("network.jar.open-unsafe-types",			false);
-
-// https://blog.mozilla.org/security/2012/10/11/click-to-play-plugins-blocklist-style/
-user_pref("plugins.click_to_play",				true);
-
 // disable webGL
 // http://www.contextis.com/resources/blog/webgl-new-dimension-browser-exploitation/
 user_pref("webgl.disabled",					true);
 // somewhat related...
 //user_pref("pdfjs.enableWebGL",					false);
+
+/******************************************************************************
+ * misc                                                                       *
+ *                                                                            *
+ ******************************************************************************/
+
+// default search engine
+//user_pref("browser.search.defaultenginename",			"DuckDcukGo");
+
+// http://kb.mozillazine.org/Clipboard.autocopy
+user_pref("clipboard.autocopy",					true);
+
+// Display an error message indicating the entered information is not a valid
+// URL instead of asking from google.
+// http://kb.mozillazine.org/Keyword.enabled#Caveats
+user_pref("keyword.enabled",					true);
+
+// don't try to guess where i'm trying to go!!! e.g.: "http://foo" -> "http://(prefix)foo(suffix)"
+// http://www-archive.mozilla.org/docs/end-user/domain-guessing.html
+user_pref("browser.fixup.alternate.enabled",			false);
+
+// https://trac.torproject.org/projects/tor/wiki/doc/TorifyHOWTO/WebBrowsers
+user_pref("network.proxy.socks_remote_dns",			true);
+
+// http://kb.mozillazine.org/Network.proxy.type
+// the default in Firefox for Linux is to use system proxy settings.
+// We change it to direct connection
+//user_pref("network.proxy.type", 0);
+
+/* mixed content stuff
+ *   - https://developer.mozilla.org/en-US/docs/Site_Compatibility_for_Firefox_23#Non-SSL_contents_on_SSL_pages_are_blocked_by_default
+ *   - https://blog.mozilla.org/tanvi/2013/04/10/mixed-content-blocking-enabled-in-firefox-23/
+ */
+user_pref("security.mixed_content.block_active_content",	true);
+// Mixed Passive Content (a.k.a. Mixed Display Content).
+// breaks imgur.com
+user_pref("security.mixed_content.block_display_content",	false);
+
+// https://secure.wikimedia.org/wikibooks/en/wiki/Grsecurity/Application-specific_Settings#Firefox_.28or_Iceweasel_in_Debian.29
+user_pref("javascript.options.methodjit.chrome",		true);
+user_pref("javascript.options.methodjit.content",		true);
+
+// CIS Mozilla Firefox 24 ESR v1.0.0 - 3.7 Disable JAR from opening Unsafe File Types
+// http://kb.mozillazine.org/Network.jar.open-unsafe-types
+user_pref("network.jar.open-unsafe-types",			false);
+
+// CIS 2.7.4 Disable Scripting of Plugins by JavaScript
+user_pref("security.xpconnect.plugin.unrestricted",		false);
+
+// CIS Mozilla Firefox 24 ESR v1.0.0 - 3.8 Set File URI Origin Policy
+// http://kb.mozillazine.org/Security.fileuri.strict_origin_policy
+user_pref("security.fileuri.strict_origin_policy",		true);
+
+// CIS 2.3.6 Disable Displaying Javascript in History URLs
+// http://kb.mozillazine.org/Browser.urlbar.filter.javascript
+user_pref("browser.urlbar.filter.javascript",			true);
+
+// disable HTML frames
+// WARNING: might make your life difficult!
+// NOTE: to be removed(?) see: https://bugzilla.mozilla.org/show_bug.cgi?id=729030
+//user_pref("browser.frames.enabled",		false);
+
+// http://asmjs.org/
+// https://www.mozilla.org/en-US/security/advisories/mfsa2015-29/
+// https://www.mozilla.org/en-US/security/advisories/mfsa2015-50/
+// https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-2712
+user_pref("javascript.options.asmjs",				true);
+
+// https://wiki.mozilla.org/SVGOpenTypeFonts
+// the iSEC Partners Report recommends to disable this
+user_pref("gfx.font_rendering.opentype_svg.enabled",		false);
+
+/******************************************************************************
+ * extensions / plugins                                                       *
+ *                                                                            *
+ ******************************************************************************/
+
+// flash - never activate
+user_pref("plugin.state.flash",					1);
+
+// https://wiki.mozilla.org/Firefox/Click_To_Play
+// https://blog.mozilla.org/security/2012/10/11/click-to-play-plugins-blocklist-style/
+user_pref("plugins.click_to_play",				true);
 
 // update add-ons automatically
 // https://blog.mozilla.org/addons/how-to-turn-off-add-on-updates/
@@ -159,9 +168,110 @@ user_pref("extensions.update.enabled",				true);
 // http://kb.mozillazine.org/Extensions.blocklist.enabled
 user_pref("extensions.blocklist.enabled",			true);
 
+/******************************************************************************
+ * firefox features / components                                              *
+ *                                                                            *
+ ******************************************************************************/
+
+// https://wiki.mozilla.org/Platform/Features/Telemetry
+// https://www.mozilla.org/en-US/legal/privacy/firefox.html#telemetry
+// https://wiki.mozilla.org/Security/Reviews/Firefox6/ReviewNotes/telemetry
+user_pref("toolkit.telemetry.enabled",			false);
+
+// https://wiki.mozilla.org/Polaris#Tracking_protection
+// https://support.mozilla.org/en-US/kb/tracking-protection-firefox
+// TODO: are these two the same?
+user_pref("privacy.trackingprotection.enabled",		true);
+user_pref("browser.polaris.enabled",			true);
+
+// disable the built-in PDF viewer
+//user_pref("pdfjs.disabled",				true);
+
+// disable sending of the health report
+// https://support.mozilla.org/en-US/kb/firefox-health-report-understand-your-browser-perf
+user_pref("datareporting.healthreport.uploadEnabled",	false);
+// disable collection of the data (the healthreport.sqlite* files)
+user_pref("datareporting.healthreport.service.enabled",	false);
+
+// Disable new tab tile ads & preload
+// http://www.thewindowsclub.com/disable-remove-ad-tiles-from-firefox
+// http://forums.mozillazine.org/viewtopic.php?p=13876331#p13876331
+user_pref("browser.newtabpage.enhanced",			false);
+user_pref("browser.newtab.preload",				true);
+// https://wiki.mozilla.org/Tiles/Technical_Documentation#Ping
+user_pref("browser.newtabpage.directory.ping",			"");
+
+// disable heartbeat
+// https://wiki.mozilla.org/Advocacy/heartbeat
+user_pref("browser.selfsupport.url",				"");
+
 // disable firefox hello
 // https://wiki.mozilla.org/Loop
 //user_pref("loop.enabled",					false);
+
+// CIS 2.1.1 Enable Auto Update
+// this is disabled for now. it is better to patch through package management.
+//user_pref("app.update.auto", true);
+
+// CIS 2.3.4 Block Reported Web Forgeries
+// http://kb.mozillazine.org/Browser.safebrowsing.enabled
+// http://kb.mozillazine.org/Safe_browsing
+// https://support.mozilla.org/en-US/kb/how-does-phishing-and-malware-protection-work
+// http://forums.mozillazine.org/viewtopic.php?f=39&t=2711237&p=12896849#p12896849
+user_pref("browser.safebrowsing.enabled",		true);
+
+// CIS 2.3.5 Block Reported Attack Sites
+// http://kb.mozillazine.org/Browser.safebrowsing.malware.enabled
+user_pref("browser.safebrowsing.malware.enabled",	true);
+
+// disable safe browsing for downloaded files. this leaks information to google.
+// https://www.mozilla.org/en-US/firefox/39.0/releasenotes/
+user_pref("browser.safebrowsing.downloads.enabled",	false);
+
+// disable pocket
+//user_pref("browser.pocket.enabled",			false);
+
+/******************************************************************************
+ * automatic connections                                                      *
+ *                                                                            *
+ ******************************************************************************/
+
+// disable link prefetching
+// http://kb.mozillazine.org/Network.prefetch-next
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ#Is_there_a_preference_to_disable_link_prefetching.3F
+user_pref("network.prefetch-next",		false);
+
+// https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections#w_geolocation-for-default-search-engine
+user_pref("browser.search.geoip.url",		"");
+
+// http://kb.mozillazine.org/Network.dns.disablePrefetch
+// https://developer.mozilla.org/en-US/docs/Web/HTTP/Controlling_DNS_prefetching
+user_pref("network.dns.disablePrefetch",			true);
+user_pref("network.dns.disablePrefetchFromHTTPS",		true);
+
+// https://wiki.mozilla.org/Privacy/Reviews/Necko
+user_pref("network.predictor.enabled",				false);
+
+// http://kb.mozillazine.org/Browser.search.suggest.enabled
+user_pref("browser.search.suggest.enabled",			false);
+
+// disable SSDP
+// https://bugzil.la/1111967
+user_pref("browser.casting.enabled",				false);
+
+// https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections#w_media-capabilities
+// http://andreasgal.com/2014/10/14/openh264-now-in-firefox/
+user_pref("media.gmp-gmpopenh264.enabled",			false);
+user_pref("media.gmp-manager.url",				"");
+
+// https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections#w_speculative-pre-connections
+user_pref("network.http.speculative-parallel-limit",		0);
+
+// https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections#w_mozilla-content
+user_pref("browser.aboutHomeSnippets.updateUrl",		"");
+
+// https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections#w_auto-update-checking
+user_pref("browser.search.update",				false);
 
 /******************************************************************************
  * HTTP                                                                       *
@@ -191,14 +301,36 @@ user_pref("security.csp.enable",				true);
 // https://bugzilla.mozilla.org/show_bug.cgi?id=822869
 // Send a referer header with the target URI as the source
 user_pref("network.http.sendRefererHeader",			1);
-user_pref("network.http.referer.spoofSource",			1);
+user_pref("network.http.referer.spoofSource",			true);
 // CIS Version 1.2.0 October 21st, 2011 2.4.3 Disable Referer from an SSL Website
 user_pref("network.http.sendSecureXSiteReferrer",		false);
+
+// CIS 2.5.1 Accept Only 1st Party Cookies
+// http://kb.mozillazine.org/Network.cookie.cookieBehavior#1
+user_pref("network.cookie.cookieBehavior",		1);
+
+// user-agent
+//user_pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; rv:31.0) Gecko/20100101 Firefox/31.0");
 
 /******************************************************************************
  * caching                                                                    *
  *                                                                            *
  ******************************************************************************/
+
+// http://kb.mozillazine.org/Browser.sessionstore.postdata
+// NOTE: relates to CIS 2.5.7
+user_pref("browser.sessionstore.postdata",		0);
+// http://kb.mozillazine.org/Browser.sessionstore.enabled
+user_pref("browser.sessionstore.enabled",		true);
+
+// http://kb.mozillazine.org/Browser.cache.offline.enable
+user_pref("browser.cache.offline.enable",		true);
+
+// always use private browsing
+// https://support.mozilla.org/en-US/kb/Private-Browsing
+// https://wiki.mozilla.org/PrivateBrowsing
+user_pref("browser.privatebrowsing.autostart",		false);
+user_pref("extensions.ghostery.privateBrowsing",	false);
 
 // clear history when firefox closes
 // https://support.mozilla.org/en-US/kb/Clear%20Recent%20History#w_how-do-i-make-firefox-clear-my-history-automatically
@@ -207,18 +339,21 @@ user_pref("privacy.clearOnShutdown.cache",		true);
 user_pref("privacy.clearOnShutdown.cookies",		true);
 user_pref("privacy.clearOnShutdown.downloads",		true);
 user_pref("privacy.clearOnShutdown.formdata",		true);
-//user_pref("privacy.clearOnShutdown.history",		true);
+user_pref("privacy.clearOnShutdown.history",		false);
 user_pref("privacy.clearOnShutdown.offlineApps",	true);
 user_pref("privacy.clearOnShutdown.passwords",		true);
 user_pref("privacy.clearOnShutdown.sessions",		true);
-//user_pref("privacy.clearOnShutdown.siteSettings",	true);
+user_pref("privacy.clearOnShutdown.siteSettings",	false);
+
+// don't remember browsing history
+user_pref("places.history.enabled",			true);
 
 // The cookie expires at the end of the session (when the browser closes).
 // http://kb.mozillazine.org/Network.cookie.lifetimePolicy#2
 user_pref("network.cookie.lifetimePolicy",		2);
 
 // http://kb.mozillazine.org/Browser.cache.disk.enable
-//user_pref("browser.cache.disk.enable",			false);
+user_pref("browser.cache.disk.enable",			true);
 
 // http://kb.mozillazine.org/Browser.cache.memory.enable
 //user_pref("browser.cache.memory.enable",		false);
@@ -254,20 +389,35 @@ user_pref("browser.formfill.expire_days",		0);
 // NOTE: CIS says 1, we use 2
 user_pref("browser.sessionstore.privacy_level",		2);
 
+// https://bugzil.la/238789#c19
+user_pref("browser.helperApps.deleteTempFileOnExit",	true);
+
 /******************************************************************************
  * UI related                                                                 *
  *                                                                            *
  ******************************************************************************/
 
+// Webpages will not be able to affect the right-click menu
+//user_pref("dom.event.contextmenu.enabled",			false);
+
+// CIS 2.3.2 Disable Downloading on Desktop
+user_pref("browser.download.folderList",		2);
+
+// always ask the user where to download
+// https://developer.mozilla.org/en/Download_Manager_preferences
+user_pref("browser.download.useDownloadDir",		false);
+
 // https://wiki.mozilla.org/Privacy/Reviews/New_Tab
-//user_pref("browser.newtabpage.enabled",			false);
+user_pref("browser.newtabpage.enabled",			true);
+// https://support.mozilla.org/en-US/kb/new-tab-page-show-hide-and-customize-top-sites#w_how-do-i-turn-the-new-tab-page-off
+// user_pref("browser.newtab.url",				"about:blank");
 
 // CIS Version 1.2.0 October 21st, 2011 2.1.2 Enable Auto Notification of Outdated Plugins
 // https://wiki.mozilla.org/Firefox3.6/Plugin_Update_Awareness_Security_Review
-//user_pref("plugins.update.notifyUser",			true);
+user_pref("plugins.update.notifyUser",			false);
 
 // CIS Version 1.2.0 October 21st, 2011 2.1.3 Enable Information Bar for Outdated Plugins
-//user_pref("plugins.hide_infobar_for_outdated_plugin",	false);
+user_pref("plugins.hide_infobar_for_outdated_plugin",	false);
 
 // CIS Version 1.2.0 October 21st, 2011 2.2.3 Enable Warning of Using Weak Encryption
 user_pref("security.warn_entering_weak",		true);
@@ -278,8 +428,8 @@ user_pref("network.IDN_show_punycode",			true);
 
 // http://kb.mozillazine.org/About:config_entries#Browser
 // http://kb.mozillazine.org/Inline_autocomplete
-//user_pref("browser.urlbar.autoFill",			false);
-//user_pref("browser.urlbar.autoFill.typed",		false);
+user_pref("browser.urlbar.autoFill",			true);
+user_pref("browser.urlbar.autoFill.typed",		true);
 
 // http://www.labnol.org/software/browsers/prevent-firefox-showing-bookmarks-address-location-bar/3636/
 // http://kb.mozillazine.org/Browser.urlbar.maxRichResults
@@ -414,6 +564,10 @@ user_pref("security.ssl3.ecdhe_ecdsa_rc4_128_sha",	false);
 user_pref("security.ssl3.ecdhe_rsa_rc4_128_sha",	false);
 user_pref("security.ssl3.rsa_rc4_128_md5",		false);
 user_pref("security.ssl3.rsa_rc4_128_sha",		false);
+// https://developer.mozilla.org/en-US/Firefox/Releases/38#Security
+// https://bugzil.la/1138882
+// https://rc4.io/
+user_pref("security.tls.unrestricted_rc4_fallback",	false);
 
 /*
  * 3DES -> false because effective key size < 128
@@ -450,7 +604,7 @@ user_pref("security.ssl3.ecdhe_ecdsa_aes_256_sha",	true);
 user_pref("security.ssl3.ecdhe_ecdsa_aes_128_gcm_sha256",	true);
 user_pref("security.ssl3.ecdhe_rsa_aes_128_gcm_sha256",		true);
 
-// susceptible to the logjam attack – https://weakdh.org/
+// susceptible to the logjam attack - https://weakdh.org/
 user_pref("security.ssl3.dhe_rsa_camellia_256_sha",	false);
 user_pref("security.ssl3.dhe_rsa_aes_256_sha",		false);
 
@@ -465,77 +619,6 @@ user_pref("security.ssl3.dhe_dss_des_ede3_sha",		false);
  */
 user_pref("security.ssl3.rsa_aes_256_sha",		true);
 user_pref("security.ssl3.rsa_aes_128_sha",		true);
-
-/******************************************************************************
- * user-agent...
- *
- * https://panopticlick.eff.org/
- *
- * you can copy the value from extensions.torbutton.useragent_override
- *
- * default: "Mozilla/5.0 (X11; Linux i686 on x86_64; rv:9.0.1) Gecko/20100101 Firefox/9.0.1"
- * before: 15.53 / 47249.6
- *
- * https://github.com/ioerror/crlwatch/blob/master/src/fetch-crls.sh
- * "Mozilla/5.0 (Windows; U; Windows NT 6.1; LANG; rv:1.9.2.3) Gecko/20100401 Firefox/3.6.3"
- * after: 12.15 bits of identifying information
- *
- * "Mozilla/5.0 (Windows NT 6.1; rv:5.0) Gecko/20100101 Firefox/5.0"
- * after: 6.73 / 106.43
- ******************************************************************************/
-//user_pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; rv:5.0) Gecko/20100101 Firefox/5.0");
-
-/******************************************************************************
- * CIS Security Configuration Benchmark For Mozilla Firefox                   *
- * Version 1.2.0 October 21st, 2011                                           *
- ******************************************************************************/
-
-// CIS 2.1.1 Enable Auto Update
-// this is disabled for now. it is better to patch through package management.
-//user_pref("app.update.auto", true);
-
-/*
- * 2.3 Dynamic Content Settings
- */
-
-// CIS 2.3.2 Disable Downloading on Desktop
-user_pref("browser.download.folderList",		2);
-
-// CIS 2.3.4 Block Reported Web Forgeries
-// http://kb.mozillazine.org/Browser.safebrowsing.enabled
-// http://kb.mozillazine.org/Safe_browsing
-//
-// "or submit URLs to a third party"
-user_pref("browser.safebrowsing.enabled",		false);
-
-// CIS 2.3.5 Block Reported Attack Sites
-// http://kb.mozillazine.org/Browser.safebrowsing.malware.enabled
-user_pref("browser.safebrowsing.malware.enabled",	true);
-
-// CIS 2.3.6 Disable Displaying Javascript in History URLs
-user_pref("browser.urlbar.filter.javascript",		true);
-
-/*
- * 2.5 Privacy Settings
- */
-
-// CIS 2.5.1 Accept Only 1st Party Cookies
-// http://kb.mozillazine.org/Network.cookie.cookieBehavior#1
-user_pref("network.cookie.cookieBehavior",		1);
-
-/*
- * 2.7 Advanced JavaScript Settings
- */
-
-// CIS 2.7.4 Disable Scripting of Plugins by JavaScript
-user_pref("security.xpconnect.plugin.unrestricted",	false);
-
-// CIS Mozilla Firefox 24 ESR v1.0.0 - 3.8 Set File URI Origin Policy
-// http://kb.mozillazine.org/Security.fileuri.strict_origin_policy
-user_pref("security.fileuri.strict_origin_policy",	true);
-
-
-
 // Performance tweaks
 user_pref("network.http.pipelining", true); //speeds up loading of websites; can cause Problems with some websites
 user_pref("network.http.pipelining.ssl", true); // enables pipelining only for ssl connections; avoids problems occurring with http
@@ -552,7 +635,7 @@ user_pref("content.notify.backoffcount", 5); // limits page reloads while recivi
 user_pref("security.dialog_enable_delay", 0);
 
 // Make backspace go back a page in session history
-user_pref("browser.backspace_action", 0);
+// user_pref("browser.backspace_action", 0);
 
 // Fix middleclick behavior
 user_pref("middlemouse.contentLoadURL", false);
@@ -563,3 +646,5 @@ user_pref("media.mediasource.mp4.enabled", true);
 user_pref("media.mediasource.webm.enabled", true);
 user_pref("media.fragmented-mp4.ffmpeg.enabled", true);
 user_pref("media.fragmented-mp4.gmp.enabled", true);
+user_pref("media.fragmented-mp4.exposed", true)
+user_pref("media.fragmented-mp4.use-blank-decoder", false)
