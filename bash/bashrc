@@ -35,7 +35,7 @@ alias df='df -h'
 alias du='du -c -h'
 
 # safety features
-alias rm='rm -I'
+hash trash 2>/dev/null && alias rm='trash' || alias rm='rm -I'
 alias ln='ln -i'
 alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
@@ -49,7 +49,7 @@ alias cls=' echo -ne "\033c"'
 alias tm='tmux attach || tmux new'
 
 # path
-PATH="$HOME/bin:$PATH"
+# PATH="$HOME/bin:$PATH"
 
 # -- Export thingy
 # better font rendering in java apps
@@ -90,7 +90,7 @@ unset HISTFILESIZE
 # HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S  "
 # Don't remember trivial {1,2,3,4}-letter commands.
 HISTIGNORE=?:??:???:????
-HISTIGNORE=${HISTIGNORE}':z *:v *'
+HISTIGNORE=${HISTIGNORE}':z *:v *:j *:make*:history:clear:* --help:cd*:ipython*'
 # ingore duplicates and commands starting with spacebar
 HISTCONTROL=ignoreboth:erasedups
 
@@ -107,9 +107,8 @@ PROMPT_COMMAND="history -a"
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 
-# display up to 2 directories on prompt
 # http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
-PS1_PWD_MAX=15
+PS1_PWD_MAX=10
 __pwd_ps1() { echo -n $PWD | sed -e "s|${HOME}|~|" -e "s|\(/[^/]*/\).*\(/.\{${PS1_PWD_MAX}\}\)|\1...\2|"; }
 source /usr/share/git-core/contrib/completion/git-prompt.sh 2>/dev/null
 source /etc/bash_completion.d/git-prompt.sh 2>/dev/null
@@ -118,12 +117,6 @@ GIT_PS1_SHOWDIRTYSTATE=1
 if [ "$TERM" != "linux" ]; then
     PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
 fi
-# Initialize fasd
-# if hash fasd 2>/dev/null; then
-#     eval "$(fasd --init auto)"
-#     [ "$IS_NVIM" ] && export _FASD_VIMINFO="$HOME/.nviminfo"
-#     alias v='f -t -e $VISUAL -b viminfo'
-# fi
 
 export _Z_DATA=$HOME/.z_data
 [ -f ~/.z/z.sh ] && source ~/.z/z.sh
@@ -187,6 +180,9 @@ fi
 #     clear # bring us back to default input colours
 # fi
 
+psgrep() { ps axuf | grep -v grep | grep "$@" -i --color=auto; }
+fname() { find . -iname "*$@*"; }
+
 # pacman with sudo
 pacman() {
     case $1 in
@@ -196,28 +192,8 @@ pacman() {
     esac
 }
 
-zypper() {
-    case $1 in
-        addrepo | ar |\
-        removerepo | rr |\
-        renamerepo | nr |\
-        modifyrepo | mr |\
-        refresh | ref |\
-        clean | ref |\
-        addservice | as |\
-        modifyservice | ms |\
-        removeservice | rs |\
-        refresh-services | refs |\
-        install | in |\
-        remove | rm |\
-        source-install | si |\
-        install-new-recommends | inr |\
-        update | up |\
-        patch |\
-        dist-update | dup |\
-        addlock | al |\
-        removelock | rl)
-            LC_ALL=C /usr/bin/sudo /usr/bin/zypper "$@" ;;
-        *)  LC_ALL=C /usr/bin/zypper "$@" ;;
-    esac
+yt() {
+    mpv $@ 2>/dev/null 1>&2 & disown
 }
+
+nohist() { unset HISTFILE; }
