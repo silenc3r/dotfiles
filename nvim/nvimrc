@@ -75,7 +75,6 @@
     Plug 'jpo/vim-railscasts-theme'
     Plug 'romainl/Apprentice'
     Plug 'scheakur/vim-scheakur'
-    Plug 'gilgigilgil/anderson.vim'
 
     " Language support
     Plug 'klen/python-mode', { 'for': 'python' }
