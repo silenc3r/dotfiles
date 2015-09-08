@@ -74,6 +74,8 @@
     Plug 'w0ng/vim-hybrid'
     Plug 'jpo/vim-railscasts-theme'
     Plug 'romainl/Apprentice'
+    Plug 'scheakur/vim-scheakur'
+    Plug 'gilgigilgil/anderson.vim'
 
     " Language support
     Plug 'klen/python-mode', { 'for': 'python' }
@@ -92,8 +94,7 @@
     syntax sync minlines=250    " Possibly faster highlighting for big files
     " set mouse=civ               " Mouse support
     set clipboard+=unnamedplus  " Use proper buffer for clipboard on linux"
-    " set hidden                  " Don't write to disk upon buffer switch
-    set autoread                " Auto reload files changed outside vim
+    set hidden                  " Allow for switching unsaved buffers
     set viewoptions+=unix,slash " Unix-windows compatibility
     set history=1000            " Store a ton of history (default is 20)
 
@@ -106,8 +107,6 @@
     set undodir=$HOME/.nvim/undo//
 
     " Search
-    set incsearch               " Show next match while entering search
-    set hlsearch                " Highlight searches by default
     set ignorecase              " Case insensitive search...
     set smartcase               " ...until upper-case letter is typed
 
@@ -133,8 +132,6 @@
     set listchars=nbsp:␣,extends:❯,precedes:❮,tab:»\ ,trail:·
 
     " Commandline completion
-    set wildmenu
-    set wildmode=list:longest,full
     set wildignorecase
     set wildignore+=*.o,*~,.lo,*.obj,*.pyc,*.jar
     set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
@@ -149,16 +146,12 @@
 " }
 
 " Formatting & Editting {
-    set autoindent              " Indent at the same level of the previous line
     set ts=4 sw=4 sts=4         " 1 Tab equals to 4 spaces
     set shiftround              " Round indent to multiple of shiftwidth
     set expandtab               " Convert tabs to spaces
-    set smarttab                " Be smart about inserting/deleting tabs
     set gdefault                " Set g flag on :s substitutions by default
     " set tildeop                 " Let tilde work with movement keys
-    set backspace=2             " Allow backspace in insert mode
     set virtualedit=onemore,block " Allow for cursor beyond last character
-    set complete-=i
     set completeopt=menuone
 
     " Remove trailing whitespaces and ^M chars
@@ -188,6 +181,7 @@
         " let g:hybrid_use_Xresources = 1
         " colorscheme hybrid
         " colorscheme kolor
+        " colorscheme scheakur
         " colorscheme iceberg
         " colorscheme twilight
         " colorscheme jellybeans
@@ -210,20 +204,19 @@
 " Keymaps {
     " Remap <Leader> to SPACEBAR
     let g:mapleader = ' '
+    let g:maplocalleader = '\\'
 
     " Clean search highlighting
-    nnoremap <silent> <BS> :nohlsearch<CR>
+    nnoremap <silent> <esc> :nohlsearch<CR>
+
+    " Toggle folding
+    nnoremap <Tab> za
 
     " Simpler saving/quiting
     nnoremap <silent> <leader>w :w<CR>
     nnoremap <silent> <leader>q :q<CR>
-    nnoremap <silent> <leader>z :wq<CR>
+    nnoremap <silent> <leader>Q :q!<CR>
     nnoremap <silent> <leader>n :enew<CR>
-
-    " Save the pinky
-    nnoremap <leader>; :
-    vnoremap <leader>; :
-    nnoremap : <Nop>
 
     " Jump to exact position
     noremap ` '
@@ -237,7 +230,7 @@
     autocmd CmdWinEnter * nnoremap <buffer> <Esc> :q<CR>
 
     " Easier access to history
-    nnoremap q; q:
+    nnoremap <leader>; q:
 
     " While searching center on the line with current result
     nnoremap N Nzzzv
@@ -252,9 +245,10 @@
 
     " fly between buffers
     nnoremap <leader>l :ls<CR>:b<space>
-    nnoremap <leader><leader> <C-^>
+    " nnoremap <leader><leader> <C-^>
     nnoremap <leader>] :bnext<CR>
     nnoremap <leader>[ :bprev<CR>
+    nnoremap <BS> <C-^>
 
     " use sane regexes
     nnoremap / /\v
@@ -303,7 +297,7 @@
     " Syntastic {
         let g:syntastic_check_on_open = 1
         let g:syntastic_python_checkers = ['flake8']
-        let g:syntastic_python_flake8_args = '--ignore="E501,E266,E221,E222,F403"'
+        let g:syntastic_python_flake8_args = '--ignore="E126,E127,E221,E222,E266,E501,F403"'
     " }
 
     " vim-easy-align {
