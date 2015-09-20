@@ -48,6 +48,8 @@ alias cls=' echo -ne "\033c"'
 # alias tmux='TERM=screen-256color tmux'
 alias tm='tmux attach || tmux new'
 
+alias ncmpcpp='ncmpcpp -c ~/.config/ncmpcpp/config'
+
 # path
 # PATH="$HOME/bin:$PATH"
 
@@ -60,6 +62,8 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.aatext=true
 export EDITOR="vi"
 [ "$IS_NVIM" ] && export VISUAL="nvim" || export VISUAL="vim"
 export WINEARCH=win32
+
+export MPD_HOST=/home/$USER/.cache/mpd/socket
 
 # prevent terminal from overwriting Ctrl-s shortcut
 if tty -s ; then
@@ -180,8 +184,16 @@ fi
 #     clear # bring us back to default input colours
 # fi
 
-psgrep() { ps axuf | grep -v grep | grep "$@" -i --color=auto; }
-fname() { find . -iname "*$@*"; }
+psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
+
+# find simplified
+fnd() {
+    if [ $# -eq 1 ]; then
+        find . -iname "*$**" 2> /dev/null
+    else
+        find "$1" -iname "*${*:2}*" 2>/dev/null
+    fi
+}
 
 # pacman with sudo
 pacman() {
@@ -192,8 +204,12 @@ pacman() {
     esac
 }
 
-yt() {
-    mpv $@ 2>/dev/null 1>&2 & disown
-}
+yt() { mpv $@ 2>/dev/null 1>&2 & disown; }
 
 nohist() { unset HISTFILE; }
+hsync() { history -a && history -n; }
+
+# transmission helpers
+trl() { transmission-remote -l; }
+trd() { transmission-remote -t $1 --remove-and-delete; }
+trr() { transmission-remote -t $1 --remove; }
