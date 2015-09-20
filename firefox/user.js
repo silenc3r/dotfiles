@@ -641,10 +641,10 @@ user_pref("security.dialog_enable_delay", 0);
 user_pref("middlemouse.contentLoadURL", false);
 
 // Enable MSE
-user_pref("media.mediasource.enabled", true);
-user_pref("media.mediasource.mp4.enabled", true);
-user_pref("media.mediasource.webm.enabled", true);
-user_pref("media.fragmented-mp4.ffmpeg.enabled", true);
-user_pref("media.fragmented-mp4.gmp.enabled", true);
-user_pref("media.fragmented-mp4.exposed", true)
-user_pref("media.fragmented-mp4.use-blank-decoder", false)
+// user_pref("media.mediasource.enabled", true);
+// user_pref("media.mediasource.mp4.enabled", true);
+// user_pref("media.mediasource.webm.enabled", true);
+// user_pref("media.fragmented-mp4.ffmpeg.enabled", true);
+// user_pref("media.fragmented-mp4.gmp.enabled", true);
+// user_pref("media.fragmented-mp4.exposed", true)
+// user_pref("media.fragmented-mp4.use-blank-decoder", false)
