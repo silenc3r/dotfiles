@@ -184,6 +184,8 @@ fi
 #     clear # bring us back to default input colours
 # fi
 
+mkcd () { mkdir -p "$*" && cd "$*"; }
+
 psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
 
 # find simplified
