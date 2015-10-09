@@ -26,10 +26,6 @@
     Plug 'kshenoy/vim-signature'
     " Fancy start screen & session management
     Plug 'mhinz/vim-startify'
-    " color matching parentheses
-    Plug 'luochen1990/rainbow'
-    " alternative
-    " Plug 'amdt/vim-niji'
 
     " Tmux support
     Plug 'jpalardy/vim-slime'
@@ -373,25 +369,6 @@
         " use global vim settings for case sensitivity
         let g:sneak#use_ic_scs = 1
     " }
-
-    " " rainbow {
-    "     let g:rainbow_active=1
-    "         let g:rainbow_conf = {
-    "         \   'ctermfgs': ['darkblue', 'darkred', 'darkmagenta', 'darkgreen', 'brown', 'darkcyan'],
-    "         \   'operators': '_,_',
-    "         \   'parentheses': [['(',')'], ['\[','\]'], ['{','}']],
-    "         \   'separately': {
-    "         \       '*': {},
-    "         \       'lisp': {
-    "         \           'ctermfgs': ['darkgray', 'darkblue', 'darkmagenta', 'darkcyan', 'darkred', 'darkgreen'],
-    "         \       },
-    "         \       'vim': {
-    "         \           'parentheses': [['fu\w* \s*.*)','endfu\w*'], ['for','endfor'], ['while', 'endwhile'], ['if','_elseif\|else_','endif'], ['(',')'], ['\[','\]'], ['{','}']],
-    "         \       },
-    "         \       'css': 0,
-    "         \   }
-    "         \}
-    " " }
 
     " delimitMate {
         let delimitMate_expand_space=1
