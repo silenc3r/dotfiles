@@ -117,8 +117,8 @@ user_pref("network.proxy.socks_remote_dns",		true);
  */
 user_pref("security.mixed_content.block_active_content",		true);
 // Mixed Passive Content (a.k.a. Mixed Display Content).
-// breaks imgur.com
-user_pref("security.mixed_content.block_display_content",	false);
+// may break some sites
+user_pref("security.mixed_content.block_display_content",	true);
 
 // https://secure.wikimedia.org/wikibooks/en/wiki/Grsecurity/Application-specific_Settings#Firefox_.28or_Iceweasel_in_Debian.29
 // I want to use JIT
@@ -429,7 +429,8 @@ user_pref("browser.newtab.url",		"about:blank");
 
 // CIS Version 1.2.0 October 21st, 2011 2.1.2 Enable Auto Notification of Outdated Plugins
 // https://wiki.mozilla.org/Firefox3.6/Plugin_Update_Awareness_Security_Review
-user_pref("plugins.update.notifyUser",		true);
+// flash sucks at updating
+user_pref("plugins.update.notifyUser",		false);
 
 // CIS Version 1.2.0 October 21st, 2011 2.1.3 Enable Information Bar for Outdated Plugins
 user_pref("plugins.hide_infobar_for_outdated_plugin",		false);
