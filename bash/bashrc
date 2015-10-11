@@ -239,3 +239,4 @@ hsync() { history -a && history -n; }
 trl() { transmission-remote -l; }
 trd() { transmission-remote -t $1 --remove-and-delete; }
 trr() { transmission-remote -t $1 --remove; }
+tri() { transmission-remote -t $1 --info; }
