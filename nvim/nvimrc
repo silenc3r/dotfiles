@@ -1,9 +1,6 @@
-"-----------------------------------------------------------------------------
-" author:   Dawid Zych
-" vim: set foldmarker={,} foldlevel=0 foldmethod=marker:
-"-----------------------------------------------------------------------------
+" vim: set foldlevel=0 foldmethod=indent:
 
-" Load plugins {
+" Load plugins
     call plug#begin('~/.nvim/plugged')
 
     " Utils
@@ -80,18 +77,15 @@
     Plug 'chase/vim-ansible-yaml', { 'for': 'yaml' }
 
     call plug#end()
-" }
 
-" General {
+" General
     filetype plugin indent on   " Automatically detect file types.
     syntax enable               " Syntax highlighting
     set synmaxcol=200           " highlight only first 200 columns
     syntax sync minlines=250    " Possibly faster highlighting for big files
-    " set mouse=civ               " Mouse support
     set clipboard+=unnamedplus  " Use proper buffer for clipboard on linux"
     set hidden                  " Allow for switching unsaved buffers
     set viewoptions+=unix,slash " Unix-windows compatibility
-    set history=1000            " Store a ton of history (default is 20)
 
     " Undo & backup
     set nowritebackup
@@ -108,7 +102,6 @@
     " UI look and behavior
     set title                   " Allow nvim to set window title
     set showcmd                 " Show partial commands in status line and selected characters/lines in visual mode
-    set laststatus=2            " Always display the statusline in all windows
     set noshowmode              " Don't show mode, Airline takes care of that
     set shortmess+=mr           " Abbrev. of messages (avoids 'hit enter')
     set lazyredraw              " Avoid scrolling problems
@@ -138,9 +131,8 @@
         au WinLeave,InsertEnter * set nocursorline
         au WinEnter,InsertLeave * set cursorline
     augroup END
-" }
 
-" Formatting & Editting {
+" Formatting & Editting
     set ts=4 sw=4 sts=4         " 1 Tab equals to 4 spaces
     set shiftround              " Round indent to multiple of shiftwidth
     set expandtab               " Convert tabs to spaces
@@ -150,16 +142,18 @@
     set completeopt=menuone
 
     " Remove trailing whitespaces and ^M chars
-    autocmd FileType c,cpp,java,go,javascript,python,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
-    autocmd FileType python setlocal colorcolumn=80
-    autocmd FileType text setlocal textwidth=80 colorcolumn=+1
-    autocmd FileType yaml setlocal ft=ansible
-    autocmd FileType spec setlocal sw=2 ts=2 sts=2 noet
-" }
+    augroup files
+        au!
+        au FileType c,cpp,java,go,javascript,python,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+        au FileType python setlocal colorcolumn=80
+        au FileType text setlocal textwidth=80 colorcolumn=+1
+        au FileType yaml setlocal ft=ansible
+        au FileType spec setlocal sw=2 ts=2 sts=2 noet
+    augroup END
 
-" Colors {
+" Colors
     set background=dark
-    " if ($TERM =~ "xterm") || ($TERM =~ "-256color")
+    if ($TERM =~ "xterm") || ($TERM =~ "-256color")
         " set t_Co=256
         " colorscheme Tomorrow-Night-Eighties
         " colorscheme Tomorrow-Night
@@ -187,16 +181,15 @@
         " colorscheme pencil
         " colorscheme atom-dark-256
         " set background=dark
-    " endif
+    endif
     " paren highlighting can be annoying
     " hi MatchParen cterm=underline ctermbg=none ctermfg=none
     hi MatchParen cterm=underline
     " comments are always italic
     hi Comment cterm=italic
     hi ColorColumn ctermbg=236
-" }
 
-" Keymaps {
+" Keymaps
     " Remap <Leader> to SPACEBAR
     let g:mapleader = ' '
     let g:maplocalleader = '\\'
@@ -210,7 +203,6 @@
     " Simpler saving/quiting
     nnoremap <silent> <leader>w :w<CR>
     nnoremap <silent> <leader>q :q<CR>
-    nnoremap <silent> <leader>Q :q!<CR>
     nnoremap <silent> <leader>n :enew<CR>
 
     " Jump to exact position
@@ -219,10 +211,13 @@
 
     " Use Enter as : and fix problems caused by that
     nnoremap <CR> :
-    autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-    autocmd BufReadPost quickfix nnoremap <buffer> <Esc> :q<CR>
-    autocmd CmdWinEnter * nnoremap <buffer> <CR> <CR>
-    autocmd CmdWinEnter * nnoremap <buffer> <Esc> :q<CR>
+    augroup enter
+        au!
+        au BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+        au BufReadPost quickfix nnoremap <buffer> <Esc> :q<CR>
+        au CmdWinEnter * nnoremap <buffer> <CR> <CR>
+        au CmdWinEnter * nnoremap <buffer> <Esc> :q<CR>
+    augroup END
 
     " Easier access to history
     nnoremap <leader>; q:
@@ -263,14 +258,12 @@
     " save the current file as root
     " TODO: it's crashing neovim for some reason
     cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
-" }
 
-" Plugins {
-    " Startify session {
+" Plugin options
+    " Startify session
         let g:startify_session_dir = "$HOME/.nvim/sessions"
-    " }
 
-    " PowerLine / airline {
+    " PowerLine / airline
     " Don't lag on changing modes - fixes problems with YCM autocompletion
     if ! has('gui_running')
         set ttimeoutlen=10
@@ -280,37 +273,32 @@
             au InsertLeave * set timeoutlen=1000
         augroup END
     endif
-    " }
 
-    " Airline {
+    " Airline
         let g:airline#extensions#whitespace#enabled = 0
         let g:airline#extensions#whitespace#show_message = 0
         let g:airline_left_sep=''
         let g:airline_right_sep=''
-    " }
 
-    " Syntastic {
+    " Syntastic
         let g:syntastic_check_on_open = 1
         let g:syntastic_python_checkers = ['flake8']
         let g:syntastic_python_flake8_args = '--ignore="E126,E127,E221,E222,E266,E501,F403"'
-    " }
 
-    " vim-easy-align {
+    " vim-easy-align
         " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
         vmap <Enter> <Plug>(EasyAlign)
         " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
         nmap <Leader>a <Plug>(EasyAlign)
-    " }
 
-    " { tcomment
+    " tcomment
         let g:tcommentMapLeader1 = 0
         let g:tcommentMapLeader2 = 0
         let g:tcommentMapLeaderUncommentAnyway = 0
         let g:tcommentMapLeaderCommentAnyway = 0
         let g:tcommentTextObjectInlineComment = 0
-    " }
 
-    " Python-Mode {
+    " Python-Mode
         " let Syntastic take care of syntax checking
         let g:pymode_lint = 0
         " use YouCompleteMe for code-completion
@@ -321,9 +309,8 @@
         " let g:pymode_syntax = 0
         " let g:pymode_syntax_highlight_self = 0
         let g:pymode_syntax_print_as_function = 1
-    " }
 
-    " Unite {
+    " Unite
         " TODO: I need to look at this some day
         let g:unite_source_history_yank_enable = 1
         " call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -334,57 +321,48 @@
         nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
         nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank history/yank<cr>
         nnoremap <leader>e :<C-u>Unite -no-split -buffer-name=buffer buffer<cr>
-    " }
 
-    " " TagBar {
-    "     " Jump to tagbar window upon opening it
-    "     let g:tagbar_autofocus = 1
-    "     nnoremap <silent> <leader>tt :TagbarToggle<CR>
-    "     nnoremap <silent> <leader>ta :TagbarOpenAutoClose<CR>
-    " "}
+    " TagBar
+        " " Jump to tagbar window upon opening it
+        " let g:tagbar_autofocus = 1
+        " nnoremap <silent> <leader>tt :TagbarToggle<CR>
+        " nnoremap <silent> <leader>ta :TagbarOpenAutoClose<CR>
 
-    " Fugitive {
+    " Fugitive
         nnoremap <silent> <leader>gs :Gstatus<CR>
         nnoremap <silent> <leader>gd :Gdiff<CR>
         nnoremap <silent> <leader>gc :Gcommit<CR>
         nnoremap <silent> <leader>gb :Gblame<CR>
         nnoremap <silent> <leader>gl :Glog<CR>
         nnoremap <silent> <leader>gp :Git push<CR>
-    "}
 
-    " UndoTree {
+    " UndoTree
         nnoremap <Leader>u :UndotreeToggle<CR>
         " If undotree is opened, it is likely one wants to interact with it.
         let g:undotree_SetFocusWhenToggle=1
-    " }
 
-    " Netrw {
+    " Netrw
         " prevent leaking of directory history
         let g:netrw_dirhistmax=-1
-    " }
 
-    " Sneak {
+    " Sneak
         " let it behave similar to easymotion
         let g:sneak#streak = 1
         " use global vim settings for case sensitivity
         let g:sneak#use_ic_scs = 1
-    " }
 
-    " delimitMate {
+    " delimitMate
         let delimitMate_expand_space=1
         let delimitMate_expand_cr=2
         " TODO: don't really know what that does
         let delimitMate_jump_expansion=1
-    " }
 
-    " vim-slime {
+    " vim-slime
         let g:slime_target = "tmux"
         let g:slime_python_ipython = 1
-    " }
-" }
 
-" Functions {
-    " Strip whitespace {
+" Functions
+    " Strip whitespace
         function! StripTrailingWhitespace()
             let _s=@/
             let l = line(".")
@@ -393,5 +371,3 @@
             let @/=_s
             call cursor(l, c)
         endfunction
-    " }
-" }
