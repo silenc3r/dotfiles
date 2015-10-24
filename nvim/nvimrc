@@ -15,7 +15,6 @@
         Plug 'ludovicchabant/vim-gutentags'
     endif
 
-    " Plug 'Shougo/unite.vim', { 'on': 'Unite' }
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install'  }
     Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
     Plug 'justinmk/vim-sneak'
@@ -68,6 +67,11 @@
     Plug 'jpo/vim-railscasts-theme'
     Plug 'romainl/Apprentice'
     Plug 'scheakur/vim-scheakur'
+    Plug 'ajh17/Spacegray.vim'
+    " Sublime material theme
+    Plug 'jdkanani/vim-material-theme'
+    " Google material design
+    Plug 'NLKNguyen/papercolor-theme'
 
     " Language support
     Plug 'klen/python-mode', { 'for': 'python' }
@@ -118,6 +122,7 @@
     set nowrap                  " Don't wrap long lines
     set list
     set listchars=nbsp:␣,extends:❯,precedes:❮,tab:»\ ,trail:·
+    set foldminlines=5
 
     " Commandline completion
     set wildignorecase
@@ -136,7 +141,6 @@
     set ts=4 sw=4 sts=4         " 1 Tab equals to 4 spaces
     set shiftround              " Round indent to multiple of shiftwidth
     set expandtab               " Convert tabs to spaces
-    set gdefault                " Set g flag on :s substitutions by default
     " set tildeop                 " Let tilde work with movement keys
     set virtualedit=onemore,block " Allow for cursor beyond last character
     set completeopt=menuone
@@ -164,6 +168,7 @@
         " colorscheme zenburn
         " let g:airline_theme='gruvbox'
         " let g:gruvbox_italic=1
+        " colorscheme spacegray
         " colorscheme gruvbox
         colorscheme apprentice
         let g:airline_theme='apprentice'
@@ -204,6 +209,7 @@
     nnoremap <silent> <leader>w :w<CR>
     nnoremap <silent> <leader>q :q<CR>
     nnoremap <silent> <leader>n :enew<CR>
+    cnoremap q1 q!
 
     " Jump to exact position
     noremap ` '
@@ -309,18 +315,6 @@
         " let g:pymode_syntax = 0
         " let g:pymode_syntax_highlight_self = 0
         let g:pymode_syntax_print_as_function = 1
-
-    " Unite
-        " TODO: I need to look at this some day
-        let g:unite_source_history_yank_enable = 1
-        " call unite#filters#matcher_default#use(['matcher_fuzzy'])
-        autocmd FileType unite call unite#filters#matcher_default#use(['matcher_fuzzy'])
-        nnoremap <leader>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<cr>
-        nnoremap <leader>f :<C-u>Unite -no-split -buffer-name=files -start-insert file<cr>
-        nnoremap <leader>r :<C-u>Unite -no-split -buffer-name=mru -start-insert file_mru<cr>
-        nnoremap <leader>o :<C-u>Unite -no-split -buffer-name=outline -start-insert outline<cr>
-        nnoremap <leader>y :<C-u>Unite -no-split -buffer-name=yank history/yank<cr>
-        nnoremap <leader>e :<C-u>Unite -no-split -buffer-name=buffer buffer<cr>
 
     " TagBar
         " " Jump to tagbar window upon opening it
