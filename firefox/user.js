@@ -156,6 +156,11 @@ user_pref("javascript.options.asmjs",		true);
 // the iSEC Partners Report recommends to disable this
 user_pref("gfx.font_rendering.opentype_svg.enabled",		false);
 
+// https://bugzil.la/654550
+// https://github.com/pyllyukko/user.js/issues/9#issuecomment-100468785
+// https://github.com/pyllyukko/user.js/issues/9#issuecomment-148922065
+user_pref("media.video_stats.enabled",		false);
+
 /******************************************************************************
  * extensions / plugins                                                       *
  *                                                                            *
@@ -184,12 +189,12 @@ user_pref("extensions.blocklist.enabled",		true);
 // https://www.mozilla.org/en-US/legal/privacy/firefox.html#telemetry
 // https://wiki.mozilla.org/Security/Reviews/Firefox6/ReviewNotes/telemetry
 user_pref("toolkit.telemetry.enabled",		false);
+// https://gecko.readthedocs.org/en/latest/toolkit/components/telemetry/telemetry/preferences.html
+user_pref("toolkit.telemetry.unified",		false);
 
-// https://wiki.mozilla.org/Polaris#Tracking_protection
+// https://wiki.mozilla.org/Security/Tracking_protection
 // https://support.mozilla.org/en-US/kb/tracking-protection-firefox
-// TODO: are these two the same?
 user_pref("privacy.trackingprotection.enabled",		true);
-user_pref("browser.polaris.enabled",		true);
 
 // Disable the built-in PDF viewer (CVE-2015-2743)
 // https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-2743
@@ -234,9 +239,11 @@ user_pref("browser.safebrowsing.enabled",		true);
 // http://kb.mozillazine.org/Browser.safebrowsing.malware.enabled
 user_pref("browser.safebrowsing.malware.enabled",		true);
 
-// Disable safe browsing for downloaded files. this leaks information to google.
+// Disable safe browsing remote lookups for downloaded files.
+// This leaks information to google.
 // https://www.mozilla.org/en-US/firefox/39.0/releasenotes/
-user_pref("browser.safebrowsing.downloads.enabled",		false);
+// https://wiki.mozilla.org/Security/Application_Reputation
+user_pref("browser.safebrowsing.downloads.remote.enabled",	false);
 
 // Disable pocket
 // https://support.mozilla.org/en-US/kb/save-web-pages-later-pocket-firefox
@@ -301,6 +308,11 @@ user_pref("security.csp.experimentalEnabled",		true);
 
 // CSP https://developer.mozilla.org/en-US/docs/Web/Security/CSP/Introducing_Content_Security_Policy
 user_pref("security.csp.enable",		true);
+
+// Subresource integrity
+// https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+// https://wiki.mozilla.org/Security/Subresource_Integrity
+user_pref("security.sri.enable",		true);
 
 // DNT HTTP header
 // http://dnt.mozilla.org/
