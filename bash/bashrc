@@ -1,69 +1,27 @@
-#------------------------------------------#
-# file:   ~/.bashrc                        #
-# author: Dawid Zych dawidzych@fastmail.fm #
-#------------------------------------------#
-
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
 eval $(dircolors)
 
-hash nvim 2>/dev/null && IS_NVIM=true
+hash nvim 2>/dev/null && VIM=nvim || VIM=vim
 
-# aliases
-alias dmesg='dmesg --color'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_DATA_HOME=$HOME/.local/share
+export XDG_CACHE_HOME=$HOME/.cache
 
-# ls
-alias ls='ls -hF --color=auto'
-alias ll='ls -l --group-directories-first'
-alias la='ll -A'
-alias lA='ls -A --group-directories-first'
-# list hidden files only
-alias lh='ls -d .??*'
-
-# cd
-alias ..='cd ..'  # redundant with autocd
-alias ...='cd ../..'
-
-alias su='su -'
-alias ping='ping -c 3'
-alias mkdir='mkdir -p -v'
-alias df='df -h'
-alias du='du -c -h'
-
-# safety features
-hash trash 2>/dev/null && alias rm='trash' || alias rm='rm -I'
-alias ln='ln -i'
-alias chown='chown --preserve-root'
-alias chmod='chmod --preserve-root'
-alias chgrp='chgrp --preserve-root'
-
-# clear screen for real (does not work in tmux)
-alias cls=' echo -ne "\033c"'
-
-[ "$IS_NVIM" ] && alias vim='nvim'
-# alias tmux='TERM=screen-256color tmux'
-alias tm='tmux attach || tmux new'
-
-alias ncmpcpp='ncmpcpp -c ~/.config/ncmpcpp/config'
-
-# path
-# PATH="$HOME/bin:$PATH"
-
-# -- Export thingy
 # better font rendering in java apps
 export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.aatext=true'
 # fix java apps in xmonad
 # export _JAVA_AWT_WM_NONREPARENTING=1
 # export AWT_TOOLKIT=MToolkit
 export EDITOR="vi"
-[ "$IS_NVIM" ] && export VISUAL="nvim" || export VISUAL="vim"
+export VISUAL=$VIM
 export WINEARCH=win32
 
-export MPD_HOST=/home/$USER/.cache/mpd/socket
+export MPD_HOST=$XDG_CACHE_HOME/mpd/socket
+
+# path
+# PATH="$HOME/bin:$PATH"
 
 # prevent terminal from overwriting Ctrl-s shortcut
 if tty -s ; then
@@ -98,22 +56,14 @@ HISTIGNORE=${HISTIGNORE}':z *:v *:j *:make*:history:clear:* --help:cd*:ipython*'
 # ingore duplicates and commands starting with spacebar
 HISTCONTROL=ignoreboth:erasedups
 
-# Save each history entry immediately
-# PROMPT_COMMAND="history -a; history -n"
 PROMPT_COMMAND="history -a"
-# PROMPT_DIRTRIM=2
-# if [ $TERM == "linux" ]; then
-#     PS1='\[\033[0;97m\]\w\[\033[0;34m\]> \[\033[0m\]'
-# else
-#     PS1='\[\033[0;97m\]\w\[\033[0;34m\]❯ \[\033[0m\]'
-# fi
 
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 
 # http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
 PS1_PWD_MAX=10
-__pwd_ps1() { echo -n $PWD | sed -e "s|${HOME}|~|" -e "s|\(/[^/]*/\).*\(/.\{${PS1_PWD_MAX}\}\)|\1...\2|"; }
+__pwd_ps1() { echo -n $PWD | sed -e "s|${HOME}|~|" -e "s|\(/[^/]*/\).*\(/.\{${PS1_PWD_MAX}\}\)|\1…\2|"; }
 source /usr/share/git-core/contrib/completion/git-prompt.sh 2>/dev/null
 source /etc/bash_completion.d/git-prompt.sh 2>/dev/null
 
@@ -122,7 +72,8 @@ if [ "$TERM" != "linux" ]; then
     PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
 fi
 
-export _Z_DATA=$HOME/.z_data
+# export _Z_DATA=$HOME/.z_data
+export _Z_DATA=$XDG_DATA_HOME/z/data
 [ -f ~/.z/z.sh ] && source ~/.z/z.sh
 
 if [ -f ~/.fzf.bash ]; then
@@ -141,7 +92,7 @@ if [ -f ~/.fzf.bash ]; then
         files=$(grep '^>' ~/.nviminfo | cut -c3- |
                 while read line; do
                     [ -f "${line/\~/$HOME}" ] && echo "$line"
-                done | fzf-tmux -d -m -q "$*" -1) && vim ${files//\~/$HOME}
+                done | fzf-tmux -d -m -q "$*" -1) && $VIM ${files//\~/$HOME}
     }
     unalias z 2> /dev/null
     j() {
@@ -240,3 +191,43 @@ trl() { transmission-remote -l; }
 trd() { transmission-remote -t $1 --remove-and-delete; }
 trr() { transmission-remote -t $1 --remove; }
 tri() { transmission-remote -t $1 --info; }
+
+# aliases
+alias dmesg='dmesg --color'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+# ls
+alias ls='ls -hF --color=auto'
+alias ll='ls -l --group-directories-first'
+alias la='ll -A'
+alias lA='ls -A --group-directories-first'
+# list hidden files only
+alias lh='ls -d .??*'
+
+# cd
+alias ..='cd ..'  # redundant with autocd
+alias ...='cd ../..'
+
+alias su='su -'
+alias ping='ping -c 3'
+alias mkdir='mkdir -p -v'
+alias df='df -h'
+alias du='du -c -h'
+
+# safety features
+hash trash 2>/dev/null && alias rm='trash' || alias rm='rm -I'
+alias ln='ln -i'
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+
+# clear screen for real (does not work in tmux)
+alias cls=' echo -ne "\033c"'
+
+[ "$IS_NVIM" ] && alias vim='nvim'
+# alias tmux='TERM=screen-256color tmux'
+alias tm='tmux attach || tmux new'
+
+alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
