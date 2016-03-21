@@ -3,6 +3,17 @@
  * https://github.com/pyllyukko/user.js                                       *
  ******************************************************************************/
 
+ /*****************************************************************************
+ * Avoid hardware based fingerprintings                                       *
+ * Canvas/Font's/Plugins                                                      *
+ ******************************************************************************/
+// https://wiki.mozilla.org/Platform/GFX/HardwareAcceleration
+// https://www.macromedia.com/support/documentation/en/flashplayer/help/help01.html
+// https://github.com/dillbyrne/random-agent-spoofer/issues/74
+ user_pref("gfx.direct2d.disabled",		true);
+ user_pref("layers.acceleration.disabled",		true);
+
+
 /******************************************************************************
  * HTML5 / APIs / DOM                                                         *
  *                                                                            *
@@ -15,12 +26,15 @@ user_pref("geo.enabled",		false);
 // http://kb.mozillazine.org/Dom.storage.enabled
 // http://dev.w3.org/html5/webstorage/#dom-localstorage
 // you can also see this with Panopticlick's "DOM localStorage"
-// BREAKS: webfonts
+// me: BREAKS: webfonts
 //user_pref("dom.storage.enabled",		false);
 
-// Don't reveal internal IPs
-// http://net.ipcalf.com/
+// Don't reveal your internal IP
+// Check the settings with: http://net.ipcalf.com/
+// https://wiki.mozilla.org/Media/WebRTC/Privacy
+user_pref("media.peerconnection.ice.default_address_only",		true);
 user_pref("media.peerconnection.enabled",		false);
+
 // getUserMedia
 // https://wiki.mozilla.org/Media/getUserMedia
 // https://developer.mozilla.org/en-US/docs/Web/API/Navigator
@@ -86,17 +100,20 @@ user_pref("webgl.disabled",		true);
  *                                                                            *
  ******************************************************************************/
 
+// Disable face detection by default
+user_pref("camera.control.face_detection.enabled",		false);
+
 // Default search engine
 //user_pref("browser.search.defaultenginename",		"DuckDuckGo");
 
 // http://kb.mozillazine.org/Clipboard.autocopy
-// I find this useful
+// me: I find this useful
 user_pref("clipboard.autocopy",		true);
 
 // Display an error message indicating the entered information is not a valid
 // URL instead of asking from google.
 // http://kb.mozillazine.org/Keyword.enabled#Caveats
-// Better just ask google
+// me: Better just ask google
 user_pref("keyword.enabled",		true);
 
 // Don't try to guess where i'm trying to go!!! e.g.: "http://foo" -> "http://(prefix)foo(suffix)"
@@ -109,19 +126,18 @@ user_pref("network.proxy.socks_remote_dns",		true);
 // http://kb.mozillazine.org/Network.proxy.type
 // the default in Firefox for Linux is to use system proxy settings.
 // We change it to direct connection
-//user_pref("network.proxy.type", 0);
+//user_pref("network.proxy.type",		0);
 
-/* Mixed content stuff
- * https://developer.mozilla.org/en-US/docs/Site_Compatibility_for_Firefox_23#Non-SSL_contents_on_SSL_pages_are_blocked_by_default
- * https://blog.mozilla.org/tanvi/2013/04/10/mixed-content-blocking-enabled-in-firefox-23/
- */
+// Mixed content stuff
+// https://developer.mozilla.org/en-US/docs/Site_Compatibility_for_Firefox_23#Non-SSL_contents_on_SSL_pages_are_blocked_by_default
+// https://blog.mozilla.org/tanvi/2013/04/10/mixed-content-blocking-enabled-in-firefox-23/
 user_pref("security.mixed_content.block_active_content",		true);
 // Mixed Passive Content (a.k.a. Mixed Display Content).
-// may break some sites
-user_pref("security.mixed_content.block_display_content",	true);
+// me: may break some sites
+user_pref("security.mixed_content.block_display_content",	false);
 
 // https://secure.wikimedia.org/wikibooks/en/wiki/Grsecurity/Application-specific_Settings#Firefox_.28or_Iceweasel_in_Debian.29
-// I want to use JIT
+// me: I want to use JIT
 user_pref("javascript.options.methodjit.chrome",		true);
 user_pref("javascript.options.methodjit.content",		true);
 
@@ -149,7 +165,7 @@ user_pref("browser.urlbar.filter.javascript",		true);
 // https://www.mozilla.org/en-US/security/advisories/mfsa2015-29/
 // https://www.mozilla.org/en-US/security/advisories/mfsa2015-50/
 // https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-2712
-// asm.js is useful
+// me: asm.js is useful
 user_pref("javascript.options.asmjs",		true);
 
 // https://wiki.mozilla.org/SVGOpenTypeFonts
@@ -161,13 +177,38 @@ user_pref("gfx.font_rendering.opentype_svg.enabled",		false);
 // https://github.com/pyllyukko/user.js/issues/9#issuecomment-148922065
 user_pref("media.video_stats.enabled",		false);
 
+// Don't reveal build ID
+// Value taken from Tor Browser
+// https://bugzil.la/583181
+user_pref("general.buildID.override",		"20100101");
+
+// Prevent font fingerprinting
+// http://www.browserleaks.com/fonts
+// https://github.com/pyllyukko/user.js/issues/120
+// me: I want pretty fonts
+// user_pref("browser.display.use_document_fonts",		0);
+
 /******************************************************************************
  * extensions / plugins                                                       *
  *                                                                            *
  ******************************************************************************/
 
-// flash - ask to activate
-user_pref("plugin.state.flash",		1);
+// Require signatures
+//user_pref("xpinstall.signatures.required",		true);
+
+// Opt-out of add-on metadata updates
+// https://blog.mozilla.org/addons/how-to-opt-out-of-add-on-metadata-updates/
+user_pref("extensions.getAddons.cache.enabled",		false);
+
+// Flash plugin state - never activate
+user_pref("plugin.state.flash",		0);
+
+// disable Gnome Shell Integration
+user_pref("plugin.state.libgnome-shell-browser-plugin",		0);
+
+// disable the bundled OpenH264 video codec
+// http://forums.mozillazine.org/viewtopic.php?p=13845077&sid=28af2622e8bd8497b9113851676846b1#p13845077
+//user_pref("media.gmp-provider.enabled",		false);
 
 // https://wiki.mozilla.org/Firefox/Click_To_Play
 // https://blog.mozilla.org/security/2012/10/11/click-to-play-plugins-blocklist-style/
@@ -191,14 +232,19 @@ user_pref("extensions.blocklist.enabled",		true);
 user_pref("toolkit.telemetry.enabled",		false);
 // https://gecko.readthedocs.org/en/latest/toolkit/components/telemetry/telemetry/preferences.html
 user_pref("toolkit.telemetry.unified",		false);
+// https://wiki.mozilla.org/Telemetry/Experiments
+user_pref("experiments.supported",		false);
+user_pref("experiments.enabled",		false);
 
 // https://wiki.mozilla.org/Security/Tracking_protection
 // https://support.mozilla.org/en-US/kb/tracking-protection-firefox
 user_pref("privacy.trackingprotection.enabled",		true);
+// https://support.mozilla.org/en-US/kb/tracking-protection-pbm
+user_pref("privacy.trackingprotection.pbmode.enabled",		true);
 
 // Disable the built-in PDF viewer (CVE-2015-2743)
 // https://web.nvd.nist.gov/view/vuln/detail?vulnId=CVE-2015-2743
-// I want pdfjs
+// me: I want pdfjs
 user_pref("pdfjs.disabled",		false);
 
 // Disable sending of the health report
@@ -206,15 +252,20 @@ user_pref("pdfjs.disabled",		false);
 user_pref("datareporting.healthreport.uploadEnabled",		false);
 // disable collection of the data (the healthreport.sqlite* files)
 user_pref("datareporting.healthreport.service.enabled",		false);
+// https://gecko.readthedocs.org/en/latest/toolkit/components/telemetry/telemetry/preferences.html
+user_pref("datareporting.policy.dataSubmissionEnabled",		false);
 
 // Disable new tab tile ads & preload
 // http://www.thewindowsclub.com/disable-remove-ad-tiles-from-firefox
 // http://forums.mozillazine.org/viewtopic.php?p=13876331#p13876331
-// ads suck but preload is nice
 user_pref("browser.newtabpage.enhanced",		false);
+// me: preload is nice
 user_pref("browser.newtab.preload",			true);
 // https://wiki.mozilla.org/Tiles/Technical_Documentation#Ping
+// https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-ping
 user_pref("browser.newtabpage.directory.ping",		"");
+// https://gecko.readthedocs.org/en/latest/browser/browser/DirectoryLinksProvider.html#browser-newtabpage-directory-source
+user_pref("browser.newtabpage.directory.source",		"data:text/plain,{}");
 
 // disable heartbeat
 // https://wiki.mozilla.org/Advocacy/heartbeat
@@ -226,7 +277,7 @@ user_pref("browser.selfsupport.url",		"");
 
 // CIS 2.1.1 Enable Auto Update
 // This is disabled for now. it is better to patch through package management.
-//user_pref("app.update.auto", true);
+//user_pref("app.update.auto",		true);
 
 // CIS 2.3.4 Block Reported Web Forgeries
 // http://kb.mozillazine.org/Browser.safebrowsing.enabled
@@ -243,11 +294,11 @@ user_pref("browser.safebrowsing.malware.enabled",		true);
 // This leaks information to google.
 // https://www.mozilla.org/en-US/firefox/39.0/releasenotes/
 // https://wiki.mozilla.org/Security/Application_Reputation
-user_pref("browser.safebrowsing.downloads.remote.enabled",	false);
+user_pref("browser.safebrowsing.downloads.remote.enabled",		false);
 
 // Disable pocket
 // https://support.mozilla.org/en-US/kb/save-web-pages-later-pocket-firefox
-// I like pocket
+// me: I like pocket
 user_pref("browser.pocket.enabled",		true);
 
 /******************************************************************************
@@ -268,11 +319,19 @@ user_pref("browser.search.geoip.url",		"");
 user_pref("network.dns.disablePrefetch",		true);
 user_pref("network.dns.disablePrefetchFromHTTPS",		true);
 
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1228457
+user_pref("network.dns.blockDotOnion",      true);
+
 // https://wiki.mozilla.org/Privacy/Reviews/Necko
 user_pref("network.predictor.enabled",		false);
+// https://wiki.mozilla.org/Privacy/Reviews/Necko#Principle:_Real_Choice
+user_pref("network.seer.enabled",		false);
 
 // http://kb.mozillazine.org/Browser.search.suggest.enabled
 user_pref("browser.search.suggest.enabled",		false);
+// Disable "Show search suggestions in location bar results"
+// me: I want search suggestions
+user_pref("browser.urlbar.suggest.searches",		true);
 
 // Disable SSDP
 // https://bugzil.la/1111967
@@ -280,10 +339,12 @@ user_pref("browser.casting.enabled",		false);
 
 // https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections#w_media-capabilities
 // http://andreasgal.com/2014/10/14/openh264-now-in-firefox/
-user_pref("media.gmp-gmpopenh264.enabled",		false);
-user_pref("media.gmp-manager.url",		"");
+// me: I want h264 enabled
+user_pref("media.gmp-gmpopenh264.enabled",		true);
+//user_pref("media.gmp-manager.url",		"");
 
 // https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections#w_speculative-pre-connections
+// https://bugzil.la/814169
 user_pref("network.http.speculative-parallel-limit",		0);
 
 // https://support.mozilla.org/en-US/kb/how-stop-firefox-making-automatic-connections#w_mozilla-content
@@ -331,10 +392,17 @@ user_pref("network.http.sendSecureXSiteReferrer",		false);
 
 // CIS 2.5.1 Accept Only 1st Party Cookies
 // http://kb.mozillazine.org/Network.cookie.cookieBehavior#1
-user_pref("network.cookie.cookieBehavior",		1);
+// This breaks a number of payment gateways so you may need to comment it out.
+// me: ok
+// user_pref("network.cookie.cookieBehavior",		1);
+// Make sure that third-party cookies (if enabled) never persist beyond the session.
+// https://feeding.cloud.geek.nz/posts/tweaking-cookies-for-privacy-in-firefox/
+// http://kb.mozillazine.org/Network.cookie.thirdparty.sessionOnly
+// https://developer.mozilla.org/en-US/docs/Cookies_Preferences_in_Mozilla#network.cookie.thirdparty.sessionOnly
+user_pref("network.cookie.thirdparty.sessionOnly",		true);
 
 // user-agent
-//user_pref("general.useragent.override", "Mozilla/5.0 (Windows NT 6.1; rv:31.0) Gecko/20100101 Firefox/31.0");
+//user_pref("general.useragent.override",		"Mozilla/5.0 (Windows NT 6.1; rv:31.0) Gecko/20100101 Firefox/31.0");
 
 /******************************************************************************
  * Caching                                                                    *
@@ -353,7 +421,7 @@ user_pref("browser.cache.offline.enable",		false);
 // Always use private browsing
 // https://support.mozilla.org/en-US/kb/Private-Browsing
 // https://wiki.mozilla.org/PrivateBrowsing
-// I don't want that
+// me: I don't want that
 user_pref("browser.privatebrowsing.autostart",		false);
 user_pref("extensions.ghostery.privateBrowsing",	false);
 
@@ -364,14 +432,14 @@ user_pref("privacy.clearOnShutdown.cache",		true);
 user_pref("privacy.clearOnShutdown.cookies",		true);
 user_pref("privacy.clearOnShutdown.downloads",		true);
 user_pref("privacy.clearOnShutdown.formdata",		true);
-// don't clear history
+// me: don't clear history
 user_pref("privacy.clearOnShutdown.history",		false);
 user_pref("privacy.clearOnShutdown.offlineApps",	true);
 user_pref("privacy.clearOnShutdown.passwords",		true);
 user_pref("privacy.clearOnShutdown.sessions",		true);
 //user_pref("privacy.clearOnShutdown.siteSettings",		false);
 
-// do remember browsing history
+// me: do remember browsing history
 user_pref("places.history.enabled",		true);
 
 // The cookie expires at the end of the session (when the browser closes).
@@ -379,6 +447,7 @@ user_pref("places.history.enabled",		true);
 user_pref("network.cookie.lifetimePolicy",		2);
 
 // http://kb.mozillazine.org/Browser.cache.disk.enable
+// me: use disk cache
 user_pref("browser.cache.disk.enable",		true);
 
 // http://kb.mozillazine.org/Browser.cache.memory.enable
@@ -418,6 +487,11 @@ user_pref("browser.sessionstore.privacy_level",		2);
 // https://bugzil.la/238789#c19
 user_pref("browser.helperApps.deleteTempFileOnExit",		true);
 
+// https://support.mozilla.org/en-US/questions/973320
+// https://developer.mozilla.org/en-US/docs/Mozilla/Preferences/Preference_reference/browser.pagethumbnails.capturing_disabled
+// me: use thumbnails
+user_pref("browser.pagethumbnails.capturing_disabled",		false);
+
 /******************************************************************************
  * UI related                                                                 *
  *                                                                            *
@@ -434,14 +508,14 @@ user_pref("browser.download.folderList",		2);
 user_pref("browser.download.useDownloadDir",		false);
 
 // https://wiki.mozilla.org/Privacy/Reviews/New_Tab
-// Newtabpage is nice
+// me: Newtabpage is nice
 user_pref("browser.newtabpage.enabled",		true);
 // https://support.mozilla.org/en-US/kb/new-tab-page-show-hide-and-customize-top-sites#w_how-do-i-turn-the-new-tab-page-off
 user_pref("browser.newtab.url",		"about:blank");
 
 // CIS Version 1.2.0 October 21st, 2011 2.1.2 Enable Auto Notification of Outdated Plugins
 // https://wiki.mozilla.org/Firefox3.6/Plugin_Update_Awareness_Security_Review
-// flash sucks at updating
+// me: this is annoying
 user_pref("plugins.update.notifyUser",		false);
 
 // CIS Version 1.2.0 October 21st, 2011 2.1.3 Enable Information Bar for Outdated Plugins
@@ -456,25 +530,25 @@ user_pref("network.IDN_show_punycode",		true);
 
 // http://kb.mozillazine.org/About:config_entries#Browser
 // http://kb.mozillazine.org/Inline_autocomplete
-// don't disable that
+// me: don't disable that
 user_pref("browser.urlbar.autoFill",		true);
 user_pref("browser.urlbar.autoFill.typed",		true);
 
 // http://www.labnol.org/software/browsers/prevent-firefox-showing-bookmarks-address-location-bar/3636/
 // http://kb.mozillazine.org/Browser.urlbar.maxRichResults
 // "Setting the preference to 0 effectively disables the Location Bar dropdown entirely."
-// use the defaults
+// me: use the defaults
 user_pref("browser.urlbar.maxRichResults",		12);
 
 // https://blog.mozilla.org/security/2010/03/31/plugging-the-css-history-leak/
 // http://dbaron.org/mozilla/visited-privacy
-// I want to know which links I visited
+// me: I want to know which links I visited
 user_pref("layout.css.visited_links_enabled",		true);
 
 // http://kb.mozillazine.org/Places.frecency.unvisited%28place_type%29Bonus
 
 // http://kb.mozillazine.org/Disabling_autocomplete_-_Firefox#Firefox_3.5
-// autocompletion is always nice
+// me: autocompletion is always nice
 user_pref("browser.urlbar.autocomplete.enabled",		true);
 
 // http://kb.mozillazine.org/Signon.autofillForms
@@ -499,12 +573,6 @@ user_pref("security.ask_for_password",		0);
 // https://blog.mozilla.org/security/2012/11/01/preloading-hsts/
 // https://wiki.mozilla.org/Privacy/Features/HSTS_Preload_List
 user_pref("network.stricttransportsecurity.preloadlist",		true);
-
-// enable SPDY
-// https://en.wikipedia.org/wiki/SPDY
-user_pref("network.http.spdy.enabled",		true);
-user_pref("network.http.spdy.enabled.v3",		true);
-user_pref("network.http.spdy.enabled.v3-1",		true);
 
 // CIS Version 1.2.0 October 21st, 2011 2.2.4 Enable Online Certificate Status Protocol
 user_pref("security.OCSP.enabled",		1);
@@ -534,6 +602,10 @@ user_pref("security.enable_ssl3",		false);
 // "2. Strict. Pinning is always enforced."
 user_pref("security.cert_pinning.enforcement_level",		2);
 
+// Kill SHA1 certificates
+// https://bugzilla.mozilla.org/show_bug.cgi?id=942515#c32
+user_pref("security.pki.sha1_enforcement_level", 2);
+
 // https://wiki.mozilla.org/Security:Renegotiation#security.ssl.treat_unsafe_negotiation_as_broken
 // see also CVE-2009-3555
 user_pref("security.ssl.treat_unsafe_negotiation_as_broken",		true);
@@ -556,7 +628,8 @@ user_pref("security.ssl.errorReporting.automatic",		false);
 /******************************************************************************
  * CIPHERS                                                                    *
  *                                                                            *
- * you can debug the SSL handshake with tshark: tshark -t ad -n -i wlan0 -T text -V -R ssl.handshake
+ * you can debug the SSL handshake with tshark:                               *
+ *     tshark -t ad -n -i wlan0 -T text -V -R ssl.handshake                   *
  ******************************************************************************/
 
 // disable null ciphers
@@ -567,9 +640,8 @@ user_pref("security.ssl3.ecdhe_ecdsa_null_sha",		false);
 user_pref("security.ssl3.ecdh_rsa_null_sha",		false);
 user_pref("security.ssl3.ecdh_ecdsa_null_sha",		false);
 
-/* SEED
- * https://en.wikipedia.org/wiki/SEED
- */
+// SEED
+// https://en.wikipedia.org/wiki/SEED
 user_pref("security.ssl3.rsa_seed_sha",		false);
 
 // 40 bits...
@@ -600,17 +672,10 @@ user_pref("security.ssl3.rsa_rc4_128_sha",		false);
 // https://rc4.io/
 user_pref("security.tls.unrestricted_rc4_fallback",		false);
 
-/*
- * 3DES -> false because effective key size < 128
- *
- *   https://en.wikipedia.org/wiki/3des#Security
- *   http://en.citizendium.org/wiki/Meet-in-the-middle_attack
- *
- *
- * See also:
- *
- * http://www-archive.mozilla.org/projects/security/pki/nss/ssl/fips-ssl-ciphersuites.html
- */
+// 3DES -> false because effective key size < 128
+// https://en.wikipedia.org/wiki/3des#Security
+// http://en.citizendium.org/wiki/Meet-in-the-middle_attack
+// http://www-archive.mozilla.org/projects/security/pki/nss/ssl/fips-ssl-ciphersuites.html
 user_pref("security.ssl3.dhe_dss_des_ede3_sha",		false);
 user_pref("security.ssl3.dhe_rsa_des_ede3_sha",		false);
 user_pref("security.ssl3.ecdh_ecdsa_des_ede3_sha",		false);
@@ -675,10 +740,10 @@ user_pref("security.dialog_enable_delay", 0);
 user_pref("middlemouse.contentLoadURL", false);
 
 // Enable MSE
-// user_pref("media.mediasource.enabled", true);
-// user_pref("media.mediasource.mp4.enabled", true);
-// user_pref("media.mediasource.webm.enabled", true);
-// user_pref("media.fragmented-mp4.ffmpeg.enabled", true);
-// user_pref("media.fragmented-mp4.gmp.enabled", true);
-// user_pref("media.fragmented-mp4.exposed", true)
-// user_pref("media.fragmented-mp4.use-blank-decoder", false)
+user_pref("media.mediasource.enabled", true);
+user_pref("media.mediasource.mp4.enabled", true);
+user_pref("media.mediasource.webm.enabled", true);
+user_pref("media.fragmented-mp4.ffmpeg.enabled", true);
+user_pref("media.fragmented-mp4.gmp.enabled", false);
+user_pref("media.fragmented-mp4.exposed", true)
+user_pref("media.fragmented-mp4.use-blank-decoder", false)
