@@ -20,8 +20,18 @@ export WINEARCH=win32
 
 export MPD_HOST=$XDG_CACHE_HOME/mpd/socket
 
+# bad bad openSUSE
+export SMLNJ_HOME=/usr/lib/smlnj/
+
 # path
 # PATH="$HOME/bin:$PATH"
+
+# virtualenvwrapper support
+export WORKON_HOME=$XDG_DATA_HOME/virtualenvs
+export PROJECT_HOME=/mnt/storage/Projects
+export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
+export VIRTUALENVWRAPPER_SCRIPT=/usr/bin/virtualenvwrapper.sh
+source /usr/bin/virtualenvwrapper_lazy.sh
 
 # prevent terminal from overwriting Ctrl-s shortcut
 if tty -s ; then
@@ -29,15 +39,25 @@ if tty -s ; then
     stty -ixoff
 fi
 
+# prevent file overwrite on stdout redirection
+# use `>|` to force redirection to an existing file
+set -o noclobber
 # enable recursive globbing
 shopt -s extglob
+# turn on recursive globbing (enables ** to recurse all directories)
+shopt -s globstar
 # cd when entering just a path
 shopt -s autocd
 # correnct minor errors in the spelling of directories
 shopt -s cdspell
+# correct spelling errors during tab-completion
+shopt -s dirspell
 # check windows size after each command and update LINES & COLUMNS
 # if necessary
 shopt -s checkwinsize
+
+shopt -s cdable_vars
+export projects="/mnt/storage/Projects"
 
 # Append to ~/.bash_history instead of overwriting it -- this prevents
 # terminals from overwriting one another's histories.
@@ -52,9 +72,9 @@ unset HISTFILESIZE
 # HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S  "
 # Don't remember trivial {1,2,3,4}-letter commands.
 HISTIGNORE=?:??:???:????
-HISTIGNORE=${HISTIGNORE}':z *:v *:j *:make*:history:clear:* --help:cd*:ipython*'
+HISTIGNORE=${HISTIGNORE}':z *:v *:j *:history:clear:* --help:cd*:ipython*'
 # ingore duplicates and commands starting with spacebar
-HISTCONTROL=ignoreboth:erasedups
+HISTCONTROL="ignoreboth:erasedups"
 
 PROMPT_COMMAND="history -a"
 
@@ -72,7 +92,6 @@ if [ "$TERM" != "linux" ]; then
     PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
 fi
 
-# export _Z_DATA=$HOME/.z_data
 export _Z_DATA=$XDG_DATA_HOME/z/data
 [ -f ~/.z/z.sh ] && source ~/.z/z.sh
 
@@ -135,11 +154,12 @@ fi
 #     clear # bring us back to default input colours
 # fi
 
-mkcd () { mkdir -p "$*" && cd "$*"; }
-md () { mkdir -p "$*" && cd "$*"; }
+mkcd() { mkdir -p "$*" && cd "$*"; }
+unalias md
+md() { mkdir -p "$*" && cd "$*"; }
 # create & change directory
-ccd () { mkdir -p "$*" && cd "$*"; }
-mcd () { mkdir -p "$*" && cd "$*"; }
+ccd() { mkdir -p "$*" && cd "$*"; }
+mcd() { mkdir -p "$*" && cd "$*"; }
 
 psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
 
