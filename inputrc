@@ -6,6 +6,7 @@ set match-hidden-files off
 set blink-matching-paren on
 set visible-stats on
 set completion-query-items 9000
+# Space:magic-space
 # use up/down arrow to search through history
 #"\e[A":history-search-backward
 #"\e[B":history-search-forward
