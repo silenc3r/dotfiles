@@ -75,6 +75,7 @@
     " Google material design
     Plug 'NLKNguyen/papercolor-theme'
     Plug 'AlessandroYorba/Sierra'
+    Plug 'AlessandroYorba/Alduin'
 
     " Language support
     Plug 'klen/python-mode', { 'for': 'python' }
@@ -151,6 +152,10 @@
     " Update diff after save
     autocmd BufWritePost * if &diff | diffupdate | endif
 
+    " Remember cursor position when switcing buffers
+    autocmd BufLeave * let b:winview = winsaveview()
+    autocmd BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
+
 " Formatting & Editting
     set ts=4 sw=4 sts=4         " 1 Tab equals to 4 spaces
     set shiftround              " Round indent to multiple of shiftwidth
@@ -185,8 +190,10 @@
         " colorscheme spacegray
         " colorscheme gruvbox
         " colorscheme sierra
-        colorscheme apprentice
-        let g:airline_theme='apprentice'
+        " colorscheme alduin
+        " let g:airline_theme='pencil'
+        " colorscheme apprentice
+        " let g:airline_theme='apprentice'
         " let g:hybrid_use_Xresources = 1
         " colorscheme hybrid
         " colorscheme kolor
@@ -197,8 +204,8 @@
         " let g:seoul256_background = 235
         " colorscheme seoul256
         " let g:pencil_terminal_italics = 1
-        " let g:airline_theme = 'pencil'
-        " colorscheme pencil
+        let g:airline_theme = 'pencil'
+        colorscheme pencil
         " colorscheme atom-dark-256
         " set background=dark
     endif
@@ -244,6 +251,9 @@
     " Easier access to command history
     nnoremap <leader>; q:
 
+    " Die ex mode, die!
+    nnoremap Q <Nop>
+
     " While searching center on the line with current result
     nnoremap N Nzzzv
     nnoremap n nzzzv
@@ -280,6 +290,10 @@
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
     " autocmd WinEnter term://* startinsert
+    augroup term_enter
+        au!
+        au TermOpen * setlocal nolist
+    augroup END
 
     " Make esc quit insert mode in terminal
     tnoremap <Esc> <C-\><C-n>
