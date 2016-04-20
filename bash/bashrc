@@ -1,6 +1,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+if [ -f /etc/bashrc ]; then
+    . /etc/bashrc
+fi
+
 eval $(dircolors)
 
 hash nvim 2>/dev/null && VIM=nvim || VIM=vim
@@ -155,7 +159,7 @@ fi
 # fi
 
 mkcd() { mkdir -p "$*" && cd "$*"; }
-unalias md
+# unalias md
 md() { mkdir -p "$*" && cd "$*"; }
 # create & change directory
 ccd() { mkdir -p "$*" && cd "$*"; }
