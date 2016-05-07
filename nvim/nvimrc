@@ -122,9 +122,9 @@
     set winminheight=0          " Windows can be 0 line high (only statusbar)
     set splitbelow              " Put new window below the current one
     set splitright              " Put new window right of the current one
-    set scrolloff=5             " Min nr of lines to keep above/below cursor
-    set sidescroll=2            " Minimal number of columns to scroll horiz.
-    set sidescrolloff=8         " Minimal number of columns to keep on sides
+    set scrolloff=0             " Min nr of lines to keep above/below cursor
+    set sidescroll=1            " Minimal number of columns to scroll horiz.
+    set sidescrolloff=0         " Minimal number of columns to keep on sides
     set cursorline              " Highlight cursor line
     set number                  " Display current line number
     set relativenumber          " Use relative line numbering
