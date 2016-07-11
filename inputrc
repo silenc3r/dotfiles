@@ -17,3 +17,7 @@ set completion-query-items 9000
 #set bind-tty-special-chars off
 #"\C-w":backward-kill-word
 "\M-\b":backward-kill-word
+
+# Fix Home/End in tmux
+"\e[1~": beginning-of-line
+"\e[4~": end-of-line
