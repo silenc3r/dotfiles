@@ -41,7 +41,7 @@
     Plug 'tpope/vim-repeat'
 
     " Autocompletion & Syntax check
-    Plug 'Valloric/YouCompleteMe', { 'on': [] }
+    " Plug 'Valloric/YouCompleteMe', { 'on': [] }
     " Plug 'scrooloose/syntastic'
     Plug 'SirVer/ultisnips', { 'on': [] }
     " Automatic closing of quotes, parenthesis, brackets, etc.
@@ -76,6 +76,7 @@
     Plug 'NLKNguyen/papercolor-theme'
     Plug 'AlessandroYorba/Sierra'
     Plug 'AlessandroYorba/Alduin'
+    Plug 'jonathanfilip/vim-lucius'
 
     " Language support
     Plug 'klen/python-mode', { 'for': 'python' }
@@ -86,10 +87,11 @@
 
     call plug#end()
 
-    augroup defer_plugin_load
-        au!
-        au! InsertEnter * call plug#load('ultisnips', 'YouCompleteMe')
-                       \| call youcompleteme#Enable() | au! defer_plugin_load
+    " augroup defer_plugin_load
+    "     au!
+    "     au! InsertEnter * call plug#load('ultisnips', 'YouCompleteMe')
+    "                    \| call youcompleteme#Enable() | au! defer_plugin_load
+    " augroup END
 
 " General
     filetype plugin indent on   " Automatically detect file types.
@@ -190,10 +192,13 @@
         " colorscheme spacegray
         " colorscheme gruvbox
         " colorscheme sierra
+        " let g:lucius_contrast='low'
+        " let g:airline_theme='gruvbox'
+        " colorscheme lucius
         " colorscheme alduin
         " let g:airline_theme='pencil'
-        " colorscheme apprentice
-        " let g:airline_theme='apprentice'
+        colorscheme apprentice
+        let g:airline_theme='apprentice'
         " let g:hybrid_use_Xresources = 1
         " colorscheme hybrid
         " colorscheme kolor
@@ -204,8 +209,8 @@
         " let g:seoul256_background = 235
         " colorscheme seoul256
         " let g:pencil_terminal_italics = 1
-        let g:airline_theme = 'pencil'
-        colorscheme pencil
+        " let g:airline_theme = 'pencil'
+        " colorscheme pencil
         " colorscheme atom-dark-256
         " set background=dark
     endif
