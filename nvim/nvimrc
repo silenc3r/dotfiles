@@ -41,6 +41,7 @@
     Plug 'tpope/vim-repeat'
 
     " Autocompletion & Syntax check
+    Plug 'Shougo/deoplete.nvim'
     " Plug 'Valloric/YouCompleteMe', { 'on': [] }
     " Plug 'scrooloose/syntastic'
     Plug 'SirVer/ultisnips', { 'on': [] }
@@ -315,6 +316,11 @@
 " Plugin options
     " vim-plug
         let g:plug_window = "enew"
+
+    " deoplete
+        let g:deoplete#enable_at_startup = 1
+        inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#manual_complete()
+        inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : deoplete#undo_completion()
 
     " Startify session
         let g:startify_session_dir = "$HOME/.config/nvim/sessions"
