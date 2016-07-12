@@ -82,8 +82,8 @@ HISTCONTROL="ignoreboth:erasedups"
 
 PROMPT_COMMAND="history -a"
 
-[ -f /etc/bash_completion ] && source /etc/bash_completion
-[ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
+# [ -f /etc/bash_completion ] && source /etc/bash_completion
+# [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 
 # http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
 PS1_PWD_MAX=10
@@ -205,7 +205,10 @@ pacman() {
     esac
 }
 
-yt() { mpv $@ 2>/dev/null 1>&2 & disown; }
+yt() {
+    mpv "$@" &>/dev/null &
+    disown
+}
 
 nohist() { unset HISTFILE; }
 hsync() { history -a && history -n; }
