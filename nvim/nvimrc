@@ -83,7 +83,7 @@
     Plug 'klen/python-mode', { 'for': 'python' }
     Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
     Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-    Plug 'guns/vim-clojure-static', { 'for': ['clojure', 'clojurescript'] }
+    " Plug 'guns/vim-clojure-static', { 'for': ['clojure', 'clojurescript'] }
     Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
 
     call plug#end()
@@ -319,8 +319,10 @@
 
     " deoplete
         let g:deoplete#enable_at_startup = 1
-        inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#manual_complete()
-        inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : deoplete#undo_completion()
+        " inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#manual_complete()
+        inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "<Tab>"
+        " inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : deoplete#undo_completion()
+        inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "<S-Tab>"
 
     " Startify session
         let g:startify_session_dir = "$HOME/.config/nvim/sessions"
