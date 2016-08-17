@@ -230,6 +230,7 @@ alias ls='ls -hF --color=auto'
 alias ll='ls -l --group-directories-first'
 alias la='ll -A'
 alias lA='ls -A --group-directories-first'
+alias l1='ls -1'
 # list hidden files only
 alias lh='ls -d .??*'
 
