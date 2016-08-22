@@ -1,5 +1,13 @@
 " vim: set foldlevel=0 foldmethod=indent:
 
+" Env options
+    let g:python_version = matchstr(system("python --version | cut -f2 -d' '"), '^[0-9]')
+    if g:python_version =~ 3
+        let g:python2_host_prog = "/usr/bin/python2"
+    else
+        let g:python3_host_prog = "/usr/bin/python3"
+    endif
+
 " Load plugins
     call plug#begin('~/.config/nvim/plugged')
 
@@ -42,8 +50,7 @@
 
     " Autocompletion & Syntax check
     Plug 'Shougo/deoplete.nvim'
-    " Plug 'Valloric/YouCompleteMe', { 'on': [] }
-    " Plug 'scrooloose/syntastic'
+    Plug 'neomake/neomake'
     Plug 'SirVer/ultisnips', { 'on': [] }
     " Automatic closing of quotes, parenthesis, brackets, etc.
     " TODO: look into HTML tag closing
@@ -85,6 +92,12 @@
     Plug 'tpope/vim-markdown', { 'for': 'markdown' }
     " Plug 'guns/vim-clojure-static', { 'for': ['clojure', 'clojurescript'] }
     Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
+
+    " Autocompletion
+    Plug 'zchee/deoplete-jedi'
+
+    " Special apps
+    Plug 'mrtazz/simplenote.vim'
 
     call plug#end()
 
@@ -144,6 +157,8 @@
     set wildignore+=*.o,*~,.lo,*.obj,*.pyc,*.jar
     set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
     set suffixes+=.in,.a        " Files with lower priority while completing
+
+    autocmd FileType simplenote setlocal nonumber norelativenumber
 
     " Hide cursor line in insert mode
     augroup cline
@@ -305,10 +320,10 @@
     tnoremap <Esc> <C-\><C-n>
 
     " Make arrowkeys resize viewports accordingly
-    nnoremap <Left> :vertical resize +1<CR>
-    nnoremap <Right> :vertical resize -1<CR>
-    nnoremap <Up> :resize -1<CR>
-    nnoremap <Down> :resize +1<CR>
+    nnoremap <S-Left> :vertical resize +1<CR>
+    nnoremap <S-Right> :vertical resize -1<CR>
+    nnoremap <S-Up> :resize -1<CR>
+    nnoremap <S-Down> :resize +1<CR>
 
     " save the current file as root
     cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
@@ -343,6 +358,10 @@
         let g:airline#extensions#whitespace#show_message = 0
         let g:airline_left_sep=''
         let g:airline_right_sep=''
+
+    " Neomake
+        let g:neomake_python_enabled_makers = ['flake8']
+        au FileType,BufWritePost *.py Neomake
 
     " Syntastic
         " let g:syntastic_check_on_open = 1
@@ -417,6 +436,9 @@
         let g:UltiSnipsExpandTrigger="<c-k>"
         let g:UltiSnipsJumpForwardTrigger="<c-k>"
         let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
+
+    " simplenote
+        source $HOME/.config/simplenote/simplenote.vim
 
 " Functions
     " Strip whitespace
