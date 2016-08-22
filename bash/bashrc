@@ -259,3 +259,8 @@ alias cls=' echo -ne "\033c"'
 alias tm='tmux attach || tmux new'
 
 alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
+
+alias snote='nvim +SimplenoteList'
+
+# to prevent dnf using two caches (one for user and one for root)
+alias dnf='sudo dnf'
