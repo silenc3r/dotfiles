@@ -48,8 +48,15 @@
     Plug 'tpope/vim-surround'
     Plug 'tpope/vim-repeat'
 
+    " Language support
+    Plug 'klen/python-mode', { 'for': 'python' }
+    Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
+    Plug 'tpope/vim-markdown', { 'for': 'markdown' }
+    Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
+
     " Autocompletion & Syntax check
     Plug 'Shougo/deoplete.nvim'
+    Plug 'zchee/deoplete-jedi'
     Plug 'neomake/neomake'
     Plug 'SirVer/ultisnips', { 'on': [] }
     " Automatic closing of quotes, parenthesis, brackets, etc.
@@ -60,41 +67,31 @@
     Plug 'bling/vim-airline'
 
     " Colorschemes
-    Plug 'chriskempson/vim-tomorrow-theme'
-    Plug 'jnurmine/Zenburn'
-    Plug 'twilight'
-    Plug 'sickill/vim-monokai'
-    Plug 'nanotech/jellybeans.vim'
-    Plug 'morhetz/gruvbox'
-    Plug 'junegunn/seoul256.vim'
-    Plug 'tomasr/molokai'
-    Plug 'gosukiwi/vim-atom-dark'
-    Plug 'reedes/vim-colors-pencil'
-    Plug 'zeis/vim-kolor'
-    Plug 'cocopon/iceberg.vim'
-    Plug 'w0ng/vim-hybrid'
-    Plug 'jpo/vim-railscasts-theme'
+    " Plug 'chriskempson/vim-tomorrow-theme'
+    " Plug 'jnurmine/Zenburn'
+    " Plug 'twilight'
+    " Plug 'sickill/vim-monokai'
+    " Plug 'nanotech/jellybeans.vim'
+    " Plug 'morhetz/gruvbox'
+    " Plug 'junegunn/seoul256.vim'
+    " Plug 'tomasr/molokai'
+    " Plug 'gosukiwi/vim-atom-dark'
+    " Plug 'reedes/vim-colors-pencil'
+    " Plug 'zeis/vim-kolor'
+    " Plug 'cocopon/iceberg.vim'
+    " Plug 'w0ng/vim-hybrid'
+    " Plug 'jpo/vim-railscasts-theme'
     Plug 'romainl/Apprentice'
-    Plug 'scheakur/vim-scheakur'
-    Plug 'ajh17/Spacegray.vim'
-    Plug 'fxn/vim-monochrome'
+    " Plug 'scheakur/vim-scheakur'
+    " Plug 'ajh17/Spacegray.vim'
+    " Plug 'fxn/vim-monochrome'
     " Sublime material theme
-    Plug 'jdkanani/vim-material-theme'
+    " Plug 'jdkanani/vim-material-theme'
     " Google material design
-    Plug 'NLKNguyen/papercolor-theme'
-    Plug 'AlessandroYorba/Sierra'
-    Plug 'AlessandroYorba/Alduin'
-    Plug 'jonathanfilip/vim-lucius'
-
-    " Language support
-    Plug 'klen/python-mode', { 'for': 'python' }
-    Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
-    Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-    " Plug 'guns/vim-clojure-static', { 'for': ['clojure', 'clojurescript'] }
-    Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
-
-    " Autocompletion
-    Plug 'zchee/deoplete-jedi'
+    " Plug 'NLKNguyen/papercolor-theme'
+    " Plug 'AlessandroYorba/Sierra'
+    " Plug 'AlessandroYorba/Alduin'
+    " Plug 'jonathanfilip/vim-lucius'
 
     " Special apps
     Plug 'mrtazz/simplenote.vim'
