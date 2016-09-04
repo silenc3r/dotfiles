@@ -176,26 +176,6 @@ fnd() {
     fi
 }
 
-# remove recursively
-# always ask before deleting
-rmr() {
-    if [ $# -eq 1 ]; then
-        find . -iname "*$**" -prune -exec rm -ir {} \;
-    else
-        find "$1" -iname "*${*:2}*" -prune -exec rm -ir {} \;
-    fi
-}
-
-# remove recursively
-# don't ask before deleting
-rmrf() {
-    if [ $# -eq 1 ]; then
-        find . -iname "*$**" -prune -exec rm -r {} \;
-    else
-        find "$1" -iname "*${*:2}*" -prune -exec rm -r {} \;
-    fi
-}
-
 # pacman with sudo
 pacman() {
     case $1 in
