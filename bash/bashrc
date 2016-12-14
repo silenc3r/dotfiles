@@ -7,7 +7,7 @@ fi
 
 eval $(dircolors)
 
-hash nvim 2>/dev/null && VIM=nvim || VIM=vim
+hash nvim 2>/dev/null && _EDITOR=nvim || _EDITOR=vim
 
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
@@ -19,16 +19,13 @@ export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.aatext=true
 # export _JAVA_AWT_WM_NONREPARENTING=1
 # export AWT_TOOLKIT=MToolkit
 export EDITOR="vi"
-export VISUAL=$VIM
+export VISUAL=$_EDITOR
 export WINEARCH=win32
 
 export MPD_HOST=$XDG_CACHE_HOME/mpd/socket
 
 # bad bad openSUSE
 export SMLNJ_HOME=/usr/lib/smlnj/
-
-# path
-# PATH="$HOME/bin:$PATH"
 
 # virtualenvwrapper support
 export WORKON_HOME=$XDG_DATA_HOME/virtualenvs
@@ -38,52 +35,44 @@ export VIRTUALENVWRAPPER_SCRIPT=/usr/bin/virtualenvwrapper.sh
 source /usr/bin/virtualenvwrapper_lazy.sh
 
 # prevent terminal from overwriting Ctrl-s shortcut
-if tty -s ; then
-    stty -ixon
-    stty -ixoff
-fi
+stty -ixon
 
 # prevent file overwrite on stdout redirection
 # use `>|` to force redirection to an existing file
 set -o noclobber
-# enable recursive globbing
-shopt -s extglob
 # turn on recursive globbing (enables ** to recurse all directories)
 shopt -s globstar
+# case-insensitive globbig (used in pathname expansion)
+shopt -s nocaseglob
 # cd when entering just a path
 shopt -s autocd
 # correnct minor errors in the spelling of directories
 shopt -s cdspell
 # correct spelling errors during tab-completion
 shopt -s dirspell
-# check windows size after each command and update LINES & COLUMNS
-# if necessary
+# update window size after every command
 shopt -s checkwinsize
+# verify commands via history expansions
+shopt -s histverify
 
 shopt -s cdable_vars
 export projects="/mnt/storage/Projects"
 
-# Append to ~/.bash_history instead of overwriting it -- this prevents
-# terminals from overwriting one another's histories.
+# append to the history file, don't overwrite it
 shopt -s histappend
-# store multiline commands as single entries in history file
+# store multiline commands as one command
 shopt -s cmdhist
 # load 10000 last commands from history, if you need more just grep a file.
 HISTSIZE=10000
 # Don't truncate ~/.bash_history -- keep all your history, ever.
 unset HISTFILESIZE
-# Add a timestamp to each history entry.
-# HISTTIMEFORMAT="%Y/%m/%d %H:%M:%S  "
-# Don't remember trivial {1,2,3,4}-letter commands.
-HISTIGNORE=?:??:???:????
-HISTIGNORE=${HISTIGNORE}':z *:v *:j *:history:clear:* --help:cd*:ipython*'
+HISTIGNORE="?:??:???:????:&:[ ]*:history:clear:z *:j *"
 # ingore duplicates and commands starting with spacebar
-HISTCONTROL="ignoreboth:erasedups"
+HISTCONTROL="erasedups:ignoreboth"
+# Add a timestamp to each history entry.
+HISTTIMEFORMAT='%F %T'
 
 PROMPT_COMMAND="history -a"
-
-# [ -f /etc/bash_completion ] && source /etc/bash_completion
-# [ -f /usr/share/bash-completion/bash_completion ] && source /usr/share/bash-completion/bash_completion
 
 # http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
 PS1_PWD_MAX=10
@@ -109,13 +98,6 @@ if [ -f ~/.fzf.bash ]; then
     fda() {
         local dir
         dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
-    }
-    v() {
-        local files
-        files=$(grep '^>' ~/.nviminfo | cut -c3- |
-                while read line; do
-                    [ -f "${line/\~/$HOME}" ] && echo "$line"
-                done | fzf-tmux -d -m -q "$*" -1) && $VIM ${files//\~/$HOME}
     }
     unalias z 2> /dev/null
     j() {
@@ -158,12 +140,7 @@ fi
 #     clear # bring us back to default input colours
 # fi
 
-mkcd() { mkdir -p "$*" && cd "$*"; }
-# unalias md
-md() { mkdir -p "$*" && cd "$*"; }
-# create & change directory
 ccd() { mkdir -p "$*" && cd "$*"; }
-mcd() { mkdir -p "$*" && cd "$*"; }
 
 psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
 
@@ -190,6 +167,18 @@ yt() {
     disown
 }
 
+ytw() { # YOUTUBE WATCH
+    if [ $# -eq 2 ]; then
+        mpv --ytdl-format=22 ytdl://ytsearch$2:"$1";
+    else
+        mpv --ytdl-format=22 ytdl://ytsearch10:"$1";
+    fi;
+}
+
+ytfm() { # YOUTUBE FM (ONLY AUDIO)
+    mpv --no-video ytdl://ytsearch10:"$@";
+};
+
 nohist() { unset HISTFILE; }
 hsync() { history -a && history -n; }
 
@@ -205,20 +194,19 @@ alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 
-# ls
-alias ls='ls -hF --color=auto'
-alias ll='ls -l --group-directories-first'
-alias la='ll -A'
-alias lA='ls -A --group-directories-first'
+alias ls='ls --color=auto --group-directories-first'
+alias la='ls --almost-all'
+alias ll='ls -l --human-readable'
+alias lla='ll --almost-all'
 alias l1='ls -1'
 # list hidden files only
-alias lh='ls -d .??*'
+alias lh='ls -d .!(|.)'
 
-# cd
 alias ..='cd ..'  # redundant with autocd
 alias ...='cd ../..'
 
 alias su='su -'
+alias sudo='sudo '  # make aliases work with sudo
 alias ping='ping -c 3'
 alias mkdir='mkdir -p -v'
 alias df='df -h'
@@ -234,7 +222,6 @@ alias chgrp='chgrp --preserve-root'
 # clear screen for real (does not work in tmux)
 alias cls=' echo -ne "\033c"'
 
-[ "$IS_NVIM" ] && alias vim='nvim'
 # alias tmux='TERM=screen-256color tmux'
 alias tm='tmux attach || tmux new'
 
