@@ -36,12 +36,11 @@
     Plug 'qpkorr/vim-bufkill'
 
     " Tmux support
-    Plug 'jpalardy/vim-slime'
-    " Plug 'christoomey/vim-tmux-navigator'
+    " Plug 'jpalardy/vim-slime'
 
     " Git
     Plug 'tpope/vim-fugitive'
-    Plug 'mhinz/vim-signify'
+    " Plug 'mhinz/vim-signify'
     Plug 'mattn/gist-vim'
 
     " Text sculpting
@@ -73,31 +72,22 @@
     Plug 'vim-airline/vim-airline-themes'
 
     " Colorschemes
-    " Plug 'chriskempson/vim-tomorrow-theme'
+    Plug 'chriskempson/vim-tomorrow-theme'
+    Plug 'chriskempson/base16-vim'
     Plug 'jnurmine/Zenburn'
-    " Plug 'twilight'
-    " Plug 'sickill/vim-monokai'
-    " Plug 'nanotech/jellybeans.vim'
-    " Plug 'morhetz/gruvbox'
-    " Plug 'junegunn/seoul256.vim'
-    " Plug 'tomasr/molokai'
-    " Plug 'gosukiwi/vim-atom-dark'
-    " Plug 'reedes/vim-colors-pencil'
-    " Plug 'zeis/vim-kolor'
-    " Plug 'cocopon/iceberg.vim'
-    " Plug 'w0ng/vim-hybrid'
-    " Plug 'jpo/vim-railscasts-theme'
+    Plug 'bcicen/vim-vice'
+    Plug 'twilight256.vim'
+    Plug 'gosukiwi/vim-atom-dark'
+    Plug 'zeis/vim-kolor'
+    Plug 'AlessandroYorba/Sierra'
     Plug 'romainl/Apprentice', { 'branch': 'fancylines-and-neovim' }
-    " Plug 'scheakur/vim-scheakur'
-    " Plug 'ajh17/Spacegray.vim'
-    " Plug 'fxn/vim-monochrome'
+    Plug 'scheakur/vim-scheakur'
+    Plug 'fxn/vim-monochrome'
+    Plug 'rakr/vim-one'
     " Sublime material theme
-    " Plug 'jdkanani/vim-material-theme'
+    Plug 'jdkanani/vim-material-theme'
     " Google material design
-    " Plug 'NLKNguyen/papercolor-theme'
-    " Plug 'AlessandroYorba/Sierra'
-    " Plug 'AlessandroYorba/Alduin'
-    " Plug 'jonathanfilip/vim-lucius'
+    Plug 'NLKNguyen/papercolor-theme'
 
     " Special apps
     Plug 'mrtazz/simplenote.vim'
@@ -162,6 +152,7 @@
     set suffixes+=.in,.a        " Files with lower priority while completing
 
     autocmd FileType simplenote setlocal nonumber norelativenumber
+    autocmd BufRead,BufNewFile *.jinja2 setlocal filetype=htmldjango
 
     " Hide cursor line in insert mode
     augroup cline
@@ -199,50 +190,42 @@
     set background=dark
     if ($TERM =~ "xterm") || ($TERM =~ "-256color")
         " set t_Co=256
+        " set termguicolors
         " colorscheme Tomorrow-Night-Eighties
-        " colorscheme Tomorrow-Night
-        " colorscheme monokai
-        " colorscheme railscasts
+        " let g:airline_theme = 'base16_eighties'
+        let base16colorspace=256
+        colorscheme base16-eighties
+        " set termguicolors
+        " colorscheme sierra
+        " colorscheme vice
         " let g:zenburn_high_Contrast = 1
         " colorscheme zenburn
+        " let g:one_allow_italics = 1
+        " set termguicolors
+        " colorscheme one
         " let g:airline_theme = 'zenburn'
-        " let g:airline_theme='gruvbox'
-        " let g:gruvbox_italic=1
-        " colorscheme spacegray
-        " colorscheme gruvbox
-        " colorscheme sierra
-        " let g:lucius_contrast='low'
-        " let g:airline_theme='gruvbox'
-        " colorscheme lucius
-        " colorscheme alduin
-        " let g:airline_theme='pencil'
-        " Apprentice
-            colorscheme apprentice
-            let g:airline_theme='apprentice'
-            hi Constant ctermfg=210
-            hi DiffText ctermfg=210
-            hi SpellRare ctermfg=210
-        " let g:hybrid_use_Xresources = 1
-        " colorscheme hybrid
+        " " Apprentice
+        "     colorscheme apprentice
+        "     let g:airline_theme='apprentice'
+        "     hi Constant ctermfg=210
+        "     hi DiffText ctermfg=210
+        "     hi SpellRare ctermfg=210
         " colorscheme kolor
         " colorscheme scheakur
-        " colorscheme iceberg
-        " colorscheme twilight
-        " colorscheme jellybeans
-        " let g:seoul256_background = 235
-        " colorscheme seoul256
-        " let g:pencil_terminal_italics = 1
-        " let g:airline_theme = 'pencil'
-        " colorscheme pencil
+        " colorscheme twilight256
         " colorscheme atom-dark-256
         " set background=dark
+        " set termguicolors
+        " colorscheme PaperColor
+        " let g:airline_theme='papercolor'
+        " colorscheme material-theme
     endif
     " paren highlighting can be annoying
-    hi MatchParen cterm=underline ctermfg=14 ctermbg=none
+    " hi MatchParen cterm=underline ctermfg=14 ctermbg=none
     " hi MatchParen cterm=underline ctermfg=none ctermbg=161
     " comments are always italic
     hi Comment cterm=italic
-    hi ColorColumn ctermbg=236
+    " hi ColorColumn ctermbg=236
 
 " Keymaps
     " Remap <Leader> to SPACEBAR

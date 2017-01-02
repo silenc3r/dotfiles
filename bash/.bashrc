@@ -9,6 +9,9 @@ eval $(dircolors)
 
 hash nvim 2>/dev/null && _EDITOR=nvim || _EDITOR=vim
 
+BASE16_SHELL=$HOME/.config/base16-shell/
+[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CACHE_HOME=$HOME/.cache
@@ -82,7 +85,9 @@ source /etc/bash_completion.d/git-prompt.sh 2>/dev/null
 
 GIT_PS1_SHOWDIRTYSTATE=1
 if [ "$TERM" != "linux" ]; then
-    PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
+    # PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
+    PS1='\[\033[1m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
+    # PS1='\033[1m$(__pwd_ps1)\033[0m$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
 fi
 
 export _Z_DATA=$XDG_DATA_HOME/z/data
