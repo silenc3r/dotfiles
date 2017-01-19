@@ -230,7 +230,5 @@ alias cls=' echo -ne "\033c"'
 # alias tmux='TERM=screen-256color tmux'
 alias tm='tmux attach || tmux new'
 
-alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
-
 # to prevent dnf using two caches (one for user and one for root)
 alias dnf='sudo dnf'
