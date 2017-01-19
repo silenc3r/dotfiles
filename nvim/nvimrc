@@ -89,9 +89,6 @@
     " Google material design
     Plug 'NLKNguyen/papercolor-theme'
 
-    " Special apps
-    Plug 'mrtazz/simplenote.vim'
-
     call plug#end()
 
     " augroup defer_plugin_load
@@ -151,22 +148,25 @@
     set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
     set suffixes+=.in,.a        " Files with lower priority while completing
 
-    autocmd FileType simplenote setlocal nonumber norelativenumber
-    autocmd BufRead,BufNewFile *.jinja2 setlocal filetype=htmldjango
-
     " Hide cursor line in insert mode
-    augroup cline
+    aug cline
         au!
         au WinLeave,InsertEnter * set nocursorline
         au WinEnter,InsertLeave * set cursorline
-    augroup END
+    aug END
 
     " Update diff after save
-    autocmd BufWritePost * if &diff | diffupdate | endif
+    aug DiffUpdate
+        au!
+        au BufWritePost * if &diff | diffupdate | endif
+    aug END
 
     " Remember cursor position when switcing buffers
-    autocmd BufLeave * let b:winview = winsaveview()
-    autocmd BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
+    aug CursorPosition
+        au!
+        au BufLeave * let b:winview = winsaveview()
+        au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
+    aug END
 
 " Formatting & Editting
     set ts=4 sw=4 sts=4         " 1 Tab equals to 4 spaces
@@ -177,13 +177,14 @@
     set completeopt=menuone
 
     " Remove trailing whitespaces and ^M chars
-    augroup files
+    augroup FileTypes
         au!
         au FileType c,cpp,java,go,javascript,python,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
         au FileType python setlocal colorcolumn=80
         au FileType text setlocal textwidth=80 colorcolumn=+1
+        au FileType simplenote setlocal nonumber norelativenumber
+        au BufRead,BufNewFile *.jinja2 setlocal filetype=htmldjango
         " au FileType yaml setlocal ft=ansible
-        au FileType spec setlocal sw=2 ts=2 sts=2 noet
     augroup END
 
 " Colors
