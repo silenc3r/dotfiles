@@ -17,7 +17,7 @@ export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CACHE_HOME=$HOME/.cache
 
 # better font rendering in java apps
-export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.aatext=true'
+# export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.aatext=true'
 # fix java apps in xmonad
 # export _JAVA_AWT_WM_NONREPARENTING=1
 # export AWT_TOOLKIT=MToolkit
@@ -169,7 +169,7 @@ pacman() {
 
 yt() {
     mpv "$@" &>/dev/null &
-    disown
+    disown -h %1
 }
 
 ytw() { # YOUTUBE WATCH
@@ -231,8 +231,6 @@ alias cls=' echo -ne "\033c"'
 alias tm='tmux attach || tmux new'
 
 alias ncmpcpp='ncmpcpp -c $XDG_CONFIG_HOME/ncmpcpp/config'
-
-alias snote='nvim +SimplenoteList'
 
 # to prevent dnf using two caches (one for user and one for root)
 alias dnf='sudo dnf'
