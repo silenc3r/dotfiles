@@ -25,7 +25,7 @@ export EDITOR="vi"
 export VISUAL=$_EDITOR
 export WINEARCH=win32
 
-export MPD_HOST=$XDG_CACHE_HOME/mpd/socket
+# export MPD_HOST=$XDG_CACHE_HOME/mpd/socket
 
 # bad bad openSUSE
 export SMLNJ_HOME=/usr/lib/smlnj/
