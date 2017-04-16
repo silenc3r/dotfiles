@@ -9,9 +9,6 @@ eval $(dircolors)
 
 hash nvim 2>/dev/null && _EDITOR=nvim || _EDITOR=vim
 
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
-
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CACHE_HOME=$HOME/.cache
@@ -77,40 +74,31 @@ HISTTIMEFORMAT='%F %T'
 
 PROMPT_COMMAND="history -a"
 
-# http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
-PS1_PWD_MAX=10
-__pwd_ps1() { echo -n $PWD | sed -e "s|${HOME}|~|" -e "s|\(/[^/]*/\).*\(/.\{${PS1_PWD_MAX}\}\)|\1…\2|"; }
-source /usr/share/git-core/contrib/completion/git-prompt.sh 2>/dev/null
-source /etc/bash_completion.d/git-prompt.sh 2>/dev/null
-
-GIT_PS1_SHOWDIRTYSTATE=1
-if [ "$TERM" != "linux" ]; then
-    # PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
-    PS1='\[\033[1m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
-    # PS1='\033[1m$(__pwd_ps1)\033[0m$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
-fi
+# # http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
+# PS1_PWD_MAX=10
+# __pwd_ps1() { echo -n $PWD | sed -e "s|${HOME}|~|" -e "s|\(/[^/]*/\).*\(/.\{${PS1_PWD_MAX}\}\)|\1…\2|"; }
+# source /usr/share/git-core/contrib/completion/git-prompt.sh 2>/dev/null
+# source /etc/bash_completion.d/git-prompt.sh 2>/dev/null
+#
+# GIT_PS1_SHOWDIRTYSTATE=1
+# if [ "$TERM" != "linux" ]; then
+#     # PS1='\[\033[0;97m\]$(__pwd_ps1)\[\033[0;93m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
+#     PS1='\[\033[1m\]$(__pwd_ps1)\[\033[1;30m\]$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
+#     # PS1='\033[1m$(__pwd_ps1)\033[0m$(__git_ps1 " (%s)")\[\033[0;34m\]❯\[\033[0m\] '
+# fi
 
 export _Z_DATA=$XDG_DATA_HOME/z/data
 [ -f ~/.z/z.sh ] && source ~/.z/z.sh
 
+export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+
 if [ -f ~/.fzf.bash ]; then
     source ~/.fzf.bash
-    fd() {
-        local dir
-        dir=$(find ${1:-*} -path '*/\.*' -prune \
-            -o -type d -print 2> /dev/null | fzf +m) && cd "$dir"
-    }
-    fda() {
-        local dir
-        dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
-    }
     unalias z 2> /dev/null
     j() {
-        if [[ -z "$*" ]]; then
-            cd "$(_z -l 2>&1 | fzf +s --tac | sed 's/^[0-9,.]* *//')"
-        else
-            _z "$@"
-        fi
+        [ $# -gt 0 ] && _z "$*" && return
+        cd "$(_z -l 2>&1 | fzf-tmux +s --tac --query "$*" | sed 's/^[0-9,.]* *//')"
     }
 fi
 
@@ -169,7 +157,7 @@ pacman() {
 
 yt() {
     mpv "$@" &>/dev/null &
-    disown -h %1
+    disown
 }
 
 ytw() { # YOUTUBE WATCH
@@ -232,3 +220,8 @@ alias tm='tmux attach || tmux new'
 
 # to prevent dnf using two caches (one for user and one for root)
 alias dnf='sudo dnf'
+
+GIT_PROMPT_ONLY_IN_REPO=0
+GIT_PROMPT_SHOW_UNTRACKED_FILES=no
+source ~/.bash-git-prompt/gitprompt.sh
+GIT_PROMPT_THEME=Custom
