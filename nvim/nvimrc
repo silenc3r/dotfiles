@@ -2,11 +2,6 @@
 
 " Env options
     let g:python_version = matchstr(system("python --version | cut -f2 -d' '"), '^[0-9]')
-    " if g:python_version =~ 3
-    "     let g:python2_host_prog = '/usr/bin/python2'
-    " else
-    "     let g:python3_host_prog = '/usr/bin/python3'
-    " endif
     let g:python2_host_prog = "/usr/bin/python2"
     let g:python3_host_prog = "/usr/bin/python3"
 
@@ -21,13 +16,14 @@
 
     if executable('ctags')
         " loading it on-demand breaks Airline
-        " Plug 'majutsushi/tagbar' ", { 'on': 'TagbarToggle' }
+        Plug 'majutsushi/tagbar' ", { 'on': 'TagbarToggle' }
         Plug 'ludovicchabant/vim-gutentags'
     endif
 
-    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install'  }
-    Plug 'cloudhead/neovim-fuzzy'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install'  }
+    Plug 'junegunn/fzf.vim'
     Plug 'tpope/vim-vinegar'
+    Plug 'tpope/vim-eunuch'
     Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
     " Display marks
     Plug 'kshenoy/vim-signature'
@@ -35,12 +31,14 @@
     Plug 'mhinz/vim-startify'
     Plug 'qpkorr/vim-bufkill'
 
+    Plug 'Alok/notational-fzf-vim'
+
     " Tmux support
     " Plug 'jpalardy/vim-slime'
 
     " Git
     Plug 'tpope/vim-fugitive'
-    " Plug 'mhinz/vim-signify'
+    Plug 'mhinz/vim-signify'
     Plug 'mattn/gist-vim'
 
     " Text sculpting
@@ -51,17 +49,19 @@
     Plug 'tpope/vim-repeat'
 
     " Language support
+    Plug 'hkupty/iron.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
     Plug 'mitsuhiko/vim-python-combined', { 'for': 'python' }
     Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
     Plug 'tpope/vim-markdown', { 'for': 'markdown' }
     Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
+    Plug 'sheerun/vim-polyglot'
 
     " Autocompletion & Syntax check
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-jedi'
     Plug 'neomake/neomake'
-    Plug 'SirVer/ultisnips', { 'on': [] }
+    Plug 'SirVer/ultisnips' ", { 'on': [] }
     Plug 'honza/vim-snippets'
     " Automatic closing of quotes, parenthesis, brackets, etc.
     " TODO: look into HTML tag closing
@@ -72,22 +72,17 @@
     Plug 'vim-airline/vim-airline-themes'
 
     " Colorschemes
-    Plug 'chriskempson/vim-tomorrow-theme'
-    Plug 'chriskempson/base16-vim'
     Plug 'jnurmine/Zenburn'
-    Plug 'bcicen/vim-vice'
-    Plug 'twilight256.vim'
-    Plug 'gosukiwi/vim-atom-dark'
-    Plug 'zeis/vim-kolor'
-    Plug 'AlessandroYorba/Sierra'
-    Plug 'romainl/Apprentice', { 'branch': 'fancylines-and-neovim' }
-    Plug 'scheakur/vim-scheakur'
-    Plug 'fxn/vim-monochrome'
     Plug 'rakr/vim-one'
-    " Sublime material theme
-    Plug 'jdkanani/vim-material-theme'
     " Google material design
     Plug 'NLKNguyen/papercolor-theme'
+    Plug 'arcticicestudio/nord-vim'
+    Plug 'morhetz/gruvbox'
+    Plug 'chriskempson/base16-vim'
+    Plug 'joshdick/onedark.vim'
+    Plug 'dracula/vim'
+    Plug 'romainl/Apprentice', { 'branch': 'fancylines-and-neovim' }
+    Plug 'reedes/vim-colors-pencil'
 
     call plug#end()
 
@@ -189,37 +184,27 @@
 
 " Colors
     set background=dark
+    " set background=light
     if ($TERM =~ "xterm") || ($TERM =~ "-256color")
-        " set t_Co=256
-        " set termguicolors
-        " colorscheme Tomorrow-Night-Eighties
-        " let g:airline_theme = 'base16_eighties'
-        let base16colorspace=256
-        colorscheme base16-eighties
-        " set termguicolors
-        " colorscheme sierra
-        " colorscheme vice
-        " let g:zenburn_high_Contrast = 1
-        " colorscheme zenburn
-        " let g:one_allow_italics = 1
-        " set termguicolors
+        set termguicolors
+        let g:one_allow_italics = 1
         " colorscheme one
+        let g:onedark_terminal_italics = 1
+        colorscheme onedark
+        " colorscheme zenburn
         " let g:airline_theme = 'zenburn'
-        " " Apprentice
-        "     colorscheme apprentice
-        "     let g:airline_theme='apprentice'
-        "     hi Constant ctermfg=210
-        "     hi DiffText ctermfg=210
-        "     hi SpellRare ctermfg=210
-        " colorscheme kolor
-        " colorscheme scheakur
         " colorscheme twilight256
-        " colorscheme atom-dark-256
-        " set background=dark
-        " set termguicolors
         " colorscheme PaperColor
         " let g:airline_theme='papercolor'
-        " colorscheme material-theme
+        let g:nord_italic_comments = 1
+        " colorscheme nord
+        " colorscheme gruvbox
+        " colorscheme base16-eighties
+        " colorscheme dracula
+        " colorscheme apprentice
+        " let g:pencil_gutter_color = 1
+        " let g:pencil_terminal_italics = 1
+        " colorscheme pencil
     endif
     " paren highlighting can be annoying
     " hi MatchParen cterm=underline ctermfg=14 ctermbg=none
@@ -283,10 +268,10 @@
     nnoremap / /\v
     vnoremap / /\v
 
-    " Quickly change tab length
-    nnoremap <leader>2 :set ts=2 sw=2 sts=2<CR>
-    nnoremap <leader>4 :set ts=4 sw=4 sts=4<CR>
-    nnoremap <leader>8 :set ts=8 sw=8 sts=8<CR>
+    " " Quickly change tab length
+    " nnoremap <leader>2 :set ts=2 sw=2 sts=2<CR>
+    " nnoremap <leader>4 :set ts=4 sw=4 sts=4<CR>
+    " nnoremap <leader>8 :set ts=8 sw=8 sts=8<CR>
 
     " Easier window navigation, <C-W>_ maximizes window after switch"
     " nnoremap <C-J> <C-W>j
@@ -305,6 +290,8 @@
     augroup term_enter
         au!
         au TermOpen * setlocal nolist
+        " au BufEnter term://* startinsert
+        " au BufLeave term://* stopinsert
     augroup END
 
     " Make esc quit insert mode in terminal
@@ -325,6 +312,7 @@
 
     " deoplete
         let g:deoplete#enable_at_startup = 1
+        let g:deoplete#auto_complete_delay = 0
         " inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#manual_complete()
         inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "<Tab>"
         " inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : deoplete#undo_completion()
@@ -347,8 +335,34 @@
     " Airline
         let g:airline#extensions#whitespace#enabled = 0
         let g:airline#extensions#whitespace#show_message = 0
+        if !exists('g:airline_symbols')
+            let g:airline_symbols = {}
+        endif
+
         let g:airline_left_sep=''
+        let g:airline_left_alt_sep = ''
         let g:airline_right_sep=''
+        let g:airline_right_alt_sep = ''
+        let g:airline_symbols.crypt = '🔒'
+        let g:airline_symbols.branch = ''
+        let g:airline_symbols.readonly = ''
+
+        let g:airline#extensions#tabline#enabled = 1
+        let g:airline#extensions#tabline#show_buffers = 1
+        let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+        let g:airline#extensions#tabline#show_close_button = 0
+        let g:airline#extensions#tabline#fnamemod = ':t'
+
+        let g:airline#extensions#tabline#buffer_idx_mode = 1
+        nmap <leader>1 <Plug>AirlineSelectTab1
+        nmap <leader>2 <Plug>AirlineSelectTab2
+        nmap <leader>3 <Plug>AirlineSelectTab3
+        nmap <leader>4 <Plug>AirlineSelectTab4
+        nmap <leader>5 <Plug>AirlineSelectTab5
+        nmap <leader>6 <Plug>AirlineSelectTab6
+        nmap <leader>7 <Plug>AirlineSelectTab7
+        nmap <leader>8 <Plug>AirlineSelectTab8
+        nmap <leader>9 <Plug>AirlineSelectTab9
 
     " Neomake
         let g:neomake_python_enabled_makers = ['flake8']
@@ -360,9 +374,8 @@
         " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
         nmap <Leader>a <Plug>(EasyAlign)
 
-    " neovim-fuzzy
-        nnoremap <C-p> :FuzzyOpen<CR>
-        nnoremap <Leader>f :FuzzyOpen<CR>
+    " FZF
+        let g:fzf_layout = {'window': 'enew'}
 
     " tcomment
         let g:tcommentMapLeader1 = 0
@@ -372,10 +385,11 @@
         let g:tcommentTextObjectInlineComment = 0
 
     " TagBar
-        " " Jump to tagbar window upon opening it
-        " let g:tagbar_autofocus = 1
+        " Jump to tagbar window upon opening it
+        let g:tagbar_autofocus = 1
         " nnoremap <silent> <leader>tt :TagbarToggle<CR>
         " nnoremap <silent> <leader>ta :TagbarOpenAutoClose<CR>
+        nnoremap <silent> <leader>t :TagbarOpenAutoClose<CR>
 
     " Fugitive
         nnoremap <silent> <leader>gs :Gstatus<CR>
@@ -409,8 +423,11 @@
         let g:UltiSnipsJumpForwardTrigger="<c-j>"
         let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-    " simplenote
-        source $HOME/.config/simplenote/simplenote.vim
+    " notational-fzf-vim
+        let g:nv_directories = ['~/Notes']
+        let g:nv_preview_direction = 'top'
+        let g:nv_preview_width = 40
+        let g:nv_use_short_pathnames = 1
 
 " Functions
     " Strip whitespace
