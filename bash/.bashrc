@@ -18,7 +18,8 @@ export XDG_CACHE_HOME=$HOME/.cache
 # fix java apps in xmonad
 # export _JAVA_AWT_WM_NONREPARENTING=1
 # export AWT_TOOLKIT=MToolkit
-export EDITOR="vi"
+# export EDITOR="vi"
+export EDITOR=$_EDITOR
 export VISUAL=$_EDITOR
 export WINEARCH=win32
 
@@ -27,12 +28,13 @@ export WINEARCH=win32
 # bad bad openSUSE
 export SMLNJ_HOME=/usr/lib/smlnj/
 
-# virtualenvwrapper support
-export WORKON_HOME=$XDG_DATA_HOME/virtualenvs
-export PROJECT_HOME=/mnt/storage/Projects
-export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
-export VIRTUALENVWRAPPER_SCRIPT=/usr/bin/virtualenvwrapper.sh
-source /usr/bin/virtualenvwrapper_lazy.sh
+export PYENV_ROOT="$HOME/.local/usr/pyenv"
+export PATH=$HOME/.local/bin:$HOME/bin:$PYENV_ROOT/bin:$PATH
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+alias penv=pyenv
+complete -F _pyenv penv
 
 # prevent terminal from overwriting Ctrl-s shortcut
 stty -ixon
@@ -90,7 +92,7 @@ PROMPT_COMMAND="history -a"
 export _Z_DATA=$XDG_DATA_HOME/z/data
 [ -f ~/.z/z.sh ] && source ~/.z/z.sh
 
-export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
 if [ -f ~/.fzf.bash ]; then
@@ -146,15 +148,6 @@ fnd() {
     fi
 }
 
-# pacman with sudo
-pacman() {
-    case $1 in
-        -S | -D | -S[^ghilps]* | -R* | -U*)
-            LC_ALL=C /usr/bin/sudo /usr/bin/pacman "$@" ;;
-    *)      LC_ALL=C /usr/bin/pacman "$@" ;;
-    esac
-}
-
 yt() {
     mpv "$@" &>/dev/null &
     disown
@@ -193,7 +186,7 @@ alias ll='ls -l --human-readable'
 alias lla='ll --almost-all'
 alias l1='ls -1'
 # list hidden files only
-alias lh='ls -d .!(|.)'
+alias lh='ls -d .!(|.) 2>/dev/null'
 
 alias ..='cd ..'  # redundant with autocd
 alias ...='cd ../..'
