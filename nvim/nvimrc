@@ -1,26 +1,20 @@
 " vim: set foldlevel=0 foldmethod=indent:
 
 " Env options
-    let g:python_version = matchstr(system("python --version | cut -f2 -d' '"), '^[0-9]')
-    let g:python2_host_prog = "/usr/bin/python2"
-    let g:python3_host_prog = "/usr/bin/python3"
+    " let g:python_version = matchstr(system("python --version | cut -f2 -d' '"), '^[0-9]')
+    let g:python_host_prog = "/home/dawid/.local/usr/pyenv/versions/neovim2/bin/python"
+    let g:python3_host_prog = "/home/dawid/.local/usr/pyenv/versions/neovim3/bin/python"
 
 " Load plugins
     call plug#begin('~/.config/nvim/plugged')
 
     " Utils
-    if executable('ag')
-        " TODO: use it, possibly with unite
-        Plug 'rking/ag.vim'
-    endif
-
     if executable('ctags')
         " loading it on-demand breaks Airline
         Plug 'majutsushi/tagbar' ", { 'on': 'TagbarToggle' }
         Plug 'ludovicchabant/vim-gutentags'
     endif
-
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install'  }
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
     Plug 'junegunn/fzf.vim'
     Plug 'tpope/vim-vinegar'
     Plug 'tpope/vim-eunuch'
@@ -30,11 +24,7 @@
     " Fancy start screen & session management
     Plug 'mhinz/vim-startify'
     Plug 'qpkorr/vim-bufkill'
-
     Plug 'Alok/notational-fzf-vim'
-
-    " Tmux support
-    " Plug 'jpalardy/vim-slime'
 
     " Git
     Plug 'tpope/vim-fugitive'
@@ -51,17 +41,17 @@
     " Language support
     Plug 'hkupty/iron.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
-    Plug 'mitsuhiko/vim-python-combined', { 'for': 'python' }
+    " Plug 'mitsuhiko/vim-python-combined', { 'for': 'python' }
     Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
     Plug 'tpope/vim-markdown', { 'for': 'markdown' }
     Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
-    Plug 'sheerun/vim-polyglot'
+    " Plug 'sheerun/vim-polyglot'
 
     " Autocompletion & Syntax check
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-jedi'
     Plug 'neomake/neomake'
-    Plug 'SirVer/ultisnips' ", { 'on': [] }
+    Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
     " Automatic closing of quotes, parenthesis, brackets, etc.
     " TODO: look into HTML tag closing
@@ -117,22 +107,24 @@
     set showcmd                 " Show partial commands in status line and selected characters/lines in visual mode
     set noshowmode              " Don't show mode, Airline takes care of that
     set shortmess+=mr           " Abbrev. of messages (avoids 'hit enter')
-    set lazyredraw              " Avoid scrolling problems
+    " set lazyredraw              " Avoid scrolling problems
     set vb t_vb=                " Prevent screen flashing
     set winminheight=0          " Windows can be 0 line high (only statusbar)
     set splitbelow              " Put new window below the current one
     set splitright              " Put new window right of the current one
-    set scrolloff=0             " Min nr of lines to keep above/below cursor
     set sidescroll=1            " Minimal number of columns to scroll horiz.
-    set sidescrolloff=0         " Minimal number of columns to keep on sides
     set cursorline              " Highlight cursor line
     set number                  " Display current line number
     set relativenumber          " Use relative line numbering
     set nowrap                  " Don't wrap long lines
     set list
-    set listchars=nbsp:␣,extends:❯,precedes:❮,tab:»\ ,trail:·
+    " bag of chars: ▶ ◀ ← → … … ⟩ ⟨ ❯ ❮
+    set listchars=nbsp:␣,extends:→,precedes:←,tab:»\ ,trail:·
+    set fillchars+=vert:│
     " set foldminlines=5
     set foldlevelstart=99
+
+    set grepprg=rg\ --vimgrep
 
     " Commandline completion
     " Command <Tab> completion: list matches, then longest common part,
@@ -165,7 +157,7 @@
 
 " Formatting & Editting
     set ts=4 sw=4 sts=4         " 1 Tab equals to 4 spaces
-    set shiftround              " Round indent to multiple of shiftwidth
+    " set shiftround              " Round indent to multiple of shiftwidth
     set expandtab               " Convert tabs to spaces
     " set tildeop                 " Let tilde work with movement keys
     set virtualedit=onemore,block " Allow for cursor beyond last character
@@ -177,7 +169,6 @@
         au FileType c,cpp,java,go,javascript,python,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
         au FileType python setlocal colorcolumn=80
         au FileType text setlocal textwidth=80 colorcolumn=+1
-        au FileType simplenote setlocal nonumber norelativenumber
         au BufRead,BufNewFile *.jinja2 setlocal filetype=htmldjango
         " au FileType yaml setlocal ft=ansible
     augroup END
@@ -202,8 +193,8 @@
         " colorscheme base16-eighties
         " colorscheme dracula
         " colorscheme apprentice
-        " let g:pencil_gutter_color = 1
-        " let g:pencil_terminal_italics = 1
+        let g:pencil_gutter_color = 1
+        let g:pencil_terminal_italics = 1
         " colorscheme pencil
     endif
     " paren highlighting can be annoying
@@ -226,8 +217,6 @@
 
     " Simpler saving/quiting
     nnoremap <silent> <leader>w :w<CR>
-    " nnoremap <silent> <leader>q :q<CR>
-    nnoremap <silent> <leader>n :enew<CR>
     cnoremap q1 q!
 
     " Jump to exact position
@@ -257,8 +246,8 @@
     nnoremap g; g;zzzv
     nnoremap g. g.zzzv
 
-    " fly between buffers
-    nnoremap <leader>l :ls<CR>:b<space>
+    " " fly between buffers
+    " nnoremap <leader>l :ls<CR>:b<space>
     " nnoremap <leader><leader> <C-^>
     nnoremap <leader>] :bnext<CR>
     nnoremap <leader>[ :bprev<CR>
@@ -268,31 +257,26 @@
     nnoremap / /\v
     vnoremap / /\v
 
-    " " Quickly change tab length
-    " nnoremap <leader>2 :set ts=2 sw=2 sts=2<CR>
-    " nnoremap <leader>4 :set ts=4 sw=4 sts=4<CR>
-    " nnoremap <leader>8 :set ts=8 sw=8 sts=8<CR>
-
-    " Easier window navigation, <C-W>_ maximizes window after switch"
-    " nnoremap <C-J> <C-W>j
-    " nnoremap <C-K> <C-W>k
-    " nnoremap <C-L> <C-W>l
-    " nnoremap <C-H> <C-W>h
+    " Easier window navigation
     tnoremap <A-h> <C-\><C-n><C-w>h
     tnoremap <A-j> <C-\><C-n><C-w>j
     tnoremap <A-k> <C-\><C-n><C-w>k
     tnoremap <A-l> <C-\><C-n><C-w>l
+    inoremap <A-h> <C-\><C-n><C-w>h
+    inoremap <A-j> <C-\><C-n><C-w>j
+    inoremap <A-k> <C-\><C-n><C-w>k
+    inoremap <A-l> <C-\><C-n><C-w>l
     nnoremap <A-h> <C-w>h
     nnoremap <A-j> <C-w>j
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
     " autocmd WinEnter term://* startinsert
-    augroup term_enter
-        au!
-        au TermOpen * setlocal nolist
-        " au BufEnter term://* startinsert
-        " au BufLeave term://* stopinsert
-    augroup END
+    " augroup term_enter
+    "     au!
+    "     au TermOpen * setlocal nolist
+    "     " au BufEnter term://* startinsert
+    "     " au BufLeave term://* stopinsert
+    " augroup END
 
     " Make esc quit insert mode in terminal
     tnoremap <Esc> <C-\><C-n>
@@ -302,9 +286,6 @@
     nnoremap <S-Right> :vertical resize -1<CR>
     nnoremap <S-Up> :resize -1<CR>
     nnoremap <S-Down> :resize +1<CR>
-
-    " save the current file as root
-    cmap w!! w !sudo tee % >/dev/null<CR>:e!<CR><CR>
 
 " Plugin options
     " vim-plug
@@ -376,6 +357,20 @@
 
     " FZF
         let g:fzf_layout = {'window': 'enew'}
+        let g:fzf_buffers_jump = 1
+        nmap <leader>f :FZF<CR>
+        if executable('rg')
+            let g:rg_command = '
+                \ rg --column --line-number --no-heading --fixed-strings
+                \ --smart-case --no-ignore --hidden --follow --color=always
+                \ --glob "!{.git,__pycache__}/*" '
+            command! -bang -nargs=* F
+                \ call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
+            nmap <leader>s :F<CR>
+        endif
+        command! -bang Buffers call fzf#run(fzf#wrap(
+            \ {'source': map(range(1, bufnr('$')), 'bufname(v:val)')}, <bang>0))
+        nnoremap <leader>l :Buffers<CR>
 
     " tcomment
         let g:tcommentMapLeader1 = 0
@@ -414,9 +409,11 @@
         " TODO: don't really know what that does
         let delimitMate_jump_expansion=1
 
-    " vim-slime
-        let g:slime_target = "tmux"
-        let g:slime_python_ipython = 1
+    " iron
+        vmap is <Plug>(iron-send-motion)
+        nmap <leader>is <Plug>(iron-send-motion)
+        nmap <leader>ir <Plug>(iron-repeat-cmd)
+        nmap <leader>ie <Plug>(iron-cr)
 
     " ultisnips
         let g:UltiSnipsExpandTrigger="<c-j>"
@@ -425,8 +422,9 @@
 
     " notational-fzf-vim
         let g:nv_directories = ['~/Notes']
-        let g:nv_preview_direction = 'top'
-        let g:nv_preview_width = 40
+        let g:default_extension = '.txt'
+        let g:nv_preview_direction = 'up'
+        " let g:nv_preview_width = 60
         let g:nv_use_short_pathnames = 1
 
 " Functions
