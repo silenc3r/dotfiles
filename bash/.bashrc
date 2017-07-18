@@ -1,40 +1,29 @@
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
 eval $(dircolors)
 
-hash nvim 2>/dev/null && _EDITOR=nvim || _EDITOR=vim
-
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_CACHE_HOME=$HOME/.cache
-
-# better font rendering in java apps
-# export _JAVA_OPTIONS='-Dawt.useSystemAAFontSettings=lcd_hrgb -Dswing.aatext=true'
-# fix java apps in xmonad
-# export _JAVA_AWT_WM_NONREPARENTING=1
-# export AWT_TOOLKIT=MToolkit
-# export EDITOR="vi"
-export EDITOR=$_EDITOR
-export VISUAL=$_EDITOR
+export EDITOR=nvim
+export VISUAL=$EDITOR
 export WINEARCH=win32
 
 # export MPD_HOST=$XDG_CACHE_HOME/mpd/socket
-
-# bad bad openSUSE
-export SMLNJ_HOME=/usr/lib/smlnj/
+export PYTHONDONTWRITEBYTECODE=1
 
 export PYENV_ROOT="$HOME/.local/usr/pyenv"
-export PATH=$HOME/.local/bin:$HOME/bin:$PYENV_ROOT/bin:$PATH
+if [ -z $TMUX ]; then
+    export PATH=$HOME/.local/bin:$HOME/bin:$PYENV_ROOT/bin:$PATH
+fi
 
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 alias penv=pyenv
 complete -F _pyenv penv
+alias pver='pyenv version'
+
+# # OPAM configuration
+# alias oinit=". $XDG_DATA_HOME/opam/opam-init/init.sh > /dev/null 2> /dev/null || true"
 
 # prevent terminal from overwriting Ctrl-s shortcut
 stty -ixon
@@ -50,27 +39,32 @@ shopt -s nocaseglob
 shopt -s autocd
 # correnct minor errors in the spelling of directories
 shopt -s cdspell
-# correct spelling errors during tab-completion
+# correct directory names and expand vars during tab-completion
 shopt -s dirspell
+shopt -s direxpand
 # update window size after every command
 shopt -s checkwinsize
 # verify commands via history expansions
 shopt -s histverify
 
 shopt -s cdable_vars
-export projects="/mnt/storage/Projects"
+export dots="/home/dawid/.dotfiles/"
+# export projects="/mnt/storage/Projects"
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 # store multiline commands as one command
 shopt -s cmdhist
+if [ -n "$XDG_DATA_HOME" ]; then
+    export HISTFILE="$XDG_DATA_HOME/bash/history"
+fi
 # load 10000 last commands from history, if you need more just grep a file.
 HISTSIZE=10000
-# Don't truncate ~/.bash_history -- keep all your history, ever.
+# Don't truncate HISTFILE - keep all your history, ever.
 unset HISTFILESIZE
 HISTIGNORE="?:??:???:????:&:[ ]*:history:clear:z *:j *"
 # ingore duplicates and commands starting with spacebar
-HISTCONTROL="erasedups:ignoreboth"
+HISTCONTROL=ignoreboth:erasedups
 # Add a timestamp to each history entry.
 HISTTIMEFORMAT='%F %T'
 
@@ -104,45 +98,14 @@ if [ -f ~/.fzf.bash ]; then
     }
 fi
 
-# # colored less output
-# export LESS='-R '
-# export LESS_TERMCAP_mb=$'\033[1;34m' # begin blinking
-# export LESS_TERMCAP_md=$'\033[1;34m' # begin bold
-# export LESS_TERMCAP_me=$'\033[0m'    # end mode
-# export LESS_TERMCAP_se=$'\033[0m'    # end standout-mode
-# export LESS_TERMCAP_so=$'\033[1;7m'  # begin standout-mode - info box
-# export LESS_TERMCAP_ue=$'\033[0m'    # end underline
-# export LESS_TERMCAP_us=$'\033[1;36m' # begin underline
-
-# -- linux console colors (jwr dark)
-# if [ "$TERM" = "linux" ]; then
-#     echo -en "\e]P0000000" #black
-#     echo -en "\e]P83d3d3d" #darkgrey
-#     echo -en "\e]P18c4665" #darkred
-#     echo -en "\e]P9bf4d80" #red
-#     echo -en "\e]P2287373" #darkgreen
-#     echo -en "\e]PA53a6a6" #green
-#     echo -en "\e]P37c7c99" #brown
-#     echo -en "\e]PB9e9ecb" #yellow
-#     echo -en "\e]P4395573" #darkblue
-#     echo -en "\e]PC477ab3" #blue
-#     echo -en "\e]P55e468c" #darkmagenta
-#     echo -en "\e]PD7e62b3" #magenta
-#     echo -en "\e]P631658c" #darkcyan
-#     echo -en "\e]PE6096bf" #cyan
-#     echo -en "\e]P7899ca1" #lightgrey
-#     echo -en "\e]PFc0c0c0" #white
-#     clear # bring us back to default input colours
-# fi
-
 ccd() { mkdir -p "$*" && cd "$*"; }
 
-psgrep() { ps aux | grep -v grep | grep "$@" -i --color=auto; }
+psgrep() { ps aux | grep -v grep | grep -i --color=none -e VSZ -e"$@"; }
 
 # find simplified
 fnd() {
     if [ $# -eq 1 ]; then
-        find . -iname "*$**" 2> /dev/null
+        find . -iname "*$**" 2>/dev/null
     else
         find "$1" -iname "*${*:2}*" 2>/dev/null
     fi
@@ -151,14 +114,6 @@ fnd() {
 yt() {
     mpv "$@" &>/dev/null &
     disown
-}
-
-ytw() { # YOUTUBE WATCH
-    if [ $# -eq 2 ]; then
-        mpv --ytdl-format=22 ytdl://ytsearch$2:"$1";
-    else
-        mpv --ytdl-format=22 ytdl://ytsearch10:"$1";
-    fi;
 }
 
 ytfm() { # YOUTUBE FM (ONLY AUDIO)
@@ -186,7 +141,7 @@ alias ll='ls -l --human-readable'
 alias lla='ll --almost-all'
 alias l1='ls -1'
 # list hidden files only
-alias lh='ls -d .!(|.) 2>/dev/null'
+lh() { ls -d .!(|.) 2>/dev/null || true; }
 
 alias ..='cd ..'  # redundant with autocd
 alias ...='cd ../..'
@@ -205,14 +160,19 @@ alias chown='chown --preserve-root'
 alias chmod='chmod --preserve-root'
 alias chgrp='chgrp --preserve-root'
 
+alias rmpyc='find . -type f -name "*.py[co]" -delete -or -type d -name "__pycache__" -delete'
+
 # clear screen for real (does not work in tmux)
 alias cls=' echo -ne "\033c"'
 
 # alias tmux='TERM=screen-256color tmux'
+alias tmux='tmux -f "$XDG_CONFIG_HOME"/tmux/tmux.conf'
 alias tm='tmux attach || tmux new'
 
-# to prevent dnf using two caches (one for user and one for root)
+# to prevent dnf using separate caches for user and root
 alias dnf='sudo dnf'
+
+alias xsel='xsel --logfile "$XDG_CACHE_HOME"/xsel/xsel.log'
 
 GIT_PROMPT_ONLY_IN_REPO=0
 GIT_PROMPT_SHOW_UNTRACKED_FILES=no
