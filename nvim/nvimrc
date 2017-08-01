@@ -16,9 +16,9 @@
     endif
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
     Plug 'junegunn/fzf.vim'
-    Plug 'tpope/vim-vinegar'
+    Plug 'justinmk/vim-dirvish'
     Plug 'tpope/vim-eunuch'
-    Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+    Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
     " Display marks
     Plug 'kshenoy/vim-signature'
     " Fancy start screen & session management
@@ -39,23 +39,24 @@
     Plug 'tpope/vim-repeat'
 
     " Language support
-    Plug 'hkupty/iron.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
+    Plug 'python-mode/python-mode', { 'for': 'python' }
     " Plug 'mitsuhiko/vim-python-combined', { 'for': 'python' }
     Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
     Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-    Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
+    " Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
     " Plug 'sheerun/vim-polyglot'
 
     " Autocompletion & Syntax check
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-jedi'
+    " check ale
     Plug 'neomake/neomake'
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
-    " Automatic closing of quotes, parenthesis, brackets, etc.
-    " TODO: look into HTML tag closing
     Plug 'Raimondi/delimitMate'
+    Plug 'kassio/neoterm'
+    Plug 'janko-m/vim-test'
 
     " UI
     Plug 'bling/vim-airline'
@@ -75,12 +76,6 @@
     Plug 'reedes/vim-colors-pencil'
 
     call plug#end()
-
-    " augroup defer_plugin_load
-    "     au!
-    "     au! InsertEnter * call plug#load('ultisnips', 'YouCompleteMe')
-    "                    \| call youcompleteme#Enable() | au! defer_plugin_load
-    " augroup END
 
 " General
     filetype plugin indent on   " Automatically detect file types.
@@ -119,7 +114,7 @@
     set nowrap                  " Don't wrap long lines
     set list
     " bag of chars: ▶ ◀ ← → … … ⟩ ⟨ ❯ ❮
-    set listchars=nbsp:␣,extends:→,precedes:←,tab:»\ ,trail:·
+    set listchars=nbsp:␣,extends:…,precedes:…,tab:»\ ,trail:·
     set fillchars+=vert:│
     " set foldminlines=5
     set foldlevelstart=99
@@ -178,31 +173,27 @@
     " set background=light
     if ($TERM =~ "xterm") || ($TERM =~ "-256color")
         set termguicolors
-        let g:one_allow_italics = 1
+        " let g:one_allow_italics = 1
         " colorscheme one
-        let g:onedark_terminal_italics = 1
-        colorscheme onedark
+            let g:onedark_terminal_italics = 1
+            colorscheme onedark
+            " hi Todo guifg=#abb2bf guibg=#5c6370
+            hi Todo gui=bold,reverse guifg=#5c6370
         " colorscheme zenburn
         " let g:airline_theme = 'zenburn'
         " colorscheme twilight256
         " colorscheme PaperColor
         " let g:airline_theme='papercolor'
-        let g:nord_italic_comments = 1
+        " let g:nord_italic_comments = 1
         " colorscheme nord
         " colorscheme gruvbox
         " colorscheme base16-eighties
         " colorscheme dracula
         " colorscheme apprentice
-        let g:pencil_gutter_color = 1
-        let g:pencil_terminal_italics = 1
+        " let g:pencil_gutter_color = 1
+        " let g:pencil_terminal_italics = 1
         " colorscheme pencil
     endif
-    " paren highlighting can be annoying
-    " hi MatchParen cterm=underline ctermfg=14 ctermbg=none
-    " hi MatchParen cterm=underline ctermfg=none ctermbg=161
-    " comments are always italic
-    hi Comment cterm=italic
-    " hi ColorColumn ctermbg=236
 
 " Keymaps
     " Remap <Leader> to SPACEBAR
@@ -212,8 +203,11 @@
     " Clean search highlighting
     nnoremap <silent> <esc> :nohlsearch<CR>
 
+    " Source init.nvim
+    nnoremap <leader>~ :source $MYVIMRC<cr>
+
     " Toggle folding
-    nnoremap <Tab> za
+    " nnoremap <Tab> za
 
     " Simpler saving/quiting
     nnoremap <silent> <leader>w :w<CR>
@@ -279,13 +273,20 @@
     " augroup END
 
     " Make esc quit insert mode in terminal
-    tnoremap <Esc> <C-\><C-n>
+    augroup esc_term
+        au!
+        tnoremap <Esc> <C-\><C-n>
+        au FileType fzf tnoremap <buffer> <Esc> <Esc>
+    augroup END
 
     " Make arrowkeys resize viewports accordingly
     nnoremap <S-Left> :vertical resize +1<CR>
     nnoremap <S-Right> :vertical resize -1<CR>
     nnoremap <S-Up> :resize -1<CR>
     nnoremap <S-Down> :resize +1<CR>
+
+    " Highlight word under cursor without moving cursor
+    map <silent> <leader>* :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<CR>
 
 " Plugin options
     " vim-plug
@@ -294,9 +295,7 @@
     " deoplete
         let g:deoplete#enable_at_startup = 1
         let g:deoplete#auto_complete_delay = 0
-        " inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : deoplete#manual_complete()
         inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "<Tab>"
-        " inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : deoplete#undo_completion()
         inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "<S-Tab>"
 
     " Startify session
@@ -329,10 +328,20 @@
         let g:airline_symbols.readonly = ''
 
         let g:airline#extensions#tabline#enabled = 1
+        let g:airline#extensions#tabline#show_splits = 1
         let g:airline#extensions#tabline#show_buffers = 1
         let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+        let g:airline#extensions#tabline#show_tab_type = 0
         let g:airline#extensions#tabline#show_close_button = 0
         let g:airline#extensions#tabline#fnamemod = ':t'
+        let g:airline#extensions#tabline#excludes = ["bash"]
+        " let g:airline#extensions#tabline#fnametruncate = 10
+
+
+        let g:airline#extensions#tabline#left_sep = ''
+        let g:airline#extensions#tabline#left_alt_sep = ''
+        let g:airline#extensions#tabline#right_sep = ''
+        let g:airline#extensions#tabline#right_alt_sep = ''
 
         let g:airline#extensions#tabline#buffer_idx_mode = 1
         nmap <leader>1 <Plug>AirlineSelectTab1
@@ -346,31 +355,31 @@
         nmap <leader>9 <Plug>AirlineSelectTab9
 
     " Neomake
+        let g:neomake_error_sign = {'text': '●', 'texthl': 'NeomakeErrorSign'}
+        let g:neomake_warning_sign = {
+            \   'text': '●',
+            \   'texthl': 'NeomakeWarningSign',
+            \ }
         let g:neomake_python_enabled_makers = ['flake8']
         au FileType,BufWritePost *.py Neomake
 
     " vim-easy-align
-        " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-        vmap <Enter> <Plug>(EasyAlign)
-        " Start interactive EasyAlign for a motion/text object (e.g. <Leader>aip)
+        vmap <Leader>a <Plug>(EasyAlign)
         nmap <Leader>a <Plug>(EasyAlign)
 
     " FZF
         let g:fzf_layout = {'window': 'enew'}
         let g:fzf_buffers_jump = 1
         nmap <leader>f :FZF<CR>
+        nmap <leader>l :Buffers<CR>
         if executable('rg')
             let g:rg_command = '
                 \ rg --column --line-number --no-heading --fixed-strings
                 \ --smart-case --no-ignore --hidden --follow --color=always
                 \ --glob "!{.git,__pycache__}/*" '
-            command! -bang -nargs=* F
+            command! -bang -nargs=* Rg
                 \ call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
-            nmap <leader>s :F<CR>
         endif
-        command! -bang Buffers call fzf#run(fzf#wrap(
-            \ {'source': map(range(1, bufnr('$')), 'bufname(v:val)')}, <bang>0))
-        nnoremap <leader>l :Buffers<CR>
 
     " tcomment
         let g:tcommentMapLeader1 = 0
@@ -380,40 +389,53 @@
         let g:tcommentTextObjectInlineComment = 0
 
     " TagBar
-        " Jump to tagbar window upon opening it
         let g:tagbar_autofocus = 1
         " nnoremap <silent> <leader>tt :TagbarToggle<CR>
         " nnoremap <silent> <leader>ta :TagbarOpenAutoClose<CR>
         nnoremap <silent> <leader>t :TagbarOpenAutoClose<CR>
+        nnoremap <silent> <F9> :TagbarToggle<CR>
 
-    " Fugitive
-        nnoremap <silent> <leader>gs :Gstatus<CR>
-        nnoremap <silent> <leader>gd :Gdiff<CR>
-        nnoremap <silent> <leader>gc :Gcommit<CR>
-        nnoremap <silent> <leader>gb :Gblame<CR>
-        nnoremap <silent> <leader>gl :Glog<CR>
-        nnoremap <silent> <leader>gp :Git push<CR>
+    " " Fugitive
+    "     nnoremap <silent> <leader>gs :Gstatus<CR>
+    "     nnoremap <silent> <leader>gd :Gdiff<CR>
+    "     nnoremap <silent> <leader>gc :Gcommit<CR>
+    "     nnoremap <silent> <leader>gb :Gblame<CR>
+    "     nnoremap <silent> <leader>gl :Glog<CR>
+    "     nnoremap <silent> <leader>gp :Git push<CR>
 
-    " UndoTree
-        nnoremap <Leader>u :UndotreeToggle<CR>
-        " If undotree is opened, it is likely one wants to interact with it.
-        let g:undotree_SetFocusWhenToggle=1
-
-    " Netrw
-        " prevent leaking of directory history
-        let g:netrw_dirhistmax=-1
+    " mundo
+        let g:mundo_width = 25
+        let g:mundo_preview_bottom = 1
+        let g:mundo_verbose_graph = 0
+        nnoremap <silent> <Leader>u :MundoToggle<cr>
 
     " delimitMate
+        let delimitMate_expand_cr=1
         let delimitMate_expand_space=1
-        let delimitMate_expand_cr=2
-        " TODO: don't really know what that does
+        let delimitMate_expand_inside_quotes = 1
         let delimitMate_jump_expansion=1
+        " just testing it
+        let delimitMate_balance_matchpairs = 1
+        let delimitMate_excluded_regions = ""
+        au FileType python let b:delimitMate_nesting_quotes = ['"']
+        au FileType htmldjango let b:delimitMate_quotes = "\" ' %"
 
-    " iron
-        vmap is <Plug>(iron-send-motion)
-        nmap <leader>is <Plug>(iron-send-motion)
-        nmap <leader>ir <Plug>(iron-repeat-cmd)
-        nmap <leader>ie <Plug>(iron-cr)
+    " " iron
+    "     vmap is <Plug>(iron-send-motion)
+    "     nmap <leader>is <Plug>(iron-send-motion)
+    "     nmap <leader>ir <Plug>(iron-repeat-cmd)
+    "     nmap <leader>ie <Plug>(iron-cr)
+
+    " neoterm
+        let g:neoterm_size = 20
+        " let g:neoterm_direct_open_repl = 1
+        let g:neoterm_automap_keys = "<space><cr>"
+        nnoremap <leader>TT :TREPLSetTerm 
+        nnoremap <leader>Tm :Tmap 
+        " nnoremap <leader>Tf :TREPLSendFile<cr>
+        " nnoremap <leader>Tl :TREPLSendLine<cr>
+        " vnoremap Ts :TREPLSendSelection<cr>
+        let g:neoterm_keep_term_open = 0
 
     " ultisnips
         let g:UltiSnipsExpandTrigger="<c-j>"
