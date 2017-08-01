@@ -23,7 +23,7 @@ complete -F _pyenv penv
 alias pver='pyenv version'
 
 # # OPAM configuration
-# alias oinit=". $XDG_DATA_HOME/opam/opam-init/init.sh > /dev/null 2> /dev/null || true"
+alias oinit=". $XDG_DATA_HOME/opam/opam-init/init.sh > /dev/null 2> /dev/null || true"
 
 # prevent terminal from overwriting Ctrl-s shortcut
 stty -ixon

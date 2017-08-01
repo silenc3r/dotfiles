@@ -17,6 +17,9 @@ set completion-query-items 9000
 # Completed names which are symbolic links to
 # directories have a slash appended.
 set mark-symlinked-directories on
+
+set completion-prefix-display-length 3
+
 # Space:magic-space
 # use up/down arrow to search through history
 #"\e[A":history-search-backward
