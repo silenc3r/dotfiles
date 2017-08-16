@@ -1,0 +1,1 @@
+bind -f common q shell tmux detach-client -s cmus
