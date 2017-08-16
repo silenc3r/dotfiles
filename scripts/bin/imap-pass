@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import argparse
-import keyring
 import getpass
+import keyring
+# requires python3-keyring
 
 if __name__ == '__main__':
     SERVICE = 'mbsync'
