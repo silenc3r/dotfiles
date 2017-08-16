@@ -1,2 +1,0 @@
-- write stow script
-    stow -t ~ -D app_folder
