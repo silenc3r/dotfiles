@@ -2,11 +2,11 @@
 
 " Env options
     " let g:python_version = matchstr(system("python --version | cut -f2 -d' '"), '^[0-9]')
-    let g:python_host_prog = "/home/dawid/.local/usr/pyenv/versions/neovim2/bin/python"
-    let g:python3_host_prog = "/home/dawid/.local/usr/pyenv/versions/neovim3/bin/python"
+    let g:python_host_prog = expand("$PYENV_ROOT") . "/versions/neovim2/bin/python"
+    let g:python3_host_prog = expand("$PYENV_ROOT") . "/versions/neovim3/bin/python"
 
 " Load plugins
-    call plug#begin('~/.config/nvim/plugged')
+    call plug#begin('~/.local/share/nvim/plugged')
 
     " Utils
     if executable('ctags')
@@ -40,9 +40,9 @@
 
     " Language support
     Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
-    Plug 'python-mode/python-mode', { 'for': 'python' }
-    " Plug 'mitsuhiko/vim-python-combined', { 'for': 'python' }
+    Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
     Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
+    Plug 'vim-python/python-syntax', { 'for': 'python' }
     Plug 'tpope/vim-markdown', { 'for': 'markdown' }
     " Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
     " Plug 'sheerun/vim-polyglot'
@@ -50,8 +50,7 @@
     " Autocompletion & Syntax check
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-jedi'
-    " check ale
-    Plug 'neomake/neomake'
+    Plug 'w0rp/ale'
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
     Plug 'Raimondi/delimitMate'
@@ -68,10 +67,9 @@
     " Google material design
     Plug 'NLKNguyen/papercolor-theme'
     Plug 'arcticicestudio/nord-vim'
-    Plug 'morhetz/gruvbox'
-    Plug 'chriskempson/base16-vim'
     Plug 'joshdick/onedark.vim'
     Plug 'dracula/vim'
+    Plug 'morhetz/gruvbox'
     Plug 'romainl/Apprentice', { 'branch': 'fancylines-and-neovim' }
     Plug 'reedes/vim-colors-pencil'
 
@@ -355,13 +353,19 @@
         nmap <leader>9 <Plug>AirlineSelectTab9
 
     " Neomake
-        let g:neomake_error_sign = {'text': '●', 'texthl': 'NeomakeErrorSign'}
-        let g:neomake_warning_sign = {
-            \   'text': '●',
-            \   'texthl': 'NeomakeWarningSign',
-            \ }
-        let g:neomake_python_enabled_makers = ['flake8']
-        au FileType,BufWritePost *.py Neomake
+        " let g:neomake_error_sign = {'text': '●', 'texthl': 'NeomakeErrorSign'}
+        " let g:neomake_warning_sign = {
+        "     \   'text': '●',
+        "     \   'texthl': 'NeomakeWarningSign',
+        "     \ }
+        " let g:neomake_python_enabled_makers = ['flake8']
+        " au FileType,BufWritePost *.py Neomake
+
+    " ALE
+        let g:airline#extensions#ale#enabled = 1
+        " let g:ale_sign_error = '>>'
+        " let g:ale_sign_warning = '--'
+        let g:ale_sign_column_always = 1
 
     " vim-easy-align
         vmap <Leader>a <Plug>(EasyAlign)
@@ -431,7 +435,6 @@
         " let g:neoterm_direct_open_repl = 1
         let g:neoterm_automap_keys = "<space><cr>"
         nnoremap <leader>TT :TREPLSetTerm 
-        nnoremap <leader>Tm :Tmap 
         " nnoremap <leader>Tf :TREPLSendFile<cr>
         " nnoremap <leader>Tl :TREPLSendLine<cr>
         " vnoremap Ts :TREPLSendSelection<cr>
@@ -448,6 +451,10 @@
         let g:nv_preview_direction = 'up'
         " let g:nv_preview_width = 60
         let g:nv_use_short_pathnames = 1
+
+    " python-syntax
+        let g:python_highlight_all = 1
+        let g:python_highlight_builtin_funcs = 0
 
 " Functions
     " Strip whitespace
