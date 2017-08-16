@@ -9,21 +9,6 @@ export VISUAL=$EDITOR
 export WINEARCH=win32
 
 # export MPD_HOST=$XDG_CACHE_HOME/mpd/socket
-export PYTHONDONTWRITEBYTECODE=1
-
-export PYENV_ROOT="$HOME/.local/usr/pyenv"
-if [ -z $TMUX ]; then
-    export PATH=$HOME/.local/bin:$HOME/bin:$PYENV_ROOT/bin:$PATH
-fi
-
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-alias penv=pyenv
-complete -F _pyenv penv
-alias pver='pyenv version'
-
-# # OPAM configuration
-alias oinit=". $XDG_DATA_HOME/opam/opam-init/init.sh > /dev/null 2> /dev/null || true"
 
 # prevent terminal from overwriting Ctrl-s shortcut
 stty -ixon
@@ -174,7 +159,22 @@ alias dnf='sudo dnf'
 
 alias xsel='xsel --logfile "$XDG_CACHE_HOME"/xsel/xsel.log'
 
+_cmus_bin=$(which --skip-alias cmus 2>/dev/null)
+if [ $? -eq 0 ]; then
+    alias cmus='/usr/bin/tmux -f "$XDG_CONFIG_HOME/cmus/tmux.conf" new-session -A -D -s cmus "$_cmus_bin"'
+fi
+
 GIT_PROMPT_ONLY_IN_REPO=0
 GIT_PROMPT_SHOW_UNTRACKED_FILES=no
 source ~/.bash-git-prompt/gitprompt.sh
 GIT_PROMPT_THEME=Custom
+
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+alias penv=pyenv
+complete -F _pyenv penv
+alias pver='pyenv version'
+
+# # OPAM configuration
+alias oinit=". $XDG_DATA_HOME/opam/opam-init/init.sh > /dev/null 2> /dev/null || true"
+# test -r /home/dawid/.local/share/opam/opam-init/init.sh && . /home/dawid/.local/share/opam/opam-init/init.sh > /dev/null 2> /dev/null || true
