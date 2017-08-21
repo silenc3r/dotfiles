@@ -14,7 +14,8 @@
         Plug 'majutsushi/tagbar' ", { 'on': 'TagbarToggle' }
         Plug 'ludovicchabant/vim-gutentags'
     endif
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
+    set rtp+=/usr/share/fzf/vim
     Plug 'junegunn/fzf.vim'
     Plug 'justinmk/vim-dirvish'
     Plug 'tpope/vim-eunuch'
@@ -45,7 +46,7 @@
     Plug 'vim-python/python-syntax', { 'for': 'python' }
     Plug 'tpope/vim-markdown', { 'for': 'markdown' }
     " Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
-    " Plug 'sheerun/vim-polyglot'
+    Plug 'sheerun/vim-polyglot'
 
     " Autocompletion & Syntax check
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
