@@ -5,7 +5,7 @@
 # set -x
 
 # If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+[ -z "$PS1" ] && return
 
 if [ -f /etc/bashrc ]; then
     . /etc/bashrc
@@ -56,11 +56,6 @@ HISTTIMEFORMAT='%F %T'
 
 PROMPT_COMMAND="history -a"
 
-if hash nvim 2> /dev/null; then
-    export EDITOR=nvim
-    export VISUAL=$EDITOR
-fi
-
 # # http://pempek.net/articles/2013/10/27/pretty-elided-shell-prompt/
 # PS1_PWD_MAX=10
 # __pwd_ps1() { echo -n $PWD | sed -e "s|${HOME}|~|" -e "s|\(/[^/]*/\).*\(/.\{${PS1_PWD_MAX}\}\)|\1…\2|"; }
@@ -86,6 +81,7 @@ fi
 
 if hash fzf 2> /dev/null; then
     if hash rg 2> /dev/null; then
+        export FZF_DEFAULT_OPTS+=' --bind "f1:execute(nvim {})"'
         export FZF_DEFAULT_COMMAND='rg --files --hidden --smart-case'
         export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     fi
@@ -94,8 +90,10 @@ if hash fzf 2> /dev/null; then
     #     export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
     # fi
 
-    source /usr/share/fzf/completion.bash 2> /dev/null
-    source /usr/share/fzf/key-bindings.bash
+    # source /usr/share/fzf/completion.bash 2> /dev/null
+    # source /usr/share/fzf/key-bindings.bash
+    source /usr/share/fzf/shell/completion.bash 2> /dev/null
+    source /usr/share/fzf/shell/key-bindings.bash
     if type -t _z &> /dev/null; then
         j() {
             [ $# -gt 0 ] && _z "$*" && return
@@ -136,6 +134,12 @@ trl() { transmission-remote -l; }
 trd() { transmission-remote -t $1 --remove-and-delete; }
 trr() { transmission-remote -t $1 --remove; }
 tri() { transmission-remote -t $1 --info; }
+
+if hash nvim 2> /dev/null; then
+    export EDITOR=nvim
+    export VISUAL=$EDITOR
+fi
+alias vim=nvim
 
 # aliases
 alias dmesg='dmesg --color'
@@ -181,6 +185,8 @@ alias dnf='sudo dnf'
 
 alias xsel='xsel --logfile "$XDG_CACHE_HOME"/xsel/xsel.log'
 
+alias mail=neomutt
+
 if hash cmus 2> /dev/null; then
     alias cmus='/usr/bin/tmux -f "$XDG_CONFIG_HOME/cmus/tmux.conf" new-session -A -D -s cmus /usr/bin/cmus'
 fi
@@ -201,7 +207,7 @@ fi
 
 # OPAM configuration
 export OPAMROOT="$XDG_DATA_HOME"/opam
-alias oinit=". $XDG_DATA_HOME/opam/opam-init/init.sh &> /dev/null || true"
+# alias oinit=". $XDG_DATA_HOME/opam/opam-init/init.sh &> /dev/null || true"
 # if [ -z "$OPAM_SWITCH_PREFIX" ]; then
 #     test -r /home/dawid/.local/share/opam/opam-init/init.sh && \
 #         . /home/dawid/.local/share/opam/opam-init/init.sh &> /dev/null || true
