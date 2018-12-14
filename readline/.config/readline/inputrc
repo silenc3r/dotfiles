@@ -21,11 +21,11 @@ set mark-symlinked-directories on
 set completion-prefix-display-length 3
 
 # Space:magic-space
-# use up/down arrow to search through history
-#"\e[A":history-search-backward
-#"\e[B":history-search-forward
 "\C-p":history-search-backward
 "\C-n":history-search-forward
+
+# This doesn't work well with FZF completions
+# TAB:menu-complete
 
 # Sane Ctrl-W behavior
 #set bind-tty-special-chars off
@@ -33,6 +33,8 @@ set completion-prefix-display-length 3
 "\M-\b":backward-kill-word
 
 $if mode=emacs
+
+# we can find these codes with `read` command
 
 # for linux console and RH/Debian xterm
 "\e[1~": beginning-of-line
@@ -61,4 +63,8 @@ $if mode=emacs
 # for freebsd console
 "\e[H": beginning-of-line
 "\e[F": end-of-line
+
+# for gnome terminal
+"\e[1;3D": backward-word
+"\e[1;3C": forward-word
 $endif
