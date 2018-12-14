@@ -1,9 +1,11 @@
 " vim: set foldlevel=0 foldmethod=indent:
 
 " Env options
-    " let g:python_version = matchstr(system("python --version | cut -f2 -d' '"), '^[0-9]')
-    let g:python_host_prog = expand("$PYENV_ROOT") . "/versions/neovim2/bin/python"
-    let g:python3_host_prog = expand("$PYENV_ROOT") . "/versions/neovim3/bin/python"
+    let g:python_version = matchstr(system("python --version | cut -f2 -d' '"), '^[0-9]')
+    let g:python_host_prog = expand("$HOME") . "/.local/share/virtualenvs/neovim2/bin/python"
+    let g:python3_host_prog = expand("$HOME") . "/.local/share/virtualenvs/neovim3/bin/python"
+    " let g:python_host_prog = expand("$PYENV_ROOT") . "/versions/neovim2/bin/python"
+    " let g:python3_host_prog = expand("$PYENV_ROOT") . "/versions/neovim3/bin/python"
 
 " Load plugins
     call plug#begin('~/.local/share/nvim/plugged')
@@ -11,24 +13,27 @@
     " Utils
     if executable('ctags')
         " loading it on-demand breaks Airline
-        Plug 'majutsushi/tagbar' ", { 'on': 'TagbarToggle' }
+        Plug 'majutsushi/tagbar' , { 'tag': '*' }
         Plug 'ludovicchabant/vim-gutentags'
     endif
     " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
     set rtp+=/usr/share/fzf/vim
     Plug 'junegunn/fzf.vim'
     Plug 'justinmk/vim-dirvish'
-    Plug 'tpope/vim-eunuch'
-    Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
+    Plug 'tpope/vim-eunuch', { 'tag': '*' }
+    Plug 'simnalamburt/vim-mundo', { 'tag': '*', 'on': 'MundoToggle' }
     " Display marks
     Plug 'kshenoy/vim-signature'
     " Fancy start screen & session management
     Plug 'mhinz/vim-startify'
     Plug 'qpkorr/vim-bufkill'
-    Plug 'Alok/notational-fzf-vim'
+    Plug 'tpope/vim-unimpaired', { 'tag': '*' }
+    Plug 'embear/vim-localvimrc', { 'tag': '*' }
+    Plug 'kassio/neoterm'
+    Plug 'janko-m/vim-test'
 
     " Git
-    Plug 'tpope/vim-fugitive'
+    Plug 'tpope/vim-fugitive', { 'tag': '*' }
     Plug 'mhinz/vim-signify'
     Plug 'mattn/gist-vim'
 
@@ -37,50 +42,66 @@
     " I find it supperior to NerdCommenter & vim-commentary
     Plug 'tomtom/tcomment_vim'
     Plug 'tpope/vim-surround'
-    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-repeat', { 'tag': '*' }
+    Plug 'Joe-Withey/v-star'
 
     " Language support
+    Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch': 'next',
+        \ 'do': 'bash install.sh',
+        \ }
+    Plug 'reasonml-editor/vim-reason-plus'
     Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
-    Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
     Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
-    Plug 'vim-python/python-syntax', { 'for': 'python' }
-    Plug 'tpope/vim-markdown', { 'for': 'markdown' }
-    " Plug 'chase/vim-ansible-yaml', { 'for': ['yaml', 'ansible'] }
-    Plug 'sheerun/vim-polyglot'
+    Plug 'sheerun/vim-polyglot', { 'tag': '*' }
+    Plug 'rgrinberg/vim-ocaml'
+    Plug 'metakirby5/codi.vim'
+    Plug 'ambv/black'
+    Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
 
     " Autocompletion & Syntax check
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
+    execute "set rtp+=" . g:opamshare . "/merlin/vim"
+    execute "helptags " . g:opamshare . "/merlin/vim/doc"
+    execute "set rtp+=" . g:opamshare . "/ocp-indent/vim"
+    Plug 'Shougo/deoplete.nvim', { 'tag': '*', 'do': ':UpdateRemotePlugins' }
     Plug 'zchee/deoplete-jedi'
-    Plug 'w0rp/ale'
+    Plug 'copy/deoplete-ocaml'
+    Plug 'w0rp/ale', { 'tag': '*' }
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
     Plug 'Raimondi/delimitMate'
-    Plug 'kassio/neoterm'
-    Plug 'janko-m/vim-test'
 
     " UI
-    Plug 'bling/vim-airline'
+    Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
 
     " Colorschemes
     Plug 'jnurmine/Zenburn'
-    Plug 'rakr/vim-one'
-    " Google material design
-    Plug 'NLKNguyen/papercolor-theme'
-    Plug 'arcticicestudio/nord-vim'
     Plug 'joshdick/onedark.vim'
-    Plug 'dracula/vim'
-    Plug 'morhetz/gruvbox'
-    Plug 'romainl/Apprentice', { 'branch': 'fancylines-and-neovim' }
-    Plug 'reedes/vim-colors-pencil'
+    " Plug 'morhetz/gruvbox'
+    " Plug 'reedes/vim-colors-pencil'
+    Plug 'rakr/vim-two-firewatch'
+    " Plug 'endel/vim-github-colorscheme'
+    " Plug 'albertorestifo/github.vim'
+    Plug 'fcpg/vim-farout'
+    " Plug 'tomasiser/vim-code-dark'
+    " Plug 'gilgigilgil/anderson.vim'
+    " Plug 'cocopon/iceberg.vim'
+    " Plug 'andreypopp/vim-colors-plain'
+    " Plug 'fcpg/vim-fahrenheit'
+    " Plug 'marlun/vim-starwars'
+    " Plug 'zefei/cake16'
+    " Plug 'kamwitsta/flatwhite-vim'
+    " Plug 'mswift42/vim-themes'
+    " Plug 'romainl/Apprentice'
+    Plug 'cormacrelf/vim-colors-github'
 
     call plug#end()
 
 " General
-    filetype plugin indent on   " Automatically detect file types.
-    syntax enable               " Syntax highlighting
-    set synmaxcol=200           " highlight only first 200 columns
-    syntax sync minlines=250    " Possibly faster highlighting for big files
+    " set synmaxcol=200           " highlight only first 200 columns
+    " syntax sync minlines=250    " Possibly faster highlighting for big files
     set clipboard+=unnamedplus  " Use proper buffer for clipboard on linux"
     set hidden                  " Allow for switching unsaved buffers
     set viewoptions+=unix,slash " Unix-windows compatibility
@@ -98,11 +119,7 @@
 
     " UI look and behavior
     set title                   " Allow nvim to set window title
-    set showcmd                 " Show partial commands in status line and selected characters/lines in visual mode
     set noshowmode              " Don't show mode, Airline takes care of that
-    set shortmess+=mr           " Abbrev. of messages (avoids 'hit enter')
-    " set lazyredraw              " Avoid scrolling problems
-    set vb t_vb=                " Prevent screen flashing
     set winminheight=0          " Windows can be 0 line high (only statusbar)
     set splitbelow              " Put new window below the current one
     set splitright              " Put new window right of the current one
@@ -116,7 +133,7 @@
     set listchars=nbsp:␣,extends:…,precedes:…,tab:»\ ,trail:·
     set fillchars+=vert:│
     " set foldminlines=5
-    set foldlevelstart=99
+    " set foldlevelstart=99
 
     set grepprg=rg\ --vimgrep
 
@@ -132,8 +149,9 @@
     " Hide cursor line in insert mode
     aug cline
         au!
-        au WinLeave,InsertEnter * set nocursorline
-        au WinEnter,InsertLeave * set cursorline
+        au WinLeave,InsertEnter * set nocursorline norelativenumber
+        au WinEnter,InsertLeave * set cursorline relativenumber
+        au BufEnter term://* setlocal nonumber norelativenumber
     aug END
 
     " Update diff after save
@@ -163,8 +181,9 @@
         au FileType c,cpp,java,go,javascript,python,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
         au FileType python setlocal colorcolumn=80
         au FileType text setlocal textwidth=80 colorcolumn=+1
+        au FileType ocaml,reason setlocal ts=2 sts=2 sw=2 colorcolumn=81
         au BufRead,BufNewFile *.jinja2 setlocal filetype=htmldjango
-        " au FileType yaml setlocal ft=ansible
+        au BufNewFile,BufRead *.t set filetype=cram
     augroup END
 
 " Colors
@@ -172,27 +191,39 @@
     " set background=light
     if ($TERM =~ "xterm") || ($TERM =~ "-256color")
         set termguicolors
-        " let g:one_allow_italics = 1
-        " colorscheme one
-            let g:onedark_terminal_italics = 1
-            colorscheme onedark
-            " hi Todo guifg=#abb2bf guibg=#5c6370
-            hi Todo gui=bold,reverse guifg=#5c6370
+        " let g:onedark_terminal_italics = 1
+        " colorscheme onedark
+        " hi Todo gui=bold,reverse guifg=#5c6370
+        " let g:codedark_conservative = 1
+        " colorscheme codedark
         " colorscheme zenburn
         " let g:airline_theme = 'zenburn'
-        " colorscheme twilight256
-        " colorscheme PaperColor
-        " let g:airline_theme='papercolor'
-        " let g:nord_italic_comments = 1
-        " colorscheme nord
-        " colorscheme gruvbox
-        " colorscheme base16-eighties
-        " colorscheme dracula
+        " colorscheme github
+        " colorscheme farout
+        let g:kamrat_italic = 1
+        colorscheme kamrat
         " colorscheme apprentice
+        " colorscheme darktooth
+        " colorscheme cake16
+        " set background=light
+        " colorscheme leya
+        " colorscheme fahrenheit
+        " set background=light
+        " colorscheme plain
+        " colorscheme anderson
+        " colorscheme iceberg
+        " let g:two_firewatch_italics=1
+        " colo two-firewatch
+        " let g:airline_theme='twofirewatch'
+        " colorscheme gruvbox
+        " let g:pencil_higher_contrast_ui = 1
         " let g:pencil_gutter_color = 1
         " let g:pencil_terminal_italics = 1
         " colorscheme pencil
+        " colorscheme flatwhite
     endif
+
+    " match ErrorMsg '\%>120v.\+'
 
 " Keymaps
     " Remap <Leader> to SPACEBAR
@@ -200,16 +231,22 @@
     let g:maplocalleader = '\\'
 
     " Clean search highlighting
-    nnoremap <silent> <esc> :nohlsearch<CR>
+    nnoremap <silent> <esc> <Cmd>nohlsearch<CR>
 
     " Source init.nvim
-    nnoremap <leader>~ :source $MYVIMRC<cr>
+    nnoremap <leader>~ <Cmd>source $MYVIMRC<cr>
 
     " Toggle folding
     " nnoremap <Tab> za
 
+    " Repeat last ex command
+    " nnoremap <leader><leader> @:
+
+    " Set working directory
+    nnoremap <leader>. <Cmd>lcd %:p:h<CR>
+
     " Simpler saving/quiting
-    nnoremap <silent> <leader>w :w<CR>
+    nnoremap <silent> <leader>w <Cmd>w<CR>
     cnoremap q1 q!
 
     " Jump to exact position
@@ -221,30 +258,23 @@
     augroup enter_esc
         au!
         au BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-        au BufReadPost quickfix nnoremap <buffer> <Esc> :q<CR>
+        au BufReadPost quickfix nnoremap <buffer> <Esc> <Cmd>q<CR>
         au CmdWinEnter * nnoremap <buffer> <CR> <CR>
-        au CmdWinEnter * nnoremap <buffer> <Esc> :q<CR>
-        au FileType netrw nnoremap <buffer> <Esc> :e #<CR>
+        au CmdWinEnter * nnoremap <buffer> <Esc> <Cmd>q<CR>
+        au FileType netrw nnoremap <buffer> <Esc> <Cmd>e #<CR>
     augroup END
 
     " Easier access to command history
-    nnoremap <leader>; q:
+    " nnoremap <leader>; q:
 
     " Die ex mode, die!
     nnoremap Q <Nop>
 
-    " While searching center on the line with current result
-    nnoremap N Nzzzv
-    nnoremap n nzzzv
-    nnoremap g; g;zzzv
-    nnoremap g. g.zzzv
-
-    " " fly between buffers
-    " nnoremap <leader>l :ls<CR>:b<space>
-    " nnoremap <leader><leader> <C-^>
-    nnoremap <leader>] :bnext<CR>
-    nnoremap <leader>[ :bprev<CR>
-    " nnoremap <BS> <C-^>
+    " " While searching center on the line with current result
+    " nnoremap N Nzzzv
+    " nnoremap n nzzzv
+    " nnoremap g; g;zzzv
+    " nnoremap g. g.zzzv
 
     " use sane regexes
     nnoremap / /\v
@@ -264,12 +294,12 @@
     nnoremap <A-k> <C-w>k
     nnoremap <A-l> <C-w>l
     " autocmd WinEnter term://* startinsert
-    " augroup term_enter
-    "     au!
-    "     au TermOpen * setlocal nolist
-    "     " au BufEnter term://* startinsert
-    "     " au BufLeave term://* stopinsert
-    " augroup END
+    augroup term_enter
+        au!
+        au TermOpen * setlocal nonumber norelativenumber
+        " au BufEnter term://* startinsert
+        " au BufLeave term://* stopinsert
+    augroup END
 
     " Make esc quit insert mode in terminal
     augroup esc_term
@@ -279,13 +309,13 @@
     augroup END
 
     " Make arrowkeys resize viewports accordingly
-    nnoremap <S-Left> :vertical resize +1<CR>
-    nnoremap <S-Right> :vertical resize -1<CR>
-    nnoremap <S-Up> :resize -1<CR>
-    nnoremap <S-Down> :resize +1<CR>
+    nnoremap <S-Left> <Cmd>vertical resize +1<CR>
+    nnoremap <S-Right> <Cmd>vertical resize -1<CR>
+    nnoremap <S-Up> <Cmd>resize -1<CR>
+    nnoremap <S-Down> <Cmd>resize +1<CR>
 
     " Highlight word under cursor without moving cursor
-    map <silent> <leader>* :let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<CR>
+    map <silent> <leader>* <Cmd>let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<CR>
 
 " Plugin options
     " vim-plug
@@ -296,6 +326,15 @@
         let g:deoplete#auto_complete_delay = 0
         inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "<Tab>"
         inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "<S-Tab>"
+
+        let g:deoplete#ignore_sources = {}
+        let g:deoplete#ignore_sources.ocaml = ['buffer', 'around', 'member', 'tag']
+
+    " LSP
+    let g:LanguageClient_serverCommands = {
+        \ 'reason': ['ocaml-language-server', '--stdio'],
+        \ 'ocaml': ['ocaml-language-server', '--stdio'],
+        \ }
 
     " Startify session
         let g:startify_session_dir = "$HOME/.config/nvim/sessions"
@@ -314,6 +353,23 @@
     " Airline
         let g:airline#extensions#whitespace#enabled = 0
         let g:airline#extensions#whitespace#show_message = 0
+
+        let g:airline_mode_map = {
+            \ '__' : '-',
+            \ 'n'  : 'N',
+            \ 'i'  : 'I',
+            \ 'R'  : 'R',
+            \ 'c'  : 'C',
+            \ 'v'  : 'V',
+            \ 'V'  : 'V',
+            \ '' : 'V',
+            \ 's'  : 'S',
+            \ 'S'  : 'S',
+            \ '' : 'S',
+            \ 't'  : 'T',
+            \ 'T'  : 'T',
+            \ }
+
         if !exists('g:airline_symbols')
             let g:airline_symbols = {}
         endif
@@ -322,18 +378,22 @@
         let g:airline_left_alt_sep = ''
         let g:airline_right_sep=''
         let g:airline_right_alt_sep = ''
-        let g:airline_symbols.crypt = '🔒'
         let g:airline_symbols.branch = ''
         let g:airline_symbols.readonly = ''
+        " let g:airline_symbols.linenr = '☰'
+        " let g:airline_symbols.maxlinenr = ''
+        "let g:airline_section_z = '%3p%% %#__accent_bold#%4l/%L%#__restore__#:%3v'
+        let g:airline_section_y = ''
+        let g:airline_section_z = '%#__accent_bold#%l/%L%#__restore__#:%2v'
 
-        let g:airline#extensions#tabline#enabled = 1
+        " let g:airline#extensions#tabline#enabled = 1
         let g:airline#extensions#tabline#show_splits = 1
         let g:airline#extensions#tabline#show_buffers = 1
         let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
         let g:airline#extensions#tabline#show_tab_type = 0
         let g:airline#extensions#tabline#show_close_button = 0
         let g:airline#extensions#tabline#fnamemod = ':t'
-        let g:airline#extensions#tabline#excludes = ["bash"]
+        let g:airline#extensions#tabline#excludes = ["term://"]
         " let g:airline#extensions#tabline#fnametruncate = 10
 
 
@@ -353,54 +413,63 @@
         nmap <leader>8 <Plug>AirlineSelectTab8
         nmap <leader>9 <Plug>AirlineSelectTab9
 
-    " Neomake
-        " let g:neomake_error_sign = {'text': '●', 'texthl': 'NeomakeErrorSign'}
-        " let g:neomake_warning_sign = {
-        "     \   'text': '●',
-        "     \   'texthl': 'NeomakeWarningSign',
-        "     \ }
-        " let g:neomake_python_enabled_makers = ['flake8']
-        " au FileType,BufWritePost *.py Neomake
+        let g:airline#extensions#ale#show_line_numbers = 0
+
+    " localvimrc
+        let g:localvimrc_whitelist=['/home/dawid/src/.*']
 
     " ALE
         let g:airline#extensions#ale#enabled = 1
-        " let g:ale_sign_error = '>>'
-        " let g:ale_sign_warning = '--'
+        " let g:ale_sign_error = '✗'
+        " let g:ale_sign_error = '●'
+        " let g:ale_sign_warning = '●'
+        " let g:ale_sign_warning = '◉'
         let g:ale_sign_column_always = 1
+        " let g:ale_python_pylint_use_global = 1
+        " let g:ale_python_pylint_executable = 'python3'
+        " let g:ale_python_flake8_options = '--ignore E501'
+        " if g:python_version ==# "3"
+        "     let g:ale_python_flake8_executable = expand("$PYENV_ROOT") . "/versions/neovim3/bin/flake8"
+        " else
+        "     let g:ale_python_flake8_executable = expand("$PYENV_ROOT") . "/versions/neovim2/bin/flake8"
+        " endif
+        nmap <silent> <C-k> <Plug>(ale_previous_wrap)zz
+        nmap <silent> <C-j> <Plug>(ale_next_wrap)zz
 
     " vim-easy-align
         vmap <Leader>a <Plug>(EasyAlign)
         nmap <Leader>a <Plug>(EasyAlign)
 
     " FZF
-        let g:fzf_layout = {'window': 'enew'}
-        let g:fzf_buffers_jump = 1
-        nmap <leader>f :FZF<CR>
-        nmap <leader>l :Buffers<CR>
-        if executable('rg')
-            let g:rg_command = '
-                \ rg --column --line-number --no-heading --fixed-strings
-                \ --smart-case --no-ignore --hidden --follow --color=always
-                \ --glob "!{.git,__pycache__}/*" '
-            command! -bang -nargs=* Rg
-                \ call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
-        endif
+        nnoremap <leader>; <Cmd>History:<CR>
+        nmap <leader>f <Cmd>FZF -m<CR>
+        nmap <leader>l <Cmd>Buffers<CR>
+        command! -bang -nargs=* Rg
+            \ call fzf#vim#grep(
+            \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+            \   <bang>0 ? fzf#vim#with_preview('up:60%')
+            \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+            \   <bang>0)
 
     " tcomment
-        let g:tcommentMapLeader1 = 0
-        let g:tcommentMapLeader2 = 0
-        let g:tcommentMapLeaderUncommentAnyway = 0
-        let g:tcommentMapLeaderCommentAnyway = 0
-        let g:tcommentTextObjectInlineComment = 0
+        let g:tcomment_mapleader1 = 0
+        let g:tcomment_mapleader2 = 0
+        let g:tcomment_mapleader_uncomment_anyway = 0
+        let g:tcomment_mapleader_comment_anyway = 0
+        let g:tcomment_textobject_inlinecomment = 0
+        let g:tcomment#filetype#guess = 0
+        call tcomment#type#Define("jinja2", "{# %s #}")
 
     " TagBar
         let g:tagbar_autofocus = 1
+        let g:tagbar_left = 0
         " nnoremap <silent> <leader>tt :TagbarToggle<CR>
         " nnoremap <silent> <leader>ta :TagbarOpenAutoClose<CR>
-        nnoremap <silent> <leader>t :TagbarOpenAutoClose<CR>
-        nnoremap <silent> <F9> :TagbarToggle<CR>
+        nnoremap <silent> <leader>t <Cmd>TagbarOpenAutoClose<CR>
+        nnoremap <silent> <F8> <Cmd>TagbarToggle<CR>
 
-    " " Fugitive
+    " Fugitive
+        command! GdiffInTab tabedit %|Gdiff
     "     nnoremap <silent> <leader>gs :Gstatus<CR>
     "     nnoremap <silent> <leader>gd :Gdiff<CR>
     "     nnoremap <silent> <leader>gc :Gcommit<CR>
@@ -412,7 +481,7 @@
         let g:mundo_width = 25
         let g:mundo_preview_bottom = 1
         let g:mundo_verbose_graph = 0
-        nnoremap <silent> <Leader>u :MundoToggle<cr>
+        nnoremap <silent> <Leader>u <Cmd>MundoToggle<cr>
 
     " delimitMate
         let delimitMate_expand_cr=1
@@ -422,40 +491,73 @@
         " just testing it
         let delimitMate_balance_matchpairs = 1
         let delimitMate_excluded_regions = ""
-        au FileType python let b:delimitMate_nesting_quotes = ['"']
-        au FileType htmldjango let b:delimitMate_quotes = "\" ' %"
-
-    " " iron
-    "     vmap is <Plug>(iron-send-motion)
-    "     nmap <leader>is <Plug>(iron-send-motion)
-    "     nmap <leader>ir <Plug>(iron-repeat-cmd)
-    "     nmap <leader>ie <Plug>(iron-cr)
+        aug MatchpairsQuotes
+            au!
+            au FileType python let b:delimitMate_nesting_quotes = ['"']
+            au FileType htmldjango let b:delimitMate_quotes = "\" ' %"
+            au FileType ocaml let b:delimitMate_quotes = "\" '"
+        aug END
 
     " neoterm
-        let g:neoterm_size = 20
-        " let g:neoterm_direct_open_repl = 1
-        let g:neoterm_automap_keys = "<space><cr>"
-        nnoremap <leader>TT :TREPLSetTerm 
-        " nnoremap <leader>Tf :TREPLSendFile<cr>
-        " nnoremap <leader>Tl :TREPLSendLine<cr>
-        " vnoremap Ts :TREPLSendSelection<cr>
-        let g:neoterm_keep_term_open = 0
+        " let g:neoterm_size = 20
+        " " let g:neoterm_direct_open_repl = 1
+        " let g:neoterm_automap_keys = "<space><cr>"
+        " nnoremap <leader>TT :TREPLSetTerm 
+        " " nnoremap <leader>Tf :TREPLSendFile<cr>
+        " " nnoremap <leader>Tl :TREPLSendLine<cr>
+        " " vnoremap Ts :TREPLSendSelection<cr>
+        " let g:neoterm_keep_term_open = 0
+        let g:neoterm_default_mod = 'vertical'
+
+    " test
+        nnoremap <leader><cr> <Cmd>TestFile<cr>
+
+        let test#custom_runners = {'Cram': ['Cram']}
+
+        function! BelowStrategy(cmd) abort
+          belowright new
+          call termopen(a:cmd)
+          au BufDelete <buffer> wincmd p " switch back to last window
+          startinsert
+        endfunction
+
+        let g:test#custom_strategies = {'below': function('BelowStrategy')}
+        " let g:test#strategy = 'below'
+        let g:test#strategy = 'neoterm'
 
     " ultisnips
         let g:UltiSnipsExpandTrigger="<c-j>"
         let g:UltiSnipsJumpForwardTrigger="<c-j>"
         let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-    " notational-fzf-vim
-        let g:nv_directories = ['~/Notes']
-        let g:default_extension = '.txt'
-        let g:nv_preview_direction = 'up'
-        " let g:nv_preview_width = 60
-        let g:nv_use_short_pathnames = 1
-
     " python-syntax
         let g:python_highlight_all = 1
-        let g:python_highlight_builtin_funcs = 0
+        let g:python_highlight_operators = 0
+        " augroup python_syntax
+        "     au!
+        "     au FileType python syntax match pythonFunctionCall /\v([^[:cntrl:][:space:][:punct:][:digit:]]|_)([^[:cntrl:][:punct:][:space:]]|_)*\ze(\s?\()/
+        "     hi! link pythonFunctionCall Function
+        " augroup END
+
+    " black
+        let g:black_virtualenv = "/home/dawid/.local/share/virtualenvs/neovim-black/"
+        autocmd BufWritePre *.py execute ':Black'
+
+    " isort
+        " let g:isort_command = 'isort'
+        augroup isort
+            au!
+            au FileType python nnoremap <buffer> <leader>I <Cmd>Isort --force-single-line-imports<CR>
+        augroup END
+
+    " polyglot
+        let g:polyglot_disabled = ['ocaml', 'reason']
+
+    " signify
+        augroup signify
+            au!
+            au User Fugitive SignifyRefresh
+        augroup END
 
 " Functions
     " Strip whitespace
@@ -467,3 +569,58 @@
             let @/=_s
             call cursor(l, c)
         endfunction
+
+    " Show highlight group for word under cursor
+    nmap <leader>$ :call <SID>SynStack()<CR>
+    function! <SID>SynStack()
+        if !exists("*synstack")
+            return
+        endif
+        echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+    endfunc
+
+    " Toggle background
+    function! ToggleBackground()
+        if &background == 'dark'
+            set background=light
+        else
+            set background=dark
+        endif
+    endfunc
+    nmap <silent> <F9> <Cmd>call ToggleBackground()<CR>
+
+" if has('statusline')
+"
+"   function! ALEWarnings() abort
+"     let l:counts = ale#statusline#Count(bufnr(''))
+"     let l:all_errors = l:counts.error + l:counts.style_error
+"     let l:all_non_errors = l:counts.total - l:all_errors
+"     return l:counts.total == 0 ? '' : printf('  W:%d ', all_non_errors)
+"   endfunction
+"
+"   function! ALEErrors() abort
+"     let l:counts = ale#statusline#Count(bufnr(''))
+"     let l:all_errors = l:counts.error + l:counts.style_error
+"     let l:all_non_errors = l:counts.total - l:all_errors
+"     return l:counts.total == 0 ? '' : printf(' E:%d ', all_errors)
+"   endfunction
+"
+"   function! ALEStatus() abort
+"     let l:counts = ale#statusline#Count(bufnr(''))
+"     let l:all_errors = l:counts.error + l:counts.style_error
+"     let l:all_non_errors = l:counts.total - l:all_errors
+"     return l:counts.total == 0 ? ' ok ' : ''
+"   endfunction
+"
+"   set laststatus=2
+"   set statusline=%<%f
+"   set statusline+=%w%h%m%r
+"
+"   set statusline+=\ %y
+"   set statusline+=%=%-14.(%l,%c%V%)\ %p%%\ 
+"
+"   set statusline+=\%#StatusLineOk#%{ALEStatus()}
+"   set statusline+=\%#StatusLineError#%{ALEErrors()}
+"   set statusline+=\%#StatusLineWarning#%{ALEWarnings()}
+"
+" endif
