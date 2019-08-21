@@ -1,0 +1,11 @@
+.PlayOnLinux
+.cache
+.cargo
+.cups
+.git
+.gitkraken
+.java
+.var
+__pycache__
+_build
+_opam
