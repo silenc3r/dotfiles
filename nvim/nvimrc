@@ -3,7 +3,8 @@
 " Env options
     " let g:python_version = matchstr(system("python --version | cut -f2 -d' '"), '^[0-9]')
     let g:python_host_prog = expand("$HOME") . "/.local/share/virtualenvs/neovim2/bin/python"
-    let g:python3_host_prog = expand("$HOME") . "/.local/share/virtualenvs/neovim3/bin/python"
+    " let g:python3_host_prog = expand("$HOME") . "/.local/share/virtualenvs/neovim3/bin/python"
+    let g:python3_host_prog = "/usr/bin/python3"
 
 " Load plugins
     call plug#begin('~/.local/share/nvim/plugged')
