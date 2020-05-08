@@ -18,7 +18,7 @@
     " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
     set rtp+=/usr/share/fzf/vim
     " for openSUSE
-    set rtp+=/usr/share/vim/site/plugin/fzf.vim
+    Plug '/usr/share/vim/site/plugin/fzf.vim'
     Plug 'junegunn/fzf.vim'
     Plug 'justinmk/vim-dirvish'
     Plug 'Lokaltog/neoranger'
@@ -60,7 +60,7 @@
     Plug 'reasonml-editor/vim-reason-plus'
     Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
     Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
-    Plug 'rgrinberg/vim-ocaml'
+    Plug 'ocaml/vim-ocaml'
     Plug 'metakirby5/codi.vim'
     Plug 'ambv/black'
     Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -119,6 +119,9 @@
     Plug 'KKPMW/oldbook-vim'
     Plug 'arcticicestudio/nord-vim'
     Plug 'tjammer/blandon.vim'
+    Plug 'arzg/vim-corvine'
+    Plug 'doums/darcula'
+    Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
 
     call plug#end()
 

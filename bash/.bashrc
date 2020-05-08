@@ -183,18 +183,16 @@ alias tm='tmux attach || tmux new'
 # to prevent dnf using separate caches for user and root
 alias dnf='sudo dnf'
 
-alias xsel='xsel --logfile "$XDG_CACHE_HOME"/xsel/xsel.log'
-
 alias mail=neomutt
 
 if hash cmus 2> /dev/null; then
     alias cmus='/usr/bin/tmux -f "$XDG_CONFIG_HOME/cmus/tmux.conf" new-session -A -D -s cmus /usr/bin/cmus'
 fi
 
-GIT_PROMPT_ONLY_IN_REPO=0
-GIT_PROMPT_SHOW_UNTRACKED_FILES=no
-source ~/.bash-git-prompt/gitprompt.sh
-GIT_PROMPT_THEME=Custom
+#GIT_PROMPT_ONLY_IN_REPO=0
+#GIT_PROMPT_SHOW_UNTRACKED_FILES=no
+#source ~/.bash-git-prompt/gitprompt.sh
+#GIT_PROMPT_THEME=Custom
 
 export PYENV_ROOT="$HOME/.local/usr/pyenv"
 if hash pyenv 2> /dev/null; then

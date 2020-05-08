@@ -17,5 +17,7 @@
 * Don't edit '/etc/profile' create '/etc/profile.d/<name>.sh' script instead
 * '/etc/environment' can be used for simple 'key=value' options
 
+GNUPG: mkdir --mode=700 $GNUPGHOME
+
 ## TODO
 - write stow script
