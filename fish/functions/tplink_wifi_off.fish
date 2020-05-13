@@ -1,3 +1,4 @@
+# Defined in - @ line 1
 function tplink_wifi_off
     nmcli connection show --active | grep -q 'enp0s25'
     if test $status -gt 0
