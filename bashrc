@@ -11,6 +11,18 @@ if [ -f /etc/bashrc ]; then
     . /etc/bashrc
 fi
 
+if [[ ! "$PATH" == *$HOME/.local/share/npm/bin* ]]; then
+    PATH="$HOME/.local/share/npm/bin:$PATH"
+fi
+if [[ ! "$PATH" == *$HOME/.local/bin* ]]; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+if [[ ! "$PATH" == *$HOME/bin* ]]; then
+    PATH="$HOME/bin:$PATH"
+fi
+
+export PATH
+
 # update LS_COLORS to use terminal colorscheme
 eval "$(dircolors)"
 
@@ -22,6 +34,9 @@ shopt -s checkwinsize
 # prevent file overwrite on stdout redirection
 # use `>|` to force redirection to an existing file
 set -o noclobber
+
+# enable extended globbing
+shopt -s extglob
 # turn on recursive globbing (enables ** to recurse all directories)
 # this causes some issuses with fzf complete
 # shopt -s globstar
@@ -39,7 +54,7 @@ shopt -s dirspell
 shopt -s histverify
 # append to the history file, don't overwrite it
 # this isn't needed if we have `history -a` in prompt command
-# shopt -s histappend
+shopt -s histappend
 # store multiline commands as one command
 shopt -s cmdhist
 
@@ -51,7 +66,7 @@ fi
 # unset HISTFILE
 HISTIGNORE="?:??:[ ]*:history:clear:z *:j *:b *:"
 # ingore duplicates and commands starting with spacebar
-HISTCONTROL=ignoreboth:erasedups
+HISTCONTROL=ignoreboth
 # Add a timestamp to each history entry.
 HISTTIMEFORMAT='%F %T  '
 
@@ -61,15 +76,11 @@ ulimit -Sv 8388608
 if hash fzf 2> /dev/null; then
     if hash fd 2> /dev/null; then
         _fzf_compgen_path() {
-            fd --follow --exclude ".git" . "$1"
+            fd --follow . "$1"
         }
         _fzf_compgen_dir() {
-            fd --type d --follow --exclude ".git" . "$1"
+            fd --type d --follow . "$1"
         }
-        # export FZF_DEFAULT_OPTS+=' --bind "f1:execute(nvim {})"'
-        export FZF_DEFAULT_COMMAND='fd --type file --follow'
-        export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-        export FZF_DEFAULT_OPTS="--ansi"
     fi
 
     # cd to selected directory
@@ -79,7 +90,7 @@ if hash fzf 2> /dev/null; then
     }
     dh () {
         local dir
-        dir=$(fd --type d --hidden --follow --exclude ".git" . "${1:-.}" | fzf +m --reverse --height=40%) && builtin cd "$dir"
+        dir=$(fd --type d --hidden --follow . "${1:-.}" | fzf +m --reverse --height=40%) && builtin cd "$dir"
     }
 
     # open file in $VISUAL
@@ -93,8 +104,8 @@ if hash fzf 2> /dev/null; then
 fi
 
 # zummi
-[ -f "$HOME"/.local/share/zummi/zummi.bash ] \
-    && source "$HOME"/.local/share/zummi/zummi.bash 
+# [ -f "$HOME"/.local/share/zummi/zummi.bash ] \
+#     && source "$HOME"/.local/share/zummi/zummi.bash 
 
 # Ranger autocd
 [ -f /usr/share/doc/ranger/examples/bash_automatic_cd.sh ] \
@@ -112,11 +123,6 @@ trl() { transmission-remote -l; }
 trd() { transmission-remote -t "$1" --remove-and-delete; }
 trr() { transmission-remote -t "$1" --remove; }
 tri() { transmission-remote -t "$1" --info; }
-
-if hash nvim 2> /dev/null; then
-    export EDITOR=nvim
-    export VISUAL=$EDITOR
-fi
 
 # aliases
 alias dmesg='dmesg --color'
@@ -163,8 +169,6 @@ alias tm='tmux attach || tmux new'
 # to prevent dnf using separate caches for user and root
 alias dnf='dnf --cacheonly'
 
-export RIPGREP_CONFIG_PATH="$HOME"/.config/ripgrep/config
-
 lns () {
     ln -s "$(realpath "$1")" "$2"
 }
@@ -174,6 +178,10 @@ alias n=notes.sh
 ng() {
     rg "$1" "$HOME"/Notes
 }
+
+# https://news.ycombinator.com/item?id=24659282
+# bashquote() { printf '%q\n' "$(cat)" ; }
+bashquote() { printf '%q' "$(cat)" ; }
 
 ## Python config
 export PYENV_ROOT="$HOME/.local/pyenv"
@@ -307,12 +315,15 @@ __reset_cursor () { [ -n "$VTE_VERSION" ] && printf "\x1b[0 q"; }
 
 orig_prompt="$PROMPT_COMMAND"
 PROMPT_COMMAND=''
-PROMPT_COMMAND+='__set_prompt;' # this has to be first
+# PROMPT_COMMAND+='__set_prompt;' # this has to be first
 PROMPT_COMMAND+='__reset_cursor;'
-PROMPT_COMMAND+='history -a;'
-#PROMPT_COMMAND+='(_zummi_save_history &);'
-#PROMPT_COMMAND+='(zummi dir add "$(command pwd 2>/dev/null)" 2>/dev/null &);'
 PROMPT_COMMAND+="$orig_prompt"
+
+SBP_PATH="$HOME/.local/sbp"
+source ${SBP_PATH}/sbp.bash
+
+# zummi
+eval "$(zummi init bash)"
 
 # # Profiling END
 # set +x
