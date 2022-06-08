@@ -1,640 +1,231 @@
-" vim: set foldlevel=0 foldmethod=indent:
-
-" Env options
-    " let g:python_version = matchstr(system("python --version | cut -f2 -d' '"), '^[0-9]')
-    let g:python_host_prog = expand("$HOME") . "/.local/share/virtualenvs/neovim2/bin/python"
-    " let g:python3_host_prog = expand("$HOME") . "/.local/share/virtualenvs/neovim3/bin/python"
-    let g:python3_host_prog = "/usr/bin/python3"
-
-" Load plugins
-    call plug#begin('~/.local/share/nvim/plugged')
-
-    " Utils
-    if executable('ctags')
-        " loading it on-demand breaks Airline
-        Plug 'majutsushi/tagbar'
-        Plug 'ludovicchabant/vim-gutentags'
-    endif
-    " Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all'  }
-    set rtp+=/usr/share/fzf/vim
-    " for openSUSE
-    Plug '/usr/share/vim/site/plugin/fzf.vim'
-    Plug 'junegunn/fzf.vim'
-    Plug 'justinmk/vim-dirvish'
-    Plug 'Lokaltog/neoranger'
-    Plug 'tpope/vim-eunuch'
-    Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
-    " Display marks
-    Plug 'kshenoy/vim-signature'
-    " Fancy start screen & session management
-    Plug 'mhinz/vim-startify'
-    Plug 'qpkorr/vim-bufkill'
-    Plug 'tpope/vim-unimpaired'
-    Plug 'embear/vim-localvimrc'
-    Plug 'kassio/neoterm'
-    Plug 'lambdalisue/suda.vim'
-    Plug 'janko-m/vim-test'
-
-    " Git
-    Plug 'tpope/vim-fugitive'
-    Plug 'mhinz/vim-signify'
-    Plug 'mattn/gist-vim'
-
-    " Text sculpting
-    " Plug 'junegunn/vim-easy-align'
-    Plug 'tommcdo/vim-lion'
-    " I find it supperior to NerdCommenter & vim-commentary
-    Plug 'tomtom/tcomment_vim'
-    " Plug 'tpope/vim-surround'
-    Plug 'machakann/vim-sandwich'
-    Plug 'tpope/vim-repeat'
-    Plug 'wellle/targets.vim'
-    Plug 'Joe-Withey/v-star'
-
-    " Language support
-    " Plug 'autozimu/LanguageClient-neovim', {
-    "     \ 'branch': 'next',
-    "     \ 'do': 'bash install.sh',
-    "     \ }
-    Plug 'vim-python/python-syntax'
-    Plug 'reasonml-editor/vim-reason-plus'
-    Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
-    Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
-    Plug 'ocaml/vim-ocaml'
-    Plug 'metakirby5/codi.vim'
-    Plug 'ambv/black'
-    Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'plytophogy/vim-virtualenv'
-    Plug 'dag/vim-fish'
-
-    " Autocompletion & Syntax check
+"### GLOBAL VARIABLES ##########################################################
+let g:python_host_prog = "/usr/bin/python3"
+let g:python3_host_prog = "/usr/bin/python3"
+if executable('opam')
     let g:opamshare = substitute(system('opam config var share'),'\n$','','''')
-    execute "set rtp+=" . g:opamshare . "/merlin/vim"
-    execute "helptags " . g:opamshare . "/merlin/vim/doc"
-    execute "set rtp+=" . g:opamshare . "/ocp-indent/vim"
-    " Plug 'Shougo/deoplete.nvim', { 'tag': '*', 'do': ':UpdateRemotePlugins' }
-    " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    " Plug 'zchee/deoplete-jedi'
-    " Plug 'copy/deoplete-ocaml'
-    " Use release branch
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
-    Plug 'w0rp/ale'
-    Plug 'SirVer/ultisnips'
-    Plug 'honza/vim-snippets'
-    Plug 'Raimondi/delimitMate'
-
-    " UI
-    " Plug 'vim-airline/vim-airline'
-    " Plug 'vim-airline/vim-airline-themes'
-    Plug 'itchyny/lightline.vim'
-    Plug 'maximbaz/lightline-ale'
-
-    " Colorschemes
-    Plug 'chriskempson/base16-vim'
-    Plug 'jnurmine/Zenburn'
-    Plug 'joshdick/onedark.vim'
-    Plug 'rakr/vim-one'
-    Plug 'morhetz/gruvbox'
-    " Plug 'reedes/vim-colors-pencil'
-    Plug 'rakr/vim-two-firewatch'
-    " Plug 'endel/vim-github-colorscheme'
-    " Plug 'albertorestifo/github.vim'
-    Plug 'fcpg/vim-farout'
-    " Plug 'tomasiser/vim-code-dark'
-    " Plug 'gilgigilgil/anderson.vim'
-    " Plug 'andreypopp/vim-colors-plain'
-    " Plug 'fcpg/vim-fahrenheit'
-    " Plug 'marlun/vim-starwars'
-    " Plug 'zefei/cake16'
-    " Plug 'kamwitsta/flatwhite-vim'
-    " Plug 'mswift42/vim-themes'
-    " Plug 'romainl/Apprentice'
-    Plug 'cormacrelf/vim-colors-github'
-    Plug 'Nequo/vim-allomancer'
-    Plug 'Lokaltog/vim-monotone'
-    Plug 'mkarmona/materialbox'
-    Plug 'mhartington/oceanic-next'
-    Plug 'sts10/vim-pink-moon'
-    Plug 'dikiaap/minimalist'
-    Plug 'KKPMW/oldbook-vim'
-    Plug 'arcticicestudio/nord-vim'
-    Plug 'tjammer/blandon.vim'
-    Plug 'arzg/vim-corvine'
-    Plug 'doums/darcula'
-    Plug 'challenger-deep-theme/vim', { 'as': 'challenger-deep' }
-
-    call plug#end()
-
-" General
-    " set synmaxcol=200           " highlight only first 200 columns
-    " syntax sync minlines=250    " Possibly faster highlighting for big files
-    set clipboard+=unnamedplus  " Use proper buffer for clipboard on linux"
-    set hidden                  " Allow for switching unsaved buffers
-    set viewoptions+=unix,slash " Unix-windows compatibility
-    set updatetime=300          " Time to update marks etc.
-
-    " Undo & backup
-    set nowritebackup
-    set noswapfile
-    set undofile                " Persistent undo is sexy
-    set undolevels=1000         " Maximum number of undo
-    set undoreload=100000       " Save complete files for undo on reload if it has less lines than this
-
-    " Search
-    set ignorecase              " Case insensitive search...
-    set smartcase               " ...until upper-case letter is typed
-
-    " UI look and behavior
-    set title                   " Allow nvim to set window title
-    set noshowmode              " Don't show mode, Airline takes care of that
-    set winminheight=0          " Windows can be 0 line high (only statusbar)
-    set splitbelow              " Put new window below the current one
-    set splitright              " Put new window right of the current one
-    set sidescroll=1            " Minimal number of columns to scroll horiz.
-    set cursorline              " Highlight cursor line
-    set number                  " Display current line number
-    set relativenumber          " Use relative line numbering
-    set nowrap                  " Don't wrap long lines
-    set list
-    " bag of chars: ▶ ◀ ← → … … ⟩ ⟨ ❯ ❮
-    set listchars=nbsp:␣,extends:…,precedes:…,tab:»\ ,trail:·
-    set fillchars+=vert:│
-    set nofoldenable
-
-    set mouse=nvc
-
-    set grepprg=rg\ --vimgrep
-
-    " Commandline completion
-    " Command <Tab> completion: list matches, then longest common part,
-    " then all.
-    set wildmode=list:longest,full
-    set wildignorecase
-    set wildignore+=*.o,*~,.lo,*.obj,*.pyc,*.jar
-    set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
-    set suffixes+=.in,.a        " Files with lower priority while completing
-
-    " Hide cursor line in insert mode
-    aug cline
-        au!
-        au WinLeave,InsertEnter * set nocursorline
-        au WinEnter,InsertLeave * set cursorline
-        " au BufEnter term://* setlocal nonumber norelativenumber
-    aug END
-
-    " Update diff after save
-    aug DiffUpdate
-        au!
-        au BufWritePost * if &diff | diffupdate | endif
-    aug END
-
-    " Remember cursor position when switcing buffers
-    aug CursorPosition
-        au!
-        au BufLeave * let b:winview = winsaveview()
-        au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
-    aug END
-
-" Formatting & Editting
-    set ts=4 sw=4 sts=4         " 1 Tab equals to 4 spaces
-    " set shiftround              " Round indent to multiple of shiftwidth
-    set expandtab               " Convert tabs to spaces
-    " set tildeop                 " Let tilde work with movement keys
-    set virtualedit=onemore,block " Allow for cursor beyond last character
-    set completeopt=menuone
-
-    " Remove trailing whitespaces and ^M chars
-    augroup FileTypes
-        au!
-        au FileType c,cpp,java,go,javascript,ocaml,python,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
-        au FileType python setlocal colorcolumn=89
-        au FileType text setlocal textwidth=80 colorcolumn=+1
-        au FileType ocaml,reason setlocal ts=2 sts=2 sw=2 colorcolumn=89
-        au BufRead,BufNewFile *.jinja2 setlocal filetype=htmldjango
-        au BufNewFile,BufRead *.t set filetype=cram
-        au FileType json syntax match Comment +\/\/.\+$+
-    augroup END
-
-" Colors
-    set background=dark
-    " set background=light
-    if ($TERM =~ "xterm") || ($TERM =~ "-256color")
-        set termguicolors
-        " let g:onedark_terminal_italics = 1
-        " colorscheme onedark
-        " hi Todo gui=bold,reverse guifg=#5c6370
-        " let g:codedark_conservative = 1
-        " colorscheme codedark
-        " colorscheme zenburn
-        " let g:airline_theme = 'zenburn'
-        " colorscheme github
-        " colorscheme farout
-        " let g:kamrat_italic = 1
-        colorscheme kamrat
-        " colorscheme materialbox  " decent
-        " colorscheme OceanicNext  " decent
-        " colorscheme pink-moon  " decent
-        " colorscheme apprentice  " decent
-        " colorscheme darktooth
-        " colorscheme cake16
-        " set background=light
-        " colorscheme leya
-        " colorscheme fahrenheit
-        " set background=light
-        " colorscheme plain
-        " colorscheme anderson
-        " colorscheme iceberg
-        " let g:two_firewatch_italics=1
-        " colo two-firewatch
-        " let g:airline_theme='twofirewatch'
-        " colorscheme gruvbox
-        " let g:pencil_higher_contrast_ui = 1
-        " let g:pencil_gutter_color = 1
-        " let g:pencil_terminal_italics = 1
-        " colorscheme pencil
-        " colorscheme flatwhite
-    endif
-
-    " match ErrorMsg '\%>120v.\+'
-
-" Keymaps
-    " Remap <Leader> to SPACEBAR
-    let g:mapleader = ' '
-    let g:maplocalleader = '\\'
-
-    " Clean search highlighting
-    nnoremap <silent> <esc> <Cmd>nohlsearch<CR>
-
-    " Source init.nvim
-    nnoremap <leader>~ <Cmd>source $MYVIMRC<cr>
-
-    " Sudo write
-    " cmap w!!<CR> w suda://%<CR>
-    command! SudoWrite w suda://%
-
-    " Toggle folding
-    " nnoremap <Tab> za
-
-    " Repeat last ex command
-    " nnoremap <leader><leader> @:
-
-    " Set working directory
-    nnoremap <leader>. <Cmd>lcd %:p:h<CR>
-
-    " Simpler saving/quiting
-    nnoremap <silent> <leader>w <Cmd>w<CR>
-    cnoremap q1 q!
-
-    " Jump to exact position
-    noremap ` '
-    noremap ' `
-
-    " Use Enter as : and fix problems caused by that
-    nnoremap <CR> :
-    augroup enter_esc
-        au!
-        au BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-        au BufReadPost quickfix nnoremap <buffer> <Esc> <Cmd>q<CR>
-        au CmdWinEnter * nnoremap <buffer> <CR> <CR>
-        au CmdWinEnter * nnoremap <buffer> <Esc> <Cmd>q<CR>
-        au FileType netrw nnoremap <buffer> <Esc> <Cmd>e #<CR>
-    augroup END
-
-    " Easier access to command history
-    " nnoremap <leader>; q:
-
-    " Die ex mode, die!
-    nnoremap Q <Nop>
-
-    " " While searching center on the line with current result
-    " nnoremap N Nzzzv
-    " nnoremap n nzzzv
-    " nnoremap g; g;zzzv
-    " nnoremap g. g.zzzv
-
-    " use sane regexes
-    nnoremap / /\v
-    vnoremap / /\v
-
-    " Easier window navigation
-    tnoremap <A-h> <C-\><C-n><C-w>h
-    tnoremap <A-j> <C-\><C-n><C-w>j
-    tnoremap <A-k> <C-\><C-n><C-w>k
-    tnoremap <A-l> <C-\><C-n><C-w>l
-    inoremap <A-h> <C-\><C-n><C-w>h
-    inoremap <A-j> <C-\><C-n><C-w>j
-    inoremap <A-k> <C-\><C-n><C-w>k
-    inoremap <A-l> <C-\><C-n><C-w>l
-    nnoremap <A-h> <C-w>h
-    nnoremap <A-j> <C-w>j
-    nnoremap <A-k> <C-w>k
-    nnoremap <A-l> <C-w>l
-    " autocmd WinEnter term://* startinsert
-    augroup term_enter
-        au!
-        au TermOpen * setlocal nonumber norelativenumber
-        " au BufEnter term://* startinsert
-        " au BufLeave term://* stopinsert
-    augroup END
-
-    " Make esc quit insert mode in terminal
-    augroup esc_term
-        au!
-        tnoremap <Esc> <C-\><C-n>
-        au FileType fzf tnoremap <buffer> <Esc> <Esc>
-    augroup END
-
-    " Make arrowkeys resize viewports accordingly
-    nnoremap <S-Left> <Cmd>vertical resize +1<CR>
-    nnoremap <S-Right> <Cmd>vertical resize -1<CR>
-    nnoremap <S-Up> <Cmd>resize -1<CR>
-    nnoremap <S-Down> <Cmd>resize +1<CR>
-
-    " Highlight word under cursor without moving cursor
-    map <silent> <leader>* <Cmd>let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<CR>
-
-" Plugin options
-    " vim-plug
-        let g:plug_window = "enew"
-
-    " deoplete
-        let g:deoplete#enable_at_startup = 1
-        let g:deoplete#auto_complete_delay = 0
-        " Use tab for trigger completion with characters ahead and navigate.
-        " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-        inoremap <silent><expr> <TAB>
-              \ pumvisible() ? "\<C-n>" :
-              \ <SID>check_back_space() ? "\<TAB>" :
-              \ coc#refresh()
-        " inoremap <silent><expr> <Tab> pumvisible() ? "\<C-n>" : "<Tab>"
-        inoremap <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "<S-Tab>"
-
-        function! s:check_back_space() abort
-            let col = col('.') - 1
-            return !col || getline('.')[col - 1]  =~# '\s'
-        endfunction
-
-        " Use <c-space> to trigger completion.
-        inoremap <silent><expr> <c-space> coc#refresh()
-
-        let g:deoplete#ignore_sources = {}
-        let g:deoplete#ignore_sources.ocaml = ['buffer', 'around', 'member', 'tag']
-
-    " LSP
-    let g:LanguageClient_serverCommands = {
-        \ 'reason': ['ocaml-language-server', '--stdio'],
-        \ 'ocaml': ['ocaml-language-server', '--stdio'],
-        \ }
-
-    " Startify session
-        let g:startify_session_dir = "$HOME/.config/nvim/sessions"
-
-    " PowerLine / airline
-    " Don't lag on changing modes - fixes problems with YCM autocompletion
-    " if ! has('gui_running')
-    "     set ttimeoutlen=10
-    "     augroup FastEscape
-    "         autocmd!
-    "         au InsertEnter * set timeoutlen=0
-    "         au InsertLeave * set timeoutlen=1000
-    "     augroup END
-    " endif
-
-    " LightLine
-        let g:lightline = {}
-        let g:lightline.colorscheme = 'kamrat'
-        let g:lightline.subseparator = { 'left': '', 'right': '' }
-        let g:lightline.component_function = {
-              \   'encformat': 'LightLineFileFormatEncoding',
-              \   'filename': 'LightLineFilename',
-              \   'filetype': 'LightLineFiletype',
-              \   'fugitive': 'LightLineFugitive',
-              \   'lineinfo': 'LightLineLineinfo',
-              \   'mode': 'LightLineMode',
-              \   'modified': 'LightLineModified',
-              \   'percent': 'LightLinePercent',
-              \   'readonly': 'LightLineReadonly',
-              \   'venv': 'LightLineVenv',
-              \ }
-        let g:lightline.component_expand = {
-              \  'linter_checking': 'lightline#ale#checking',
-              \  'linter_warnings': 'lightline#ale#warnings',
-              \  'linter_errors': 'lightline#ale#errors',
-              \  'linter_ok': 'lightline#ale#ok',
-              \ }
-        let g:lightline.component_type = {
-              \     'linter_checking': 'warning',
-              \     'linter_warnings': 'warning',
-              \     'linter_errors': 'error',
-              \     'linter_ok': 'left',
-              \ }
-        let g:lightline.active = {
-              \ 'left': [ [ 'mode', 'paste' ],
-              \           [ 'fugitive' ],
-              \           [ 'filename', 'readonly', 'modified' ] ],
-              \ 'right': [ [ 'linter_checking', 'linter_errors', 'linter_warnings', 'linter_ok', 'percent', 'lineinfo' ],
-              \            [ 'filetype', 'encformat' ],
-              \            [ 'venv' ] ]
-              \ }
-
-        function! MyVisible(discard)
-            let _ = &ft == 'startify' ||
-                  \ &ft == 'fzf' ||
-                  \ &ft == 'help' ||
-                  \ &ft == 'tagbar' ||
-                  \ &ft =~ 'Mundo'
-            return !_
-        endfunction
-
-        function! LightLineVenv()
-            if &filetype =~# "python"
-                if get(g:, 'virtualenv_loaded', 0)
-                    return virtualenv#statusline()
-                else
-                    return fnamemodify($VIRTUAL_ENV, ':t')
-                endif
-            endif
-            return ''
-        endfunction
-
-        function! LightLineReadonly()
-            return MyVisible(0) ? (&readonly ? '' : '') : ''
-        endfunction
-
-        function! LightLineModified()
-            return MyVisible(0) ? &modified ? '[+]' : &modifiable ? '' : '[-]' : ''
-        endfunction
-
-        function! LightLineFiletype()
-            return winwidth(0) > 70 && MyVisible(0)
-                  \ ? (strlen(&filetype) ? &filetype : 'no ft') : ''
-        endfunction
-
-        function! LightLinePercent()
-            return MyVisible(0) ? printf("%3d%%", (100 * line('.') / line('$'))) : ''
-        endfunction
-
-        function! LightLineLineinfo()
-            return MyVisible(0) ? printf("%3d:%-2d", line('.'), col('.')) : ''
-        endfunction
-
-        function! LightLineFugitive()
-            if MyVisible(0) && exists('*fugitive#head')
-                let branch = fugitive#head()
-                return branch !=# '' ? ' '.branch : ''
-            endif
-            return ''
-        endfunction
-
-        function! LightLineFileFormatEncoding()
-            return winwidth(0) > 70 && MyVisible(0)
-                \ ? (strlen(&fenc) ? &fenc : &enc)
-                \   . '[' . &fileformat . ']'
-                \ : ''
-        endfunction
-
-        function! LightLineFilename()
-            let l:fname = expand('%:t')
-            let l:fpath = expand('%')
-            return &filetype ==# 'dirvish' ?
-                  \   (l:fpath ==# getcwd() . '/' ? fnamemodify(l:fpath, ':~') :
-                  \   fnamemodify(l:fpath, ':~:.')) :
-                  \ l:fname =~ '__Tagbar__' ? '' :
-                  \ l:fname =~ '__Mundo' ? '' :
-                  \ &ft == 'fzf' ? '' :
-                  \ ('' !=# l:fname ? l:fname : '[No Name]')
-        endfunction
-
-        function! LightLineMode()
-            let l:fname = expand('%:t')
-            return l:fname =~ '__Tagbar__' ? 'Tagbar' :
-                  \ l:fname == '__Mundo__' ? 'Mundo' :
-                  \ l:fname == '__Mundo_Preview__' ? 'Mundo Preview' :
-                  \ &ft == 'fzf' ? 'FZF' :
-                  \ &buftype == 'help' ? 'Help' :
-                  \ winwidth(0) > 60 ? lightline#mode() : ''
-        endfunction
-
-        let g:tagbar_status_func = 'TagbarStatusFunc'
-        function! TagbarStatusFunc(current, sort, fname, ...) abort
-            " let g:lightline.fname = a:fname
-            return lightline#statusline(0)
-        endfunction
-
-        let g:lightline#ale#indicator_checking = "..."
-        let g:lightline#ale#indicator_warnings = "W:"
-        let g:lightline#ale#indicator_errors = "E:"
-        let g:lightline#ale#indicator_ok = ""
-
-    " Airline
-        let g:airline_powerline_fonts = 0
-        let g:airline_symbols_ascii = 1
-        let g:airline#extensions#whitespace#enabled = 0
-        let g:airline#extensions#whitespace#show_message = 0
-        let g:airline#extensions#hunks#enabled = 0
-
-        " let g:airline_mode_map = {
-        "     \ '__' : '-',
-        "     \ 'c'  : 'C',
-        "     \ 'i'  : 'I',
-        "     \ 'ic' : 'I',
-        "     \ 'ix' : 'I',
-        "     \ 'n'  : 'N',
-        "     \ 'ni' : 'N',
-        "     \ 'no' : 'N',
-        "     \ 'R'  : 'R',
-        "     \ 'Rv' : 'R',
-        "     \ 's'  : 'S',
-        "     \ 'S'  : 'S',
-        "     \ '' : 'S',
-        "     \ 't'  : 'T',
-        "     \ 'v'  : 'V',
-        "     \ 'V'  : 'V',
-        "     \ '' : 'V',
-        "     \ }
-
-        if !exists('g:airline_symbols')
-            let g:airline_symbols = {}
-        endif
-
-        let g:airline_left_sep=''
-        let g:airline_left_alt_sep = ''
-        let g:airline_right_sep=''
-        let g:airline_right_alt_sep = ''
-        let g:airline_symbols.branch = ''
-        let g:airline_symbols.readonly = ''
-        " let g:airline_section_a = ''
-        " let g:airline_section_y = ''
-        let g:airline_section_z = '%3p%% %3l:%-2v'
-
-        " let g:airline#extensions#tabline#enabled = 1
-        let g:airline#extensions#tabline#show_splits = 1
-        let g:airline#extensions#tabline#show_buffers = 1
-        let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
-        let g:airline#extensions#tabline#show_tab_type = 0
-        let g:airline#extensions#tabline#show_close_button = 0
-        let g:airline#extensions#tabline#fnamemod = ':t'
-        let g:airline#extensions#tabline#excludes = ["term://"]
-        " let g:airline#extensions#tabline#fnametruncate = 10
-
-
-        let g:airline#extensions#tabline#left_sep = ''
-        let g:airline#extensions#tabline#left_alt_sep = ''
-        let g:airline#extensions#tabline#right_sep = ''
-        let g:airline#extensions#tabline#right_alt_sep = ''
-
-        let g:airline#extensions#tabline#buffer_idx_mode = 1
-        nmap <leader>1 <Plug>AirlineSelectTab1
-        nmap <leader>2 <Plug>AirlineSelectTab2
-        nmap <leader>3 <Plug>AirlineSelectTab3
-        nmap <leader>4 <Plug>AirlineSelectTab4
-        nmap <leader>5 <Plug>AirlineSelectTab5
-        nmap <leader>6 <Plug>AirlineSelectTab6
-        nmap <leader>7 <Plug>AirlineSelectTab7
-        nmap <leader>8 <Plug>AirlineSelectTab8
-        nmap <leader>9 <Plug>AirlineSelectTab9
-
-        let g:airline#extensions#ale#show_line_numbers = 0
+    let g:opambin = substitute(system('opam config var bin'),'\n$','','''')
+    " let $PATH .= ':' . g:opambin
+    " let $PATH = g:opambin . ':' . $PATH
+    " execute "set rtp+=" . g:opamshare . "/merlin/vim"
+    " execute "helptags " . g:opamshare . "/merlin/vim/doc"
+    " execute "set rtp+=" . g:opamshare . "/ocp-indent/vim"
+    set rtp += "/home/dawid/.local/opam/default/share/ocp-indent/vim"
+endif
+
+" Remap <Leader> to SPACEBAR
+let g:mapleader = ' '
+let g:maplocalleader = '\\'
+
+" Disable built-in plugins
+" let g:loaded_matchparen=1   " disable paren highlighting
+let g:loaded_netrwPlugin=1
+
+"### LOAD PLUGINS ##############################################################
+call plug#begin('~/.local/share/nvim/plugged')
+
+" Utils
+Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-eunuch'  " rename, delete files
+Plug 'simnalamburt/vim-mundo', { 'on': 'MundoToggle' }
+Plug 'kshenoy/vim-signature'  " Display marks
+Plug 'mhinz/vim-startify'  " Start screen and session management
+Plug 'qpkorr/vim-bufkill'
+Plug 'tpope/vim-unimpaired'
+Plug 'embear/vim-localvimrc'
+Plug 'kassio/neoterm'
+Plug 'lambdalisue/suda.vim'
+Plug 'janko-m/vim-test'
+Plug 'kevinhwang91/nvim-bqf'
+Plug 'Lokaltog/neoranger'
+
+" Git
+Plug 'mhinz/vim-signify'
+" Plug 'mattn/gist-vim'
+
+" Text sculpting
+" Plug 'junegunn/vim-easy-align'
+Plug 'tommcdo/vim-lion'
+" I find it supperior to NerdCommenter & vim-commentary
+Plug 'tomtom/tcomment_vim'
+Plug 'machakann/vim-sandwich'
+Plug 'tpope/vim-repeat'
+Plug 'wellle/targets.vim'
+Plug 'Joe-Withey/v-star'
+
+" Language support
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" Plug 'vim-python/python-syntax'
+" Plug 'tmhedberg/SimpylFold', { 'for': 'python' }
+Plug 'mitsuhiko/vim-jinja', { 'for': ['html', 'htmldjango'] }
+" Plug 'ocaml/vim-ocaml'
+Plug 'metakirby5/codi.vim'
+Plug 'stsewd/isort.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'plytophogy/vim-virtualenv'
+" Plug 'dag/vim-fish'
+Plug 'sbdchd/neoformat'
+" Plug 'ziglang/zig.vim'
+Plug 'pbrisbin/vim-cram'
+
+" autoclose parentheses
+Plug 'Raimondi/delimitMate'
+
+" LSP stuff
+Plug 'neovim/nvim-lspconfig'
+Plug 'hrsh7th/cmp-nvim-lsp'
+Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-vsnip'
+Plug 'hrsh7th/vim-vsnip'
+
+" Colorschemes
+Plug 'rafi/awesome-vim-colorschemes'
+Plug 'jnurmine/Zenburn'
+" Plug 'joshdick/onedark.vim'
+" Plug 'rakr/vim-one'
+" Plug 'morhetz/gruvbox'
+Plug 'reedes/vim-colors-pencil'
+Plug 'rakr/vim-two-firewatch'
+" Plug 'endel/vim-github-colorscheme'
+" Plug 'albertorestifo/github.vim'
+Plug 'fcpg/vim-farout'
+Plug 'tomasiser/vim-code-dark'
+Plug 'andreypopp/vim-colors-plain'
+Plug 'fcpg/vim-fahrenheit'
+Plug 'zefei/cake16'
+" Plug 'cormacrelf/vim-colors-github'
+Plug 'Nequo/vim-allomancer'
+Plug 'Lokaltog/vim-monotone'
+" Plug 'mkarmona/materialbox'
+" Plug 'arcticicestudio/nord-vim'
+Plug 'tjammer/blandon.vim'
+Plug 'doums/darcula'
+Plug 'AlessandroYorba/Breve'
+Plug 'liuchengxu/space-vim-theme'
+Plug 'igungor/schellar'
+Plug 'cocopon/iceberg.vim/'
+
+call plug#end()
+
+"### PLUGIN OPTIONS ############################################################
+"# tree-sitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "bash", "python", "ocaml", "ocaml_interface", "json", "json5", "lua", "fish", "html", "css", "cpp", "c", "toml", "vim", "yaml", "zig" },
+  highlight = {
+    enable = true,              -- false will disable the whole extension
+    -- disable = { "vim" },
+    custom_captures = {
+        -- ["namespace"] = "lorettaNormal",
+    },
+    -- don't use both TS and default highlighting
+    additional_vim_regex_highlighting = false,
+  },
+}
+EOF
+
+"# lsp-config
+set completeopt=menu,menuone,noselect
+
+lua << EOF
+local nvim_lsp = require('lspconfig')
+
+-- Use an on_attach function to only map the following keys
+-- after the language server attaches to the current buffer
+local on_attach = function(client, bufnr)
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  -- Enable completion triggered by <c-x><c-o>
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- See `:help vim.lsp.*` for documentation on any of the below functions
+  buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+  buf_set_keymap('n', '<leader>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+  buf_set_keymap('n', '<leader>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+  buf_set_keymap('n', '<leader>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+  buf_set_keymap('n', '<leader>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
+  buf_set_keymap('n', '<leader>F', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
+end
+
+-- Setup nvim-cmp
+local cmp = require'cmp'
+
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    -- select false to confirm only when completion is selected
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+  },
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' },
+    { name = 'buffer' },
+  }
+})
+
+-- Use a loop to conveniently call 'setup' on multiple servers and
+-- map buffer local keybindings when the language server attaches
+local servers = { 'pyright', 'ocamllsp', 'bashls' }
+for _, lsp in ipairs(servers) do
+  nvim_lsp[lsp].setup {
+    on_attach = on_attach,
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()),
+    flags = {
+      debounce_text_changes = 150,
+    }
+  }
+end
+EOF
+
+"""""""""""""""
+">>- vim-plug
+let g:plug_window = "enew"
+
+" """""""""""""""""""""""
+" ">>- Startify session
+" let g:startify_session_dir = "$HOME/.config/nvim/sessions"
 
     " localvimrc
         let g:localvimrc_whitelist=['/home/dawid/src/.*']
 
-    " ALE
-        let g:ale_lint_on_text_changed = 'normal'
-        let g:ale_lint_on_insert_leave = 1
-        let g:airline#extensions#ale#enabled = 1
-        " let g:ale_sign_error = '✗'
-        " let g:ale_sign_error = '●'
-        " let g:ale_sign_warning = '●'
-        " let g:ale_sign_warning = '◉'
-        let g:ale_sign_column_always = 1
-        " let g:ale_python_pylint_use_global = 1
-        " let g:ale_python_pylint_executable = 'python3'
-        " let g:ale_python_flake8_options = '--ignore E501'
-        " if g:python_version ==# "3"
-        "     let g:ale_python_flake8_executable = expand("$PYENV_ROOT") . "/versions/neovim3/bin/flake8"
-        " else
-        "     let g:ale_python_flake8_executable = expand("$PYENV_ROOT") . "/versions/neovim2/bin/flake8"
-        " endif
-        let g:ale_linters = {'python': ['flake8']}
-        nmap <silent> <C-k> <Plug>(ale_previous_wrap)zz
-        nmap <silent> <C-j> <Plug>(ale_next_wrap)zz
+    " vim-lion
+        let g:lion_squeeze_spaces = 1
 
-    " " vim-easy-align
-    "     vmap <Leader>a <Plug>(EasyAlign)
-    "     nmap <Leader>a <Plug>(EasyAlign)
+""""""""""
+">>- FZF
+let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.7 } }
+nnoremap <leader>; <Cmd>History:<CR>
+nmap <leader>f <Cmd>Files<CR>
+nmap <leader>l <Cmd>Buffers<CR>
+nmap <leader>C <Cmd>Colors<CR>
 
-    " FZF
-        nnoremap <leader>; <Cmd>History:<CR>
-        nmap <leader>f <Cmd>FZF -m<CR>
-        nmap <leader>l <Cmd>Buffers<CR>
-        nmap <leader>t <Cmd>Tags<CR>
-        command! -bang -nargs=* Rg
-            \ call fzf#vim#grep(
-            \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-            \   <bang>0 ? fzf#vim#with_preview('up:60%')
-            \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-            \   <bang>0)
+" Path completion with custom source command
+inoremap <expr> <c-x><c-f> fzf#vim#complete#path('fd')
 
     " tcomment
         let g:tcomment_mapleader1 = 0
@@ -644,23 +235,6 @@
         let g:tcomment_textobject_inlinecomment = 0
         let g:tcomment#filetype#guess = 0
         call tcomment#type#Define("jinja2", "{# %s #}")
-
-    " TagBar
-        let g:tagbar_autofocus = 1
-        let g:tagbar_left = 0
-        " nnoremap <silent> <leader>tt :TagbarToggle<CR>
-        " nnoremap <silent> <leader>ta :TagbarOpenAutoClose<CR>
-        nnoremap <silent> <leader>T <Cmd>TagbarOpenAutoClose<CR>
-        nnoremap <silent> <F8> <Cmd>TagbarToggle<CR>
-
-    " Fugitive
-        command! GdiffInTab tabedit %|Gdiff
-    "     nnoremap <silent> <leader>gs :Gstatus<CR>
-    "     nnoremap <silent> <leader>gd :Gdiff<CR>
-    "     nnoremap <silent> <leader>gc :Gcommit<CR>
-    "     nnoremap <silent> <leader>gb :Gblame<CR>
-    "     nnoremap <silent> <leader>gl :Glog<CR>
-    "     nnoremap <silent> <leader>gp :Git push<CR>
 
     " mundo
         let g:mundo_width = 25
@@ -693,11 +267,12 @@
         " " vnoremap Ts :TREPLSendSelection<cr>
         " let g:neoterm_keep_term_open = 0
         let g:neoterm_default_mod = 'vertical'
+        let g:neoterm_shell = 'fish'
 
     " test
         nnoremap <leader><cr> <Cmd>TestFile<cr>
 
-        let test#custom_runners = {'Cram': ['Cram']}
+        " let test#custom_runners = {'Cram': ['Cram']}
 
         function! BelowStrategy(cmd) abort
           belowright new
@@ -710,11 +285,6 @@
         " let g:test#strategy = 'below'
         let g:test#strategy = 'neoterm'
 
-    " ultisnips
-        let g:UltiSnipsExpandTrigger="<c-j>"
-        let g:UltiSnipsJumpForwardTrigger="<c-j>"
-        let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-
     " python-syntax
         let g:python_highlight_all = 1
         let g:python_highlight_operators = 0
@@ -724,10 +294,6 @@
         "     hi! link pythonFunctionCall Function
         " augroup END
 
-    " black
-        let g:black_virtualenv = "/home/dawid/.local/share/virtualenvs/neovim-black/"
-        autocmd BufWritePre *.py execute ':Black'
-
     " isort
         " let g:isort_command = 'isort'
         augroup isort
@@ -735,22 +301,255 @@
             au FileType python nnoremap <buffer> <leader>I <Cmd>Isort --force-single-line-imports<CR>
         augroup END
 
-    " " polyglot
-    "     let g:polyglot_disabled = ['ocaml', 'reason', 'python']
+    " Neoformat
+        let g:neoformat_ocaml_ocamlformat = {
+                    \ 'exe': g:opambin . '/ocamlformat',
+                    \ 'no_append': 1,
+                    \ 'stdin': 1,
+                    \ 'args': ['--enable-outside-detected-project', '--name', '"%:p"', '-']
+                    \ }
+        let g:neoformat_enabled_ocaml = ['ocamlformat']
 
-    " signify
-        augroup signify
-            au!
-            au User Fugitive SignifyRefresh
-        augroup END
+""""""""""""""
+">>- signify
+let g:signify_sign_add               = '+'
+let g:signify_sign_delete            = '_'
+let g:signify_sign_delete_first_line = '‾'
+let g:signify_sign_change            = '~'
+let g:signify_sign_show_count = 0
+let g:signify_sign_show_text = 1
 
     " gutentags
         let g:gutentags_exclude_filetypes = ['css', 'html', 'javascript.jsx', 'htmldjango', 'json', 'xml']
         let g:gutentags_ctags_exclude = ['node_modules', '.git', '_opam', 'build', '_build', 'dist', '.venv', '.env']
         let g:gutentags_project_root = ['_opam', '.env', '.venv', 'README.md']
 
-    " neoranger
-        nnoremap - <Cmd>RangerCurrentFile<cr>
+"""""""""""""""
+">> neoranger
+nnoremap - <Cmd>RangerCurrentFile<cr>
+let g:neoranger_viewmode='miller'
+
+
+" #############
+" >> General <<
+" #############
+
+" set synmaxcol=200           " highlight only first 200 columns
+" syntax sync minlines=250    " Possibly faster highlighting for big files
+set clipboard+=unnamedplus  " Use proper buffer for clipboard on linux"
+set hidden                  " Allow for switching unsaved buffers
+set updatetime=100          " Time to update marks etc.
+
+" Undo & backup
+set nowritebackup
+set noswapfile
+set undofile                " Persistent undo is sexy
+
+" Search
+set ignorecase              " Case insensitive search...
+set smartcase               " ...until upper-case letter is typed
+
+" UI look and behavior
+set title                   " Allow nvim to set window title
+" set noshowmode              " Don't show mode, Airline takes care of that
+set winminheight=0          " Windows can be 0 line high (only statusbar)
+set splitbelow              " Put new window below the current one
+set splitright              " Put new window right of the current one
+set scrolloff=3             " Show next 3 lines while scrolling
+set sidescrolloff=5         " Show next 5 columns while side-scrolling
+set cursorline              " Highlight cursor line
+set number                  " Display current line number
+" set signcolumn=yes:2          " Always show sign column
+set signcolumn=number          " Always show sign column
+set nowrap                  " Don't wrap long lines
+set list
+" bag of chars: ▶ ◀ ← → … … ⟩ ⟨ ❯ ❮ · »
+set listchars=nbsp:␣,extends:⟩,precedes:⟨,tab:»\ ,trail:·
+set fillchars+=vert:┃
+set nofoldenable
+
+" relative number column highlighting only for active window
+set relativenumber
+
+function! RelativeNumberActivity(active) abort
+    if &number ==# 'nonumber'
+        return 0
+    endif
+    if a:active == v:true
+        setlocal relativenumber
+    else
+        setlocal norelativenumber
+    endif
+endfunction
+
+augroup CustomWindowActivity
+    autocmd!
+    autocmd WinEnter * call RelativeNumberActivity(v:true)
+    autocmd WinLeave * call RelativeNumberActivity(v:false)
+augroup END
+
+set mouse=nvc
+
+set grepprg=rg\ --vimgrep
+
+" Commandline completion
+" Command <Tab> completion: select longest if possible, otherwise
+" display popup and switch through matches
+" set wildmode=longest:full,full
+set wildmode=full
+set pumblend=10
+set wildignorecase
+set wildignore+=*.o,*~,.lo,*.obj,*.pyc,*.jar,*.exe
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
+set wildignore+=*.pdf
+set wildignore+=*.cma,*.cmxs,*.cmi,*.cmx,*.cmxa,*.cmt,*.cmta,_opam,_build,*.opt,*.byte " ocaml stuff
+set suffixes+=.in,.a        " Files with lower priority while completing
+
+" Formatting & Editting
+set ts=4 sw=4 sts=4         " 1 Tab equals 4 spaces
+" set shiftround              " Round indent to multiple of shiftwidth
+set expandtab               " Convert tabs to spaces
+" set tildeop                 " Let tilde work with movement keys
+set virtualedit=onemore,block " Allow for cursor beyond last character
+
+    " Hide cursor line in insert mode
+    aug cline
+        au!
+        au WinLeave,InsertEnter * set nocursorline
+        au WinEnter,InsertLeave * set cursorline
+    aug END
+
+    augroup term_enter
+        au!
+        au TermOpen * setlocal nonumber norelativenumber signcolumn=no
+        " this is set after launching terminal for the first time!
+        " au TermOpen * setlocal shell=fish
+        " au BufEnter term://* startinsert
+        " au BufLeave term://* stopinsert
+    augroup END
+
+    aug SpecialBuffers
+        au!
+        au FileType help,qf setlocal norelativenumber signcolumn=no nobuflisted
+    aug END
+
+    " Update diff after save
+    aug DiffUpdate
+        au!
+        au BufWritePost * if &diff | diffupdate | endif
+    aug END
+
+    " Remember cursor position when switcing buffers
+    aug CursorPosition
+        au!
+        au BufLeave * let b:winview = winsaveview()
+        au User * let b:winview = winsaveview()
+        au BufEnter * if(exists('b:winview')) | call winrestview(b:winview) | endif
+    aug END
+
+    " Remove trailing whitespaces and ^M chars
+    augroup FileTypes
+        au!
+        au FileType c,cpp,java,go,javascript,ocaml,python,xml,yml autocmd BufWritePre <buffer> call StripTrailingWhitespace()
+        au FileType python setlocal colorcolumn=89
+        au FileType text setlocal textwidth=80 colorcolumn=+1
+        au FileType ocaml,reason setlocal ts=2 sts=2 sw=2 colorcolumn=101
+        au FileType scheme setlocal ts=2 sts=2 sw=2 colorcolumn=101
+        au BufRead,BufNewFile *.jinja2 setlocal filetype=htmldjango
+        au BufNewFile,BufRead *.t set filetype=cram
+        au FileType json syntax match Comment +\/\/.\+$+
+    augroup END
+
+""""""""""""""""""""""""""""""""""""""""""""""
+">>- support `git commit` in terminal window
+if executable('nvr')
+  let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+endif
+
+augroup GitClose
+    au!
+    autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+augroup END
+
+"### KEYBINDINGS #################################################################
+
+" Clear search highlighting
+nnoremap <silent> <esc> <Cmd>nohlsearch<CR>
+
+" Source init.nvim
+nnoremap <leader>~ <Cmd>source $MYVIMRC<cr>
+
+" Switch to previous buffer
+nnoremap <BS> <C-^>
+
+" Sudo write
+command! SudoWrite w suda://%
+
+" Toggle folding
+" nnoremap <Tab> za
+
+" Repeat last ex command
+" nnoremap <leader><leader> @:
+
+" Set working directory
+nnoremap <leader>. <Cmd>lcd %:p:h<CR>
+
+" Jump to exact position
+noremap ` '
+noremap ' `
+
+" Use Enter as : and fix problems caused by that
+" XXX may break some stuff
+nnoremap <CR> :
+augroup enter_esc
+    au!
+    au FileType qf nnoremap <buffer> <CR> <CR>
+    au FileType qf nnoremap <buffer> <Esc> <Cmd>q<CR>
+    au CmdWinEnter * nnoremap <buffer> <CR> <CR>
+    au CmdWinEnter * nnoremap <buffer> <Esc> <Cmd>q<CR>
+    au FileType netrw nnoremap <buffer> <Esc> <Cmd>e #<CR>
+augroup END
+
+" Easier access to command history
+" nnoremap <leader>; q:
+
+" No ex mode
+nnoremap Q <Nop>
+
+" use sane regexes
+nnoremap / /\v
+vnoremap / /\v
+
+" Easier window navigation
+tnoremap <A-h> <C-\><C-n><C-w>h
+tnoremap <A-j> <C-\><C-n><C-w>j
+tnoremap <A-k> <C-\><C-n><C-w>k
+tnoremap <A-l> <C-\><C-n><C-w>l
+inoremap <A-h> <C-\><C-n><C-w>h
+inoremap <A-j> <C-\><C-n><C-w>j
+inoremap <A-k> <C-\><C-n><C-w>k
+inoremap <A-l> <C-\><C-n><C-w>l
+nnoremap <A-h> <C-w>h
+nnoremap <A-j> <C-w>j
+nnoremap <A-k> <C-w>k
+nnoremap <A-l> <C-w>l
+
+" Make esc quit insert mode in terminal
+" XXX may break some stuff
+augroup esc_term
+    au!
+    tnoremap <Esc> <C-\><C-n>
+    au FileType fzf tnoremap <buffer> <Esc> <Esc>
+augroup END
+
+" Make arrowkeys resize viewports accordingly
+nnoremap <S-Left> <Cmd>vertical resize +1<CR>
+nnoremap <S-Right> <Cmd>vertical resize -1<CR>
+nnoremap <S-Up> <Cmd>resize -1<CR>
+nnoremap <S-Down> <Cmd>resize +1<CR>
+
+" Highlight word under cursor without moving cursor
+map <silent> <leader>* <Cmd>let @/ = '\<'.expand('<cword>').'\>'\|set hlsearch<CR>
 
 " Functions
     " Strip whitespace
@@ -778,48 +577,121 @@
         echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
     endfunc
 
-    " Toggle background
-    function! ToggleBackground()
-        if &background == 'dark'
-            set background=light
-        else
-            set background=dark
-        endif
-    endfunc
-    nmap <silent> <F9> <Cmd>call ToggleBackground()<CR>
 
-" if has('statusline')
-"
-"   function! ALEWarnings() abort
-"     let l:counts = ale#statusline#Count(bufnr(''))
-"     let l:all_errors = l:counts.error + l:counts.style_error
-"     let l:all_non_errors = l:counts.total - l:all_errors
-"     return l:counts.total == 0 ? '' : printf('  W:%d ', all_non_errors)
-"   endfunction
-"
-"   function! ALEErrors() abort
-"     let l:counts = ale#statusline#Count(bufnr(''))
-"     let l:all_errors = l:counts.error + l:counts.style_error
-"     let l:all_non_errors = l:counts.total - l:all_errors
-"     return l:counts.total == 0 ? '' : printf(' E:%d ', all_errors)
-"   endfunction
-"
-"   function! ALEStatus() abort
-"     let l:counts = ale#statusline#Count(bufnr(''))
-"     let l:all_errors = l:counts.error + l:counts.style_error
-"     let l:all_non_errors = l:counts.total - l:all_errors
-"     return l:counts.total == 0 ? ' ok ' : ''
-"   endfunction
-"
-"   set laststatus=2
-"   set statusline=%<%f
-"   set statusline+=%w%h%m%r
-"
-"   set statusline+=\ %y
-"   set statusline+=%=%-14.(%l,%c%V%)\ %p%%\ 
-"
-"   set statusline+=\%#StatusLineOk#%{ALEStatus()}
-"   set statusline+=\%#StatusLineError#%{ALEErrors()}
-"   set statusline+=\%#StatusLineWarning#%{ALEWarnings()}
-"
-" endif
+" Colors
+    " workaround for https://github.com/neovim/neovim/issues/9019
+    function! s:CustomizeColors() abort
+        " if has('guirunning') || has('termguicolors')
+        "     let cursorline_gui=''
+        "     let cursorline_cterm='ctermfg=white'
+        " else
+        "     let cursorline_gui='guifg=white'
+        "     let cursorline_cterm=''
+        " endif
+        " exec 'hi CursorLine ' . cursorline_gui . ' ' . cursorline_cterm
+        " match ErrorMsg '\%>120v.\+'
+        " green!
+        " hi MatchParen ctermfg=40 ctermbg=234 guifg=#00D000 guibg=#191919 gui=underline cterm=underline
+        " hi MatchParen ctermfg=40 ctermbg=234 guifg=#02e3e3 guibg=#0000FF
+        " hi MatchParen ctermfg=40 ctermbg=234 guifg=#00FFFF guibg=#0000FF
+        hi MatchParen ctermfg=40 ctermbg=234 guifg=#FFFFFF guibg=#0000FF
+        " make maching paren inverse of Normal
+        " let s:fg = synIDattr(synIDtrans(hlID("Normal")), "fg#")
+        " let s:bg = synIDattr(synIDtrans(hlID("Normal")), "bg#")
+        " hi MatchParen cterm=underline gui=underline guibg=fg ctermbg=fg guifg=bg ctermfg=bg
+        " comments are always italic
+        " hi Comment cterm=italic
+        " hi ColorColumn ctermbg=236
+    endfunction
+
+    augroup OnColorScheme
+        autocmd!
+        " autocmd ColorScheme,BufEnter,BufWinEnter * call s:CustomizeColors()
+    augroup END
+
+    if ($TERM =~ "xterm") || ($TERM =~ "-256color") || ($TERM =~ "alacritty")
+        set termguicolors
+        " let g:onedark_terminal_italics = 1
+        " colorscheme onedark
+        " hi Todo gui=bold,reverse guifg=#5c6370
+        " let g:codedark_conservative = 1
+        " colorscheme codedark
+        " colorscheme zenburn
+        " let g:airline_theme = 'zenburn'
+        " colorscheme github
+        " colorscheme farout
+        " let g:kamrat_italic = 1
+        " colorscheme kamrat
+        " colorscheme sierra  " really good
+        " colorscheme materialbox  " decent
+        " colorscheme breve  " broken Normal
+        " colo schellar
+        " set background=dark | colorscheme pink-moon  " decent
+        " colorscheme cake16
+        " colorscheme fahrenheit
+        " colorscheme plain
+        " colorscheme iceberg
+        " let g:two_firewatch_italics=1
+        " colo two-firewatch
+        " let g:airline_theme='twofirewatch'
+        " colorscheme gruvbox
+        " let g:pencil_higher_contrast_ui = 1
+        " let g:pencil_gutter_color = 1
+        " let g:pencil_terminal_italics = 1
+        " set background=light | colorscheme pencil
+        " set background=dark | colorscheme darcula
+
+        " colorscheme OceanicNext  " decent
+        " set background=light | colo PaperColor  " nice light theme
+        " colorscheme afterglow
+        " colorscheme apprentice  " decent
+        " colorscheme carbonized-dark
+
+        " colorscheme challenger_deep
+        " trying
+        " set background=light
+        " colorscheme paramount
+        "
+        colorscheme loretta
+
+        " SHITTY COLORSCHEMES
+        " colorscheme 256_noir
+        " colorscheme OceanicNextLight
+        " colorscheme abstract
+        " colorscheme alduin
+        " colorscheme allomancer
+        " colorscheme anderson
+        " colo angr
+        " colorscheme atom
+        " colorscheme ayu
+        " colorscheme breve
+        " colorscheme cake16
+    elseif exists('g:GuiLoaded')
+        colorscheme loretta
+    endif
+
+    " aug ReloadColors
+    "     au!
+    "     au BufRead,BufNewFile * colorscheme loretta
+    " aug END
+
+if exists(':GuiFont')
+    " Use GuiFont! to ignore font errors
+    GuiFont! JetBrains Mono:h10.5
+endif
+
+if exists(':GuiLinespace')
+    " Use GuiFont! to ignore font errors
+    GuiLinespace 2
+endif
+
+" GUI ScrollBar
+if exists(':GuiScrollBar')
+    GuiScrollBar 0
+endif
+
+
+" GUI Popupmenu
+if exists(':GuiPopupmenu')
+    GuiPopupmenu 1
+endif
