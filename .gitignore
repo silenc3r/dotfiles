@@ -1,2 +1,4 @@
 tags
 #fish/.config/fish/functions/_*
+fish/functions/fisher.fish
+fish/conf.d/asdf_direnv.fish
